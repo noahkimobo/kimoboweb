@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { CATEGORIES } from '@/lib/format'
 import { siteConfig } from '@/lib/site'
+import { SocialLinks } from './social-links'
 
 export function SiteFooter() {
   return (
@@ -67,12 +68,13 @@ export function SiteFooter() {
           <p>
             &copy; {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
           </p>
-          <div className="flex gap-5">
+          <div className="flex items-center gap-5">
             <span>Privacy</span>
             <span>Terms</span>
             <Link href="/admin" className="transition-colors hover:text-foreground">
               Admin
             </Link>
+            <SocialLinks />
           </div>
         </div>
       </div>
