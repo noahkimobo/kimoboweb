@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kimobo Furnitures | Quality Beds & More</title>
+    <style>
+        :root {
+            --primary: #1a252f;
+            --accent: #3498db;
+            --light: #f8f9fa;
+            --dark: #2c3e50;
+            --success: #2ecc71;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--dark);
+            background-color: var(--light);
+            scroll-behavior: smooth; /* Modern CSS smooth scrolling fallback */
+        }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200') no-repeat center center/cover;
+            color: white;
+            text-align: center;
+            padding: 100px 20px;
+        }
+
+        .hero h1 { font-size: 3rem; margin-bottom: 10px; }
+        .hero p { font-size: 1.2rem; margin-bottom: 20px; }
+        
+        .btn {
+            background-color: var(--accent);
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #2980b9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 30px;
+        }
+
+        /* Catalog Section */
+        .catalog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+            padding-bottom: 20px;
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .product-card h3 { margin: 15px 0 5px; }
+        .product-card .price { color: var(--accent); font-weight: bold; font-size: 1.1rem; }
+
+        /* Booking Section */
+        .booking-section {
+            background-color: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 40px auto;
+            position: relative;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        /* Dynamic Alert Message Container via JS */
+        .alert-message {
+            display: none;
+            background-color: var(--success);
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        /* Footer & Contact */
+        footer {
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 50px;
+        }
+
+        .social-links a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+            font-size: 1.1rem;
+        }
+        
+        .social-links a:hover { color: var(--accent); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div style="font-size: 1.5rem; font-weight: bold; margin-bottom: 10px;">KIMOBO FURNITURES</div>
+        <nav>
+            <a href="#catalog">Catalog</a>
+            <a href="#book-showroom">Book Showroom</a>
+            <a href="#contact">Location & Contact</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Quality Beds & More!</h1>
+        <p>Premium craftsmanship. Free same-day delivery within Nairobi. Pay only after delivery.</p>
+        <a href="#book-showroom" class="btn">Book Showroom Visit</a>
+    </section>
+
+    <div class="container" id="catalog">
+        <h2>Our Furniture Catalog</h2>
+        <div class="catalog-grid">
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1540518614846-7eded433c457?q=80&w=500" alt="Mocket Bed">
+                <h3>5x6 Raised Mocket Bed</h3>
+                <p>Comfortable raised design with premium fabric finish.</p>
+                <p class="price">Contact for Price</p>
+                <a href="https://wa.me/254141459677" class="btn" style="padding: 8px 15px; font-size: 0.9rem;">Order via WhatsApp</a>
+            </div>
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=500" alt="Chesterfield Sofa">
+                <h3>Chesterfield Sofa</h3>
+                <p>Timeless classic tufted luxury for your living room.</p>
+                <p class="price">Ksh 25,000</p>
+                <a href="https://wa.me/254141459677" class="btn" style="padding: 8px 15px; font-size: 0.9rem;">Order via WhatsApp</a>
+            </div>
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1484101403633-562f891dc89a?q=80&w=500" alt="Butterfly Sofa">
+                <h3>Butterfly Sofa</h3>
+                <p>Modern style and unmatched cozy relaxation.</p>
+                <p class="price">Ksh 25,000</p>
+                <a href="https://wa.me/254141459677" class="btn" style="padding: 8px 15px; font-size: 0.9rem;">Order via WhatsApp</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="book-showroom">
+        <div class="booking-section">
+            <div id="alertBox" class="alert-message"></div>
+            <h2>Book a Showroom Appointment</h2>
+            
+            <form id="showroomForm">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" required placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" required placeholder="0712 345 678">
+                </div>
+                <div class="form-group">
+                    <label for="date">Preferred Date</label>
+                    <input type="date" id="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="time">Preferred Time</label>
+                    <select id="time" required>
+                        <option value="">Select a time</option>
+                        <option value="Morning (9:00 AM - 12:00 PM)">Morning (9:00 AM - 12:00 PM)</option>
+                        <option value="Afternoon (12:00 PM - 4:00 PM)">Afternoon (12:00 PM - 4:00 PM)</option>
+                        <option value="Evening (4:00 PM - 6:00 PM)">Evening (4:00 PM - 6:00 PM)</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Confirm Appointment</button>
+            </form>
+        </div>
+    </div>
+
+    <footer id="contact">
+        <h2>Visit Our Showroom</h2>
+        <p><strong>Location:</strong> Kahawa Wendani, Nairobi, Kenya</p>
+        <p><strong>Call / WhatsApp:</strong> +254 141 459677</p>
+        <p><em>Free delivery within Nairobi | Payments accepted only after delivery</em></p>
+        
+        <div class="social-links" style="margin-top: 20px;">
+            <a href="https://www.instagram.com/kimobofunitures/" target="_blank">Instagram</a> | 
+            <a href="https://wa.me/254141459677" target="_blank">WhatsApp Chat</a>
+        </div>
+        <p style="margin-top: 30px; font-size: 0.8rem; opacity: 0.7;">&copy; 2026 Kimobo Furnitures. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('showroomForm');
+            const alertBox = document.getElementById('alertBox');
+
+            // 1. Handle Form Submission Interactivity
+            form.addEventListener('submit', (event) => {
+                event.preventDefault(); // Prevents the webpage from reloading
+
+                // Capture input values
+                const customerName = document.getElementById('name').value.trim();
+                const customerPhone = document.getElementById('phone').value.trim();
+                const bookingDate = document.getElementById('date').value;
+                const bookingTime = document.getElementById('time').value;
+
+                // Basic validation fallback
+                if (!customerName || !customerPhone || !bookingDate || !bookingTime) {
+                    alertBox.style.backgroundColor = '#e74c3c'; // Red for error
+                    alertBox.textContent = 'Please fill out all fields correctly.';
+                    alertBox.style.display = 'block';
+                    return;
+                }
+
+                // Display a professional immediate success popup on the page
+                alertBox.style.backgroundColor = '#2ecc71'; // Green for success
+                alertBox.textContent = `Thank you, ${customerName}! Your showroom appointment request for ${bookingDate} (${bookingTime}) has been received. We will call you back on ${customerPhone} shortly to confirm.`;
+                alertBox.style.display = 'block';
+
+                // Optional advanced action: Redirect information straight to your WhatsApp to notify you instantly
+                const whatsappText = encodeURIComponent(`Hello Kimobo Furnitures! I would like to book a showroom visit.\n\nName: ${customerName}\nPhone: ${customerPhone}\nDate: ${bookingDate}\nTime: ${bookingTime}`);
+                
+                // Triggers after 2.5 seconds so they can read the on-screen success message first
+                setTimeout(() => {
+                    window.open(`https://wa.me/254141459677?text=${whatsappText}`, '_blank');
+                    form.reset(); // Clear the form fields
+                }, 2500);
+            });
+
+            // 2. Smooth Scrolling Effect for Navigation Anchors
+            document.querySelectorAll('nav a, .hero .btn').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const targetId = this.getAttribute('href');
+                    if (targetId.startsWith('#')) {
+                        e.preventDefault();
+                        document.querySelector(targetId).scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
