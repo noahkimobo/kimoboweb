@@ -6,6 +6,8 @@ import { ValueProps } from '@/components/home/value-props'
 import { ProductCard } from '@/components/product/product-card'
 import { getFeaturedProducts } from '@/lib/queries'
 
+export const dynamic = 'force-dynamic'
+
 export default async function HomePage() {
   const featured = await getFeaturedProducts(4)
 

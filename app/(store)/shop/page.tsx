@@ -5,6 +5,8 @@ import { ProductCard } from '@/components/product/product-card'
 import { getProducts, type ProductSort } from '@/lib/queries'
 import { categoryLabel } from '@/lib/format'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Shop',
   description: 'Browse the full Kimobo Furnitures collection of solid wood furniture.',

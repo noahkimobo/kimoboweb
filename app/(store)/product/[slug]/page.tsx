@@ -7,6 +7,8 @@ import { PurchasePanel } from "@/components/product/purchase-panel"
 import { ProductDetails } from "@/components/product/product-details"
 import { ProductCard } from "@/components/product/product-card"
 
+export const dynamic = 'force-dynamic'
+
 type Params = { params: Promise<{ slug: string }> }
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
