@@ -12,7 +12,17 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  if (typeof password !== 'string' || password !== adminPassword) {
+  // Temporary debug log for local troubleshooting (does not print the secret)
+  try {
+    const isMatch = typeof password === 'string' && password === adminPassword
+    // eslint-disable-next-line no-console
+    console.log(`[admin-login] password-received: type=${typeof password}, length=${typeof password === 'string' ? password.length : 'N/A'}, match=${isMatch}`)
+    if (!isMatch) {
+      return NextResponse.json({ error: 'Incorrect password.' }, { status: 401 })
+    }
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.error('[admin-login] debug failed', e)
     return NextResponse.json({ error: 'Incorrect password.' }, { status: 401 })
   }
 
