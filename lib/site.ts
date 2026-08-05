@@ -6,7 +6,7 @@ export const siteConfig = {
   whatsappNumber: '254141459677',
   whatsappGreeting:
     "Hi Kimobo Furnitures, I have a question about your furniture and I'd love some help.",
-  email: 'hello@kimobofurnitures.com',
+  email: 'kimobofurnitures.com',
   phone: '+254 141 459 677',
   // Update these with your real profile/page URLs. Leave as '' to hide an icon.
   social: {
