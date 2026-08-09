@@ -238,7 +238,7 @@ export function ProductForm({ product }: { product?: Product }) {
         </div>
 
         <div className="flex flex-col gap-2">
-          <Label htmlFor="price">Price (USD)</Label>
+          <Label htmlFor="price">Price (KES)</Label>
           <Input
             id="price"
             type="number"
@@ -251,7 +251,7 @@ export function ProductForm({ product }: { product?: Product }) {
         </div>
 
         <div className="flex flex-col gap-2">
-          <Label htmlFor="compareAtPrice">Compare-at price (optional, shows as "sale")</Label>
+          <Label htmlFor="compareAtPrice">Compare-at price (KES, optional, shows as "sale")</Label>
           <Input
             id="compareAtPrice"
             type="number"
