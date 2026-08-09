@@ -3,6 +3,9 @@ import { Truck, RotateCcw, ShieldCheck } from "lucide-react"
 
 export function ProductDetails({ product }: { product: Product }) {
   const specs: { label: string; value: string }[] = [
+    { label: "Seaters", value: product.seaters ? `${product.seaters}` : "—" },
+    { label: "Wood type", value: product.woodType || "—" },
+    { label: "Sitting area", value: product.cushionType || "—" },
     { label: "Dimensions", value: product.dimensions || "—" },
     { label: "Weight", value: product.weight || "—" },
     { label: "Materials", value: (product.materials ?? []).join(", ") || "—" },

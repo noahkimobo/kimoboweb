@@ -27,6 +27,9 @@ type FormState = {
   description: string
   priceDollars: string
   compareAtPriceDollars: string
+  seaters: string
+  woodType: string
+  cushionType: string
   stock: string
   featured: boolean
   images: string[]
@@ -65,6 +68,9 @@ export function ProductForm({ product }: { product?: Product }) {
     description: product?.description ?? '',
     priceDollars: toDollars(product?.price ?? 0),
     compareAtPriceDollars: toDollars(product?.compareAtPrice),
+    seaters: String(product?.seaters ?? 1),
+    woodType: product?.woodType ?? '',
+    cushionType: product?.cushionType ?? '',
     stock: String(product?.stock ?? 0),
     featured: product?.featured ?? false,
     images: product?.images ?? [],
@@ -81,17 +87,24 @@ export function ProductForm({ product }: { product?: Product }) {
   }
 
   async function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0]
-    if (!file) return
+    const files = Array.from(e.target.files ?? [])
+    if (!files.length) return
+
     setUploading(true)
     try {
-      const body = new FormData()
-      body.append('file', file)
-      const res = await fetch('/api/admin/upload', { method: 'POST', body })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error ?? 'Upload failed.')
-      update('images', [...form.images, data.url as string])
-      toast.success('Image uploaded')
+      const uploadedUrls: string[] = []
+
+      for (const file of files) {
+        const body = new FormData()
+        body.append('file', file)
+        const res = await fetch('/api/admin/upload', { method: 'POST', body })
+        const data = await res.json()
+        if (!res.ok) throw new Error(data.error ?? 'Upload failed.')
+        uploadedUrls.push(data.url as string)
+      }
+
+      update('images', [...form.images, ...uploadedUrls])
+      toast.success(files.length > 1 ? `${files.length} images uploaded` : 'Image uploaded')
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Upload failed.')
     } finally {
@@ -137,6 +150,9 @@ export function ProductForm({ product }: { product?: Product }) {
       compareAtPrice: form.compareAtPriceDollars.trim()
         ? toCents(form.compareAtPriceDollars)
         : null,
+      seaters: Math.max(1, Number.parseInt(form.seaters, 10) || 1),
+      woodType: form.woodType.trim(),
+      cushionType: form.cushionType.trim(),
       stock: Math.max(0, Number.parseInt(form.stock, 10) || 0),
       featured: form.featured,
       images: form.images,
@@ -262,6 +278,45 @@ export function ProductForm({ product }: { product?: Product }) {
           />
         </div>
 
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="seaters">Seaters</Label>
+          <Input
+            id="seaters"
+            type="number"
+            min="1"
+            step="1"
+            value={form.seaters}
+            onChange={(e) => update('seaters', e.target.value)}
+          />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="woodType">Wood type</Label>
+          <Input
+            id="woodType"
+            value={form.woodType}
+            onChange={(e) => update('woodType', e.target.value)}
+            placeholder="e.g. Mahogany"
+          />
+        </div>
+
+        <div className="flex flex-col gap-2 sm:col-span-2">
+          <Label htmlFor="cushionType">Sitting area</Label>
+          <Select
+            value={form.cushionType}
+            onValueChange={(v) => update('cushionType', v)}
+          >
+            <SelectTrigger id="cushionType" className="w-full">
+              <SelectValue placeholder="Choose a filling type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Spring cushion">Spring cushion</SelectItem>
+              <SelectItem value="Fiber filled">Fiber filled</SelectItem>
+              <SelectItem value="High density foam">High density foam</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
         <div className="flex flex-col gap-2 sm:col-span-2">
           <Label htmlFor="description">Description</Label>
           <Textarea
@@ -337,6 +392,7 @@ export function ProductForm({ product }: { product?: Product }) {
             ref={fileInputRef}
             type="file"
             accept="image/png,image/jpeg,image/webp,image/avif"
+            multiple
             className="hidden"
             onChange={handleFileSelect}
           />

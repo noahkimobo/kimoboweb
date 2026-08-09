@@ -21,7 +21,8 @@ export async function PATCH(request: NextRequest, { params }: Params) {
   const updates: Partial<NewProduct> = {}
   const allowed: (keyof NewProduct)[] = [
     'name', 'slug', 'description', 'category', 'price', 'compareAtPrice',
-    'images', 'colors', 'materials', 'dimensions', 'weight', 'stock', 'featured',
+    'images', 'colors', 'materials', 'seaters', 'woodType', 'cushionType',
+    'dimensions', 'weight', 'stock', 'featured',
   ]
   for (const key of allowed) {
     if (key in body) (updates as Record<string, unknown>)[key] = body[key]
