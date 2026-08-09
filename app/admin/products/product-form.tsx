@@ -304,7 +304,7 @@ export function ProductForm({ product }: { product?: Product }) {
           <Label htmlFor="cushionType">Sitting area</Label>
           <Select
             value={form.cushionType}
-            onValueChange={(v) => update('cushionType', v)}
+            onValueChange={(v) => update('cushionType', v ?? '')}
           >
             <SelectTrigger id="cushionType" className="w-full">
               <SelectValue placeholder="Choose a filling type" />
