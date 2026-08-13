@@ -1,0 +1,8 @@
+ALTER TABLE products
+  ADD COLUMN IF NOT EXISTS seaters integer NOT NULL DEFAULT 1;
+
+ALTER TABLE products
+  ADD COLUMN IF NOT EXISTS wood_type text NOT NULL DEFAULT '';
+
+ALTER TABLE products
+  ADD COLUMN IF NOT EXISTS cushion_type text NOT NULL DEFAULT '';
