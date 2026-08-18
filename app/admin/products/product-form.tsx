@@ -103,7 +103,10 @@ export function ProductForm({ product }: { product?: Product }) {
         uploadedUrls.push(data.url as string)
       }
 
-      update('images', [...form.images, ...uploadedUrls])
+      setForm((current) => ({
+        ...current,
+        images: [...current.images, ...uploadedUrls],
+      }))
       toast.success(files.length > 1 ? `${files.length} images uploaded` : 'Image uploaded')
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Upload failed.')
@@ -379,14 +382,16 @@ export function ProductForm({ product }: { product?: Product }) {
             type="button"
             onClick={() => fileInputRef.current?.click()}
             disabled={uploading}
-            className="flex size-24 flex-col items-center justify-center gap-1 rounded-md border border-dashed border-border text-muted-foreground hover:border-foreground hover:text-foreground disabled:opacity-50"
+            className="flex size-24 flex-col items-center justify-center gap-1 rounded-md border border-dashed border-border px-2 text-center text-muted-foreground hover:border-foreground hover:text-foreground disabled:opacity-50"
           >
             {uploading ? (
               <Loader2 className="size-5 animate-spin" />
             ) : (
               <Upload className="size-5" />
             )}
-            <span className="text-[11px]">{uploading ? 'Uploading' : 'Upload'}</span>
+            <span className="text-[11px]">
+              {uploading ? 'Uploading' : 'Upload images'}
+            </span>
           </button>
           <input
             ref={fileInputRef}

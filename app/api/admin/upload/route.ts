@@ -50,6 +50,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ url: blob.url })
     }
 
+    if (process.env.NODE_ENV === 'production') {
+      return NextResponse.json(
+        { error: 'BLOB_READ_WRITE_TOKEN is not configured on the server.' },
+        { status: 500 },
+      )
+    }
+
     const uploadsDir = path.resolve(process.cwd(), 'public', 'uploads')
     if (!existsSync(uploadsDir)) {
       mkdirSync(uploadsDir, { recursive: true })

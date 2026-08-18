@@ -26,8 +26,6 @@ function LoginForm() {
         body: JSON.stringify({ password }),
       })
       const data = await res.json().catch(() => ({}))
-      // eslint-disable-next-line no-console
-      console.log('admin login response', res.status, data)
       if (!res.ok) {
         setError(data.error ?? 'Something went wrong.')
         return

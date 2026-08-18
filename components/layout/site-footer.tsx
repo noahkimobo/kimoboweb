@@ -71,9 +71,6 @@ export function SiteFooter() {
           <div className="flex items-center gap-5">
             <span>Privacy</span>
             <span>Terms</span>
-            <Link href="/admin" className="transition-colors hover:text-foreground">
-              Admin
-            </Link>
             <SocialLinks />
           </div>
         </div>
