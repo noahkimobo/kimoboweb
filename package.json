@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start",
     "query:products": "node scripts/query-products.mjs",
+    "import:catalog": "node scripts/seed-catalog.mjs",
     "lint": "eslint ."
   },
   "dependencies": {
