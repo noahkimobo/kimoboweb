@@ -3,7 +3,7 @@ import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import { put } from '@vercel/blob'
 
-const MAX_BYTES = 4.5 * 1024 * 1024 // 4.5MB Vercel server upload limit
+const MAX_BYTES = 4 * 1024 * 1024 // Leave room below hosting request-body limits.
 const ALLOWED_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/avif'])
 
 function getExtension(type: string) {
