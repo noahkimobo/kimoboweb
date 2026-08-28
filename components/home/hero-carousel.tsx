@@ -14,7 +14,7 @@ export function HeroCarousel({ products }: { products: Product[] }) {
     if (slides.length < 2) return
     const timer = window.setInterval(() => {
       setActive((current) => (current + 1) % slides.length)
-    }, 1000)
+    }, 3000)
     return () => window.clearInterval(timer)
   }, [slides.length])
 
@@ -39,13 +39,12 @@ export function HeroCarousel({ products }: { products: Product[] }) {
     <div className="relative aspect-4/3 overflow-hidden rounded-2xl bg-secondary lg:aspect-square">
       <Link href={`/product/${product.slug}`} className="absolute inset-0">
         <Image
-          key={product.id}
           src={product.images[0]}
           alt={product.name}
           fill
           priority
           sizes="(max-width: 1024px) 100vw, 50vw"
-          className="object-cover transition-opacity duration-500"
+          className="object-cover transition-opacity duration-1000"
         />
         <span className="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/65 to-transparent px-6 pb-6 pt-16 text-lg font-medium text-white">
           {product.name}
