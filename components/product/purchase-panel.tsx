@@ -1,37 +1,20 @@
 "use client"
 
 import { useState } from "react"
-import { Minus, Plus, Check, ShoppingBag, MessageCircle } from "lucide-react"
+import { Minus, Plus, Check, MessageCircle } from "lucide-react"
 import type { Product, ProductColor } from "@/lib/db/schema"
 import { formatPrice } from "@/lib/format"
 import { whatsappLink } from "@/lib/site"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { useCart } from "@/components/cart/cart-provider"
 
 export function PurchasePanel({ product }: { product: Product }) {
-  const { addItem } = useCart()
   const colors = (product.colors ?? []) as ProductColor[]
   const [color, setColor] = useState<ProductColor | null>(colors[0] ?? null)
   const [qty, setQty] = useState(1)
 
   const inStock = product.stock > 0
   const onSale = product.compareAtPrice != null && product.compareAtPrice > product.price
-
-  function handleAdd() {
-    addItem(
-      {
-        productId: product.id,
-        slug: product.slug,
-        name: product.name,
-        price: product.price,
-        image: product.images?.[0] ?? "",
-        color: color?.name ?? null,
-        maxStock: product.stock,
-      },
-      qty,
-    )
-  }
 
   function handleWhatsAppOrder() {
     const message = [
@@ -133,15 +116,6 @@ export function PurchasePanel({ product }: { product: Product }) {
         </div>
       </div>
 
-      <Button
-        size="lg"
-        className="h-14 rounded-full bg-primary text-base text-primary-foreground hover:bg-primary/90"
-        disabled={!inStock}
-        onClick={handleAdd}
-      >
-        <ShoppingBag className="mr-2 h-5 w-5" />
-        {inStock ? "Add to cart" : "Out of stock"}
-      </Button>
       <Button
         size="lg"
         variant="outline"

@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
-import { Menu, Search, ShoppingBag, X } from 'lucide-react'
+import { Menu, Search, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -13,13 +13,11 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet'
-import { useCart } from '@/components/cart/cart-provider'
 import { CATEGORIES } from '@/lib/format'
 import { siteConfig } from '@/lib/site'
 import { cn } from '@/lib/utils'
 
 export function SiteHeader() {
-  const { count, setOpen } = useCart()
   const pathname = usePathname()
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -146,20 +144,6 @@ export function SiteHeader() {
             </Button>
           )}
 
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label={`Open cart, ${count} items`}
-            className="relative"
-            onClick={() => setOpen(true)}
-          >
-            <ShoppingBag className="size-5" />
-            {count > 0 && (
-              <span className="absolute -right-0.5 -top-0.5 flex size-4.5 min-w-4.5 items-center justify-center rounded-full bg-accent px-1 text-[10px] font-semibold text-accent-foreground">
-                {count}
-              </span>
-            )}
-          </Button>
         </div>
       </div>
     </header>
