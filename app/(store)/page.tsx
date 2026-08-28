@@ -2,19 +2,17 @@ import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { Hero } from '@/components/home/hero'
 import { CategoryShowcase } from '@/components/home/category-showcase'
-import { ValueProps } from '@/components/home/value-props'
 import { ProductCard } from '@/components/product/product-card'
 import { getFeaturedProducts } from '@/lib/queries'
 
 export const dynamic = 'force-dynamic'
 
 export default async function HomePage() {
-  const featured = await getFeaturedProducts(4)
+  const featured = await getFeaturedProducts(18)
 
   return (
     <>
-      <Hero />
-      <ValueProps />
+      <Hero products={featured} />
       <CategoryShowcase />
 
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
@@ -36,7 +34,7 @@ export default async function HomePage() {
           </Link>
         </div>
         <div className="grid grid-cols-2 gap-x-4 gap-y-8 lg:grid-cols-4">
-          {featured.map((product) => (
+          {featured.slice(0, 4).map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>

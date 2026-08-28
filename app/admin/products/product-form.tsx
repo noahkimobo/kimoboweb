@@ -261,7 +261,7 @@ export function ProductForm({ product }: { product?: Product }) {
 
         <div className="flex items-center justify-between rounded-md border border-border px-3 py-2">
           <Label htmlFor="featured" className="cursor-pointer">
-            Featured on homepage
+            Show in homepage carousel
           </Label>
           <Switch
             id="featured"

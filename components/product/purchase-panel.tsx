@@ -1,9 +1,10 @@
 "use client"
 
 import { useState } from "react"
-import { Minus, Plus, Check, ShoppingBag } from "lucide-react"
+import { Minus, Plus, Check, ShoppingBag, MessageCircle } from "lucide-react"
 import type { Product, ProductColor } from "@/lib/db/schema"
 import { formatPrice } from "@/lib/format"
+import { whatsappLink } from "@/lib/site"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { useCart } from "@/components/cart/cart-provider"
@@ -30,6 +31,19 @@ export function PurchasePanel({ product }: { product: Product }) {
       },
       qty,
     )
+  }
+
+  function handleWhatsAppOrder() {
+    const message = [
+      "Hi Kimobo Furnitures, I would like to order:",
+      "",
+      `Product: ${product.name}`,
+      `Price: ${formatPrice(product.price)}`,
+      `Color: ${color?.name ?? "Not specified"}`,
+      `Quantity: ${qty}`,
+      `Product page: ${product.slug}`,
+    ].join("\n")
+    window.open(whatsappLink(message), "_blank", "noopener,noreferrer")
   }
 
   return (
@@ -127,6 +141,16 @@ export function PurchasePanel({ product }: { product: Product }) {
       >
         <ShoppingBag className="mr-2 h-5 w-5" />
         {inStock ? "Add to cart" : "Out of stock"}
+      </Button>
+      <Button
+        size="lg"
+        variant="outline"
+        className="h-14 rounded-full border-[#25D366] text-base text-[#168c45] hover:bg-[#25D366]/10 hover:text-[#168c45]"
+        disabled={!inStock}
+        onClick={handleWhatsAppOrder}
+      >
+        <MessageCircle className="mr-2 h-5 w-5" />
+        Order on WhatsApp
       </Button>
     </div>
   )

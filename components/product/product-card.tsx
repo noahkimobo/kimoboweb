@@ -1,15 +1,21 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
+import { MessageCircle } from 'lucide-react'
 import type { Product } from '@/lib/db/schema'
 import { categoryLabel, formatPrice } from '@/lib/format'
+import { whatsappLink } from '@/lib/site'
 
 export function ProductCard({ product }: { product: Product }) {
   const onSale = product.compareAtPrice && product.compareAtPrice > product.price
   const soldOut = product.stock <= 0
 
+  const whatsappMessage = `Hi Kimobo Furnitures, I would like to order:\n\nProduct: ${product.name}\nPrice: ${formatPrice(product.price)}\nQuantity: 1\nProduct page: ${product.slug}`
+
   return (
-    <Link href={`/product/${product.slug}`} className="group flex flex-col">
+    <div className="group flex flex-col">
+      <div className="relative">
+        <Link href={`/product/${product.slug}`} className="block">
       <div className="relative aspect-square overflow-hidden rounded-lg bg-secondary">
         <Image
           src={product.images[0] || '/placeholder.svg'}
@@ -26,6 +32,17 @@ export function ProductCard({ product }: { product: Product }) {
           )}
           {soldOut && <Badge variant="secondary">Sold out</Badge>}
         </div>
+      </div>
+        </Link>
+        <a
+          href={whatsappLink(whatsappMessage)}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Order ${product.name} on WhatsApp`}
+          className="absolute bottom-3 right-3 flex size-10 items-center justify-center rounded-full bg-[#25D366] text-white shadow-md transition-transform hover:scale-105"
+        >
+          <MessageCircle className="size-5" />
+        </a>
       </div>
       <div className="mt-3 flex flex-col gap-0.5">
         <span className="text-xs uppercase tracking-wide text-muted-foreground">
@@ -50,6 +67,6 @@ export function ProductCard({ product }: { product: Product }) {
           )}
         </div>
       </div>
-    </Link>
+    </div>
   )
 }

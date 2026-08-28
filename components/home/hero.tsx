@@ -1,10 +1,11 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { SocialLinks } from '@/components/layout/social-links'
+import type { Product } from '@/lib/db/schema'
+import { HeroCarousel } from '@/components/home/hero-carousel'
 
-export function Hero() {
+export function Hero({ products }: { products: Product[] }) {
   return (
     <section className="relative overflow-hidden">
       <SocialLinks className="absolute right-4 top-4 z-10 sm:right-6 lg:right-8" />
@@ -30,16 +31,7 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="relative aspect-4/3 overflow-hidden rounded-2xl bg-secondary lg:aspect-square">
-          <Image
-            src="/products/hero-living.png"
-            alt="A warm minimalist living room featuring the Oak Collection"
-            fill
-            priority
-            sizes="(max-width: 1024px) 100vw, 50vw"
-            className="object-cover"
-          />
-        </div>
+        <HeroCarousel products={products} />
       </div>
     </section>
   )
