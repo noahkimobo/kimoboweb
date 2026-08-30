@@ -92,22 +92,28 @@ export function ProductForm({ product }: { product?: Product }) {
 
     setUploading(true)
     try {
-      const uploadedUrls: string[] = []
+      const body = new FormData()
+      files.forEach((file) => body.append('file', file))
 
-      for (const file of files) {
-        const body = new FormData()
-        body.append('file', file)
-        const res = await fetch('/api/admin/upload', { method: 'POST', body })
-        const responseText = await res.text()
-        let data: { error?: string; url?: string }
-        try {
-          data = JSON.parse(responseText) as { error?: string; url?: string }
-        } catch {
-          throw new Error(`Upload failed (${res.status}). ${responseText.slice(0, 120)}`)
-        }
-        if (!res.ok) throw new Error(data.error ?? 'Upload failed.')
-        if (!data.url) throw new Error('Upload succeeded but no image URL was returned.')
-        uploadedUrls.push(data.url)
+      const res = await fetch('/api/admin/upload', { method: 'POST', body })
+      const responseText = await res.text()
+      let data: { error?: string; url?: string; urls?: string[] }
+      try {
+        data = JSON.parse(responseText) as { error?: string; url?: string; urls?: string[] }
+      } catch {
+        throw new Error(`Upload failed (${res.status}). ${responseText.slice(0, 120)}`)
+      }
+
+      if (!res.ok) throw new Error(data.error ?? 'Upload failed.')
+
+      const uploadedUrls = Array.isArray(data.urls)
+        ? data.urls
+        : data.url
+          ? [data.url]
+          : []
+
+      if (!uploadedUrls.length) {
+        throw new Error('Upload succeeded but no image URLs were returned.')
       }
 
       setForm((current) => ({
