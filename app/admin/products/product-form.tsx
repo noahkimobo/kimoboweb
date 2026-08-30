@@ -95,9 +95,6 @@ export function ProductForm({ product }: { product?: Product }) {
       const uploadedUrls: string[] = []
 
       for (const file of files) {
-        if (file.size > 4 * 1024 * 1024) {
-          throw new Error(`"${file.name}" is too large. Images must be under 4MB.`)
-        }
         const body = new FormData()
         body.append('file', file)
         const res = await fetch('/api/admin/upload', { method: 'POST', body })
@@ -106,11 +103,7 @@ export function ProductForm({ product }: { product?: Product }) {
         try {
           data = JSON.parse(responseText) as { error?: string; url?: string }
         } catch {
-          throw new Error(
-            res.status === 413
-              ? 'Image is too large for the server. Please upload an image under 4MB.'
-              : `Upload failed (${res.status}). ${responseText.slice(0, 120)}`,
-          )
+          throw new Error(`Upload failed (${res.status}). ${responseText.slice(0, 120)}`)
         }
         if (!res.ok) throw new Error(data.error ?? 'Upload failed.')
         if (!data.url) throw new Error('Upload succeeded but no image URL was returned.')

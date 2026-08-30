@@ -3,7 +3,6 @@ import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import { put } from '@vercel/blob'
 
-const MAX_BYTES = 4 * 1024 * 1024 // Leave room below hosting request-body limits.
 const ALLOWED_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/avif'])
 
 function getExtension(type: string) {
@@ -30,9 +29,6 @@ export async function POST(request: NextRequest) {
       { error: 'Only JPEG, PNG, WebP, or AVIF images are allowed.' },
       { status: 400 },
     )
-  }
-  if (file.size > MAX_BYTES) {
-    return NextResponse.json({ error: 'Image must be under 4.5MB.' }, { status: 400 })
   }
 
   const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '-')
