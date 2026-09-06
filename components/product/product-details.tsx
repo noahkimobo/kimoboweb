@@ -2,21 +2,21 @@ import type { Product } from "@/lib/db/schema"
 import { Truck, RotateCcw, ShieldCheck } from "lucide-react"
 
 export function ProductDetails({ product }: { product: Product }) {
-  const specs: { label: string; value: string }[] = [
-    { label: "Seaters", value: product.seaters ? `${product.seaters}` : "—" },
-    { label: "Wood type", value: product.woodType || "—" },
-    { label: "Sitting area", value: product.cushionType || "—" },
-    ...(product.category === "bedroom"
-      ? [
-          { label: "Bed size", value: product.bedSize ? `${product.bedSize} ft` : "—" },
-          { label: "Configuration", value: product.doubleDecker ? "Double decker" : "Standard bed" },
-        ]
-      : []),
-    { label: "Dimensions", value: product.dimensions || "—" },
-    { label: "Weight", value: product.weight || "—" },
-    { label: "Materials", value: (product.materials ?? []).join(", ") || "—" },
-    { label: "Category", value: product.category },
-  ]
+  const specs: { label: string; value: string }[] = product.category === "bedroom"
+    ? [
+        { label: "Wood type", value: product.woodType || "—" },
+        { label: "Bed size", value: product.bedSize ? `${product.bedSize} ft` : "—" },
+        { label: "Bed type", value: product.doubleDecker ? "Double decker" : "Standard bed" },
+      ]
+    : [
+        { label: "Seaters", value: product.seaters ? `${product.seaters}` : "—" },
+        { label: "Wood type", value: product.woodType || "—" },
+        { label: "Sitting area", value: product.cushionType || "—" },
+        { label: "Dimensions", value: product.dimensions || "—" },
+        { label: "Weight", value: product.weight || "—" },
+        { label: "Materials", value: (product.materials ?? []).join(", ") || "—" },
+        { label: "Category", value: product.category },
+      ]
 
   return (
     <div className="grid gap-12 md:grid-cols-2">

@@ -303,17 +303,19 @@ export function ProductForm({ product }: { product?: Product }) {
           />
         </div>
 
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="seaters">Seaters</Label>
-          <Input
-            id="seaters"
-            type="number"
-            min="1"
-            step="1"
-            value={form.seaters}
-            onChange={(e) => update('seaters', e.target.value)}
-          />
-        </div>
+        {form.category !== 'bedroom' && (
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="seaters">Seaters</Label>
+            <Input
+              id="seaters"
+              type="number"
+              min="1"
+              step="1"
+              value={form.seaters}
+              onChange={(e) => update('seaters', e.target.value)}
+            />
+          </div>
+        )}
 
         <div className="flex flex-col gap-2">
           <Label htmlFor="woodType">Wood type</Label>
@@ -325,22 +327,24 @@ export function ProductForm({ product }: { product?: Product }) {
           />
         </div>
 
-        <div className="flex flex-col gap-2 sm:col-span-2">
-          <Label htmlFor="cushionType">Sitting area</Label>
-          <Select
-            value={form.cushionType}
-            onValueChange={(v) => update('cushionType', v ?? '')}
-          >
-            <SelectTrigger id="cushionType" className="w-full">
-              <SelectValue placeholder="Choose a filling type" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Spring cushion">Spring cushion</SelectItem>
-              <SelectItem value="Fiber filled">Fiber filled</SelectItem>
-              <SelectItem value="High density foam">High density foam</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+        {form.category !== 'bedroom' && (
+          <div className="flex flex-col gap-2 sm:col-span-2">
+            <Label htmlFor="cushionType">Sitting area</Label>
+            <Select
+              value={form.cushionType}
+              onValueChange={(v) => update('cushionType', v ?? '')}
+            >
+              <SelectTrigger id="cushionType" className="w-full">
+                <SelectValue placeholder="Choose a filling type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Spring cushion">Spring cushion</SelectItem>
+                <SelectItem value="Fiber filled">Fiber filled</SelectItem>
+                <SelectItem value="High density foam">High density foam</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        )}
 
         {form.category === 'bedroom' && (
           <div className="flex flex-col gap-4 rounded-md border border-border p-4 sm:col-span-2">
