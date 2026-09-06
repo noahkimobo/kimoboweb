@@ -1,10 +1,10 @@
 "use client"
 
 import { useState } from "react"
-import { Minus, Plus, Check, MessageCircle } from "lucide-react"
+import { Minus, Plus, Check, MessageCircle, Music2 } from "lucide-react"
 import type { Product, ProductColor } from "@/lib/db/schema"
 import { formatPrice } from "@/lib/format"
-import { whatsappLink } from "@/lib/site"
+import { siteConfig, whatsappLink } from "@/lib/site"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 
@@ -47,6 +47,15 @@ export function PurchasePanel({ product }: { product: Product }) {
             </>
           )}
         </div>
+        <a
+          href={siteConfig.social.tiktok}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-foreground underline decoration-muted-foreground/50 underline-offset-4 transition-colors hover:text-muted-foreground"
+        >
+          <Music2 className="size-4" aria-hidden="true" />
+          Watch us on TikTok
+        </a>
       </div>
 
       <p className="leading-relaxed text-muted-foreground">{product.description}</p>
