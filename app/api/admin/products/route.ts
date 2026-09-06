@@ -22,6 +22,7 @@ export async function POST(request: NextRequest) {
         price: body.price ?? 0,
         compareAtPrice: body.compareAtPrice ?? null,
         images: body.images ?? [],
+        videoUrl: body.videoUrl ?? null,
         colors: body.colors ?? [],
         materials: body.materials ?? [],
         seaters: body.seaters ?? 1,

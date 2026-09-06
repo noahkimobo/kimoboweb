@@ -6,3 +6,6 @@ ALTER TABLE products
 
 ALTER TABLE products
   ADD COLUMN IF NOT EXISTS cushion_type text NOT NULL DEFAULT '';
+
+ALTER TABLE products
+  ADD COLUMN IF NOT EXISTS video_url text;

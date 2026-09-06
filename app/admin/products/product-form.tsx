@@ -25,6 +25,7 @@ type FormState = {
   slug: string
   category: string
   description: string
+  videoUrl: string
   priceDollars: string
   compareAtPriceDollars: string
   seaters: string
@@ -66,6 +67,7 @@ export function ProductForm({ product }: { product?: Product }) {
     slug: product?.slug ?? '',
     category: product?.category ?? CATEGORIES[0].slug,
     description: product?.description ?? '',
+    videoUrl: product?.videoUrl ?? '',
     priceDollars: toDollars(product?.price ?? 0),
     compareAtPriceDollars: toDollars(product?.compareAtPrice),
     seaters: String(product?.seaters ?? 1),
@@ -162,6 +164,7 @@ export function ProductForm({ product }: { product?: Product }) {
       slug: form.slug.trim() || slugify(form.name),
       category: form.category,
       description: form.description.trim(),
+      videoUrl: form.videoUrl.trim() || null,
       price: toCents(form.priceDollars),
       compareAtPrice: form.compareAtPriceDollars.trim()
         ? toCents(form.compareAtPriceDollars)
@@ -341,6 +344,20 @@ export function ProductForm({ product }: { product?: Product }) {
             value={form.description}
             onChange={(e) => update('description', e.target.value)}
           />
+        </div>
+
+        <div className="flex flex-col gap-2 sm:col-span-2">
+          <Label htmlFor="videoUrl">Product video link (optional)</Label>
+          <Input
+            id="videoUrl"
+            type="url"
+            value={form.videoUrl}
+            onChange={(e) => update('videoUrl', e.target.value)}
+            placeholder="https://www.tiktok.com/@your-account/video/..."
+          />
+          <p className="text-xs text-muted-foreground">
+            Add a TikTok or other video URL for this product.
+          </p>
         </div>
       </div>
 

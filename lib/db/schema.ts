@@ -20,6 +20,7 @@ export const products = pgTable('products', {
   price: integer('price').notNull().default(0),
   compareAtPrice: integer('compare_at_price'),
   images: jsonb('images').$type<string[]>().notNull().default([]),
+  videoUrl: text('video_url'),
   colors: jsonb('colors').$type<ProductColor[]>().notNull().default([]),
   materials: jsonb('materials').$type<string[]>().notNull().default([]),
   seaters: integer('seaters').notNull().default(1),

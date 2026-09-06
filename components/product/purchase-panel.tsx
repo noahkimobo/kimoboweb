@@ -48,13 +48,13 @@ export function PurchasePanel({ product }: { product: Product }) {
           )}
         </div>
         <a
-          href={siteConfig.social.tiktok}
+          href={product.videoUrl || siteConfig.social.tiktok}
           target="_blank"
           rel="noopener noreferrer"
           className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-foreground underline decoration-muted-foreground/50 underline-offset-4 transition-colors hover:text-muted-foreground"
         >
           <Music2 className="size-4" aria-hidden="true" />
-          Watch us on TikTok
+          {product.videoUrl ? "Watch product video" : "Watch us on TikTok"}
         </a>
       </div>
 

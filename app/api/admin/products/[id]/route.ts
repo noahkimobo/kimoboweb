@@ -21,7 +21,7 @@ export async function PATCH(request: NextRequest, { params }: Params) {
   const updates: Partial<NewProduct> = {}
   const allowed: (keyof NewProduct)[] = [
     'name', 'slug', 'description', 'category', 'price', 'compareAtPrice',
-    'images', 'colors', 'materials', 'seaters', 'woodType', 'cushionType',
+    'images', 'videoUrl', 'colors', 'materials', 'seaters', 'woodType', 'cushionType',
     'dimensions', 'weight', 'stock', 'featured',
   ]
   for (const key of allowed) {
