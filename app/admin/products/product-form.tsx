@@ -342,6 +342,45 @@ export function ProductForm({ product }: { product?: Product }) {
           </Select>
         </div>
 
+        {form.category === 'bedroom' && (
+          <div className="flex flex-col gap-4 rounded-md border border-border p-4 sm:col-span-2">
+            <div>
+              <Label htmlFor="bedSize">Bed size (feet)</Label>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Select a size up to the maximum 6 x 6 feet.
+              </p>
+            </div>
+            <Select
+              value={form.bedSize}
+              onValueChange={(value) => update('bedSize', value ?? '')}
+            >
+              <SelectTrigger id="bedSize" className="w-full sm:w-64">
+                <SelectValue placeholder="Choose bed size" />
+              </SelectTrigger>
+              <SelectContent>
+                {['3 x 6', '4 x 6', '5 x 6', '6 x 6'].map((size) => (
+                  <SelectItem key={size} value={size}>
+                    {size} feet
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <Label htmlFor="doubleDecker">Double-decker combination</Label>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  Mark this product as a double-decker bed.
+                </p>
+              </div>
+              <Switch
+                id="doubleDecker"
+                checked={form.doubleDecker}
+                onCheckedChange={(checked) => update('doubleDecker', checked)}
+              />
+            </div>
+          </div>
+        )}
+
         <div className="flex flex-col gap-2 sm:col-span-2">
           <Label htmlFor="description">Description</Label>
           <Textarea
