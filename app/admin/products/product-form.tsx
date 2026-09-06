@@ -384,10 +384,11 @@ export function ProductForm({ product }: { product?: Product }) {
               <button
                 type="button"
                 onClick={() => removeImage(i)}
-                aria-label="Remove image"
-                className="absolute right-1 top-1 flex size-5 items-center justify-center rounded-full bg-background/90 text-foreground opacity-0 shadow-sm transition-opacity group-hover:opacity-100"
+                aria-label={`Delete image ${i + 1}`}
+                title="Delete image"
+                className="absolute right-1 top-1 flex size-7 items-center justify-center rounded-md bg-destructive text-destructive-foreground shadow-sm transition-opacity hover:bg-destructive/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
-                <X className="size-3" />
+                <Trash2 className="size-3.5" />
               </button>
             </div>
           ))}
