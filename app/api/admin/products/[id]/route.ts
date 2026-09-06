@@ -22,6 +22,7 @@ export async function PATCH(request: NextRequest, { params }: Params) {
   const allowed: (keyof NewProduct)[] = [
     'name', 'slug', 'description', 'category', 'price', 'compareAtPrice',
     'images', 'videoUrl', 'colors', 'materials', 'seaters', 'woodType', 'cushionType',
+    'bedSize', 'doubleDecker',
     'dimensions', 'weight', 'stock', 'featured',
   ]
   for (const key of allowed) {

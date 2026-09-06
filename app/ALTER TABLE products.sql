@@ -9,3 +9,9 @@ ALTER TABLE products
 
 ALTER TABLE products
   ADD COLUMN IF NOT EXISTS video_url text;
+
+ALTER TABLE products
+  ADD COLUMN IF NOT EXISTS bed_size text;
+
+ALTER TABLE products
+  ADD COLUMN IF NOT EXISTS double_decker boolean NOT NULL DEFAULT false;

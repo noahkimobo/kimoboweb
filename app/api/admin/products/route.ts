@@ -28,6 +28,8 @@ export async function POST(request: NextRequest) {
         seaters: body.seaters ?? 1,
         woodType: body.woodType ?? '',
         cushionType: body.cushionType ?? '',
+        bedSize: body.bedSize ?? null,
+        doubleDecker: body.doubleDecker ?? false,
         dimensions: body.dimensions ?? '',
         weight: body.weight ?? '',
         stock: body.stock ?? 0,

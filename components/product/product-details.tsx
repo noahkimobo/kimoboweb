@@ -6,6 +6,12 @@ export function ProductDetails({ product }: { product: Product }) {
     { label: "Seaters", value: product.seaters ? `${product.seaters}` : "—" },
     { label: "Wood type", value: product.woodType || "—" },
     { label: "Sitting area", value: product.cushionType || "—" },
+    ...(product.category === "bedroom"
+      ? [
+          { label: "Bed size", value: product.bedSize ? `${product.bedSize} ft` : "—" },
+          { label: "Configuration", value: product.doubleDecker ? "Double decker" : "Standard bed" },
+        ]
+      : []),
     { label: "Dimensions", value: product.dimensions || "—" },
     { label: "Weight", value: product.weight || "—" },
     { label: "Materials", value: (product.materials ?? []).join(", ") || "—" },

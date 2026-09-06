@@ -31,6 +31,8 @@ type FormState = {
   seaters: string
   woodType: string
   cushionType: string
+  bedSize: string
+  doubleDecker: boolean
   stock: string
   featured: boolean
   images: string[]
@@ -73,6 +75,8 @@ export function ProductForm({ product }: { product?: Product }) {
     seaters: String(product?.seaters ?? 1),
     woodType: product?.woodType ?? '',
     cushionType: product?.cushionType ?? '',
+    bedSize: product?.bedSize ?? '',
+    doubleDecker: product?.doubleDecker ?? false,
     stock: String(product?.stock ?? 0),
     featured: product?.featured ?? false,
     images: product?.images ?? [],
@@ -172,6 +176,8 @@ export function ProductForm({ product }: { product?: Product }) {
       seaters: Math.max(1, Number.parseInt(form.seaters, 10) || 1),
       woodType: form.woodType.trim(),
       cushionType: form.cushionType.trim(),
+      bedSize: form.category === 'bedroom' ? form.bedSize || null : null,
+      doubleDecker: form.category === 'bedroom' && form.doubleDecker,
       stock: Math.max(0, Number.parseInt(form.stock, 10) || 0),
       featured: form.featured,
       images: form.images,
