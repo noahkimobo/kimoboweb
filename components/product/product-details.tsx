@@ -5,8 +5,16 @@ export function ProductDetails({ product }: { product: Product }) {
   const specs: { label: string; value: string }[] = product.category === "bedroom"
     ? [
         { label: "Wood type", value: product.woodType || "—" },
-        { label: "Bed size", value: product.bedSize ? `${product.bedSize} ft` : "—" },
-        { label: "Bed type", value: product.doubleDecker ? "Double decker" : "Standard bed" },
+        ...(product.doubleDecker
+          ? [
+              { label: "Bottom bed size", value: product.bottomBedSize ? `${product.bottomBedSize} ft` : "—" },
+              { label: "Top bed size", value: product.topBedSize ? `${product.topBedSize} ft` : "—" },
+              { label: "Bed type", value: "Double decker" },
+            ]
+          : [
+              { label: "Bed size", value: product.bedSize ? `${product.bedSize} ft` : "—" },
+              { label: "Bed type", value: "Standard bed" },
+            ]),
       ]
     : [
         { label: "Seaters", value: product.seaters ? `${product.seaters}` : "—" },

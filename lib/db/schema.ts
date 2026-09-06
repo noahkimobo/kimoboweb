@@ -27,6 +27,8 @@ export const products = pgTable('products', {
   woodType: text('wood_type').notNull().default(''),
   cushionType: text('cushion_type').notNull().default(''),
   bedSize: text('bed_size'),
+  bottomBedSize: text('bottom_bed_size'),
+  topBedSize: text('top_bed_size'),
   doubleDecker: boolean('double_decker').notNull().default(false),
   dimensions: text('dimensions').notNull().default(''),
   weight: text('weight').notNull().default(''),

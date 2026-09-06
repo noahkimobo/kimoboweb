@@ -29,6 +29,8 @@ export async function POST(request: NextRequest) {
         woodType: body.woodType ?? '',
         cushionType: body.cushionType ?? '',
         bedSize: body.bedSize ?? null,
+        bottomBedSize: body.bottomBedSize ?? null,
+        topBedSize: body.topBedSize ?? null,
         doubleDecker: body.doubleDecker ?? false,
         dimensions: body.dimensions ?? '',
         weight: body.weight ?? '',

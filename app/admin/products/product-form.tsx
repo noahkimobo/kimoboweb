@@ -32,6 +32,8 @@ type FormState = {
   woodType: string
   cushionType: string
   bedSize: string
+  bottomBedSize: string
+  topBedSize: string
   doubleDecker: boolean
   stock: string
   featured: boolean
@@ -76,6 +78,8 @@ export function ProductForm({ product }: { product?: Product }) {
     woodType: product?.woodType ?? '',
     cushionType: product?.cushionType ?? '',
     bedSize: product?.bedSize ?? '',
+    bottomBedSize: product?.bottomBedSize ?? '',
+    topBedSize: product?.topBedSize ?? '',
     doubleDecker: product?.doubleDecker ?? false,
     stock: String(product?.stock ?? 0),
     featured: product?.featured ?? false,
@@ -177,6 +181,12 @@ export function ProductForm({ product }: { product?: Product }) {
       woodType: form.woodType.trim(),
       cushionType: form.cushionType.trim(),
       bedSize: form.category === 'bedroom' ? form.bedSize || null : null,
+      bottomBedSize: form.category === 'bedroom' && form.doubleDecker
+        ? form.bottomBedSize || null
+        : null,
+      topBedSize: form.category === 'bedroom' && form.doubleDecker
+        ? form.topBedSize || null
+        : null,
       doubleDecker: form.category === 'bedroom' && form.doubleDecker,
       stock: Math.max(0, Number.parseInt(form.stock, 10) || 0),
       featured: form.featured,
@@ -382,6 +392,35 @@ export function ProductForm({ product }: { product?: Product }) {
                 onCheckedChange={(checked) => update('doubleDecker', checked)}
               />
             </div>
+            {form.doubleDecker && (
+              <div className="grid gap-4 sm:grid-cols-2">
+                {[
+                  ['bottomBedSize', 'Bottom bed size'],
+                  ['topBedSize', 'Top bed size'],
+                ].map(([field, label]) => (
+                  <div key={field} className="flex flex-col gap-2">
+                    <Label htmlFor={field}>{label} (feet)</Label>
+                    <Select
+                      value={form[field as 'bottomBedSize' | 'topBedSize']}
+                      onValueChange={(value) =>
+                        update(field as 'bottomBedSize' | 'topBedSize', value ?? '')
+                      }
+                    >
+                      <SelectTrigger id={field}>
+                        <SelectValue placeholder="Choose size" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {['3 x 6', '4 x 6', '5 x 6', '6 x 6'].map((size) => (
+                          <SelectItem key={size} value={size}>
+                            {size} feet
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
