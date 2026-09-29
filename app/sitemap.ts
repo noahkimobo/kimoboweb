@@ -23,6 +23,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'yearly',
       priority: 0.4,
     },
+    {
+      url: `${siteUrl}/book-visit`,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
     ...products.map((product) => ({
       url: `${siteUrl}/product/${encodeURIComponent(product.slug)}`,
       lastModified: product.createdAt,

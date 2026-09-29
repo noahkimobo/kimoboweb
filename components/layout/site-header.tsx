@@ -65,6 +65,13 @@ export function SiteHeader() {
                     {c.label}
                   </Link>
                 ))}
+                <Link
+                  href="/book-visit"
+                  onClick={() => setMobileOpen(false)}
+                  className="border-b border-border/60 py-3 text-sm font-medium"
+                >
+                  Book a visit
+                </Link>
               </nav>
               <form onSubmit={submitSearch} className="mt-4 flex gap-2 px-4">
                 <Input
@@ -109,6 +116,15 @@ export function SiteHeader() {
               {c.label}
             </Link>
           ))}
+          <Link
+            href="/book-visit"
+            className={cn(
+              'rounded-full border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary',
+              pathname === '/book-visit' && 'border-foreground text-foreground',
+            )}
+          >
+            Book a visit
+          </Link>
         </nav>
 
         <div className="ml-auto flex items-center gap-1">

@@ -70,13 +70,22 @@ export default async function HomePage() {
             Message us on WhatsApp and our team will help you find the right pieces for
             your space.
           </p>
-          <Link
-            href="/shop"
-            className="mt-7 inline-flex items-center gap-2 rounded-md bg-background px-6 py-3 text-sm font-semibold text-foreground transition-opacity hover:opacity-90"
-          >
-            Start shopping
-            <ArrowRight className="size-4" />
-          </Link>
+          <div className="mt-7 flex flex-wrap justify-center gap-3">
+            <Link
+              href="/shop"
+              className="inline-flex items-center gap-2 rounded-md bg-background px-6 py-3 text-sm font-semibold text-foreground transition-opacity hover:opacity-90"
+            >
+              Start shopping
+              <ArrowRight className="size-4" />
+            </Link>
+            <Link
+              href="/book-visit"
+              className="inline-flex items-center gap-2 rounded-md border border-primary-foreground/40 px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10"
+            >
+              Book a visit
+              <ArrowRight className="size-4" />
+            </Link>
+          </div>
         </div>
       </section>
     </>

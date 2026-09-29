@@ -43,8 +43,13 @@ export function SiteFooter() {
               <li>Our Craft</li>
               <li>Sustainability</li>
               <li>
+                <Link href="/book-visit" className="transition-colors hover:text-foreground">
+                  Book a visit
+                </Link>
+              </li>
+              <li>
                 <Link href="/return-policy" className="transition-colors hover:text-foreground">
-                  Returns &amp; Refunds
+                  Delivery &amp; Returns
                 </Link>
               </li>
               <li>Lifetime Warranty</li>
