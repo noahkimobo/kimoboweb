@@ -1,8 +1,17 @@
 import Link from 'next/link'
+import type { Metadata } from 'next'
 import { LayoutDashboard, Package, ExternalLink } from 'lucide-react'
 import { siteConfig } from '@/lib/site'
 import { LogoutButton } from './logout-button'
 import { Toaster } from '@/components/ui/sonner'
+
+export const metadata: Metadata = {
+  title: 'Admin',
+  robots: {
+    index: false,
+    follow: false,
+  },
+}
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (

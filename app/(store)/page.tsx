@@ -4,14 +4,35 @@ import { Hero } from '@/components/home/hero'
 import { CategoryShowcase } from '@/components/home/category-showcase'
 import { ProductCard } from '@/components/product/product-card'
 import { getFeaturedProducts } from '@/lib/queries'
+import { siteConfig } from '@/lib/site'
+import { siteUrl } from '@/lib/seo'
 
 export const dynamic = 'force-dynamic'
 
 export default async function HomePage() {
   const featured = await getFeaturedProducts(18)
+  const organizationStructuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Kimobo Furnitures',
+    url: siteUrl,
+    sameAs: Object.values(siteConfig.social).filter(Boolean),
+  }
+  const websiteStructuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Kimobo Furnitures',
+    url: siteUrl,
+  }
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([organizationStructuredData, websiteStructuredData]).replace(/</g, '\\u003c'),
+        }}
+      />
       <Hero products={featured} />
       <CategoryShowcase />
 

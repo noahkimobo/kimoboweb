@@ -7,16 +7,29 @@ import { categoryLabel } from '@/lib/format'
 
 export const dynamic = 'force-dynamic'
 
-export const metadata: Metadata = {
-  title: 'Shop',
-  description: 'Browse the full Kimobo Furnitures collection of solid wood furniture.',
-}
-
 type SearchParams = Promise<{
   category?: string
   sort?: string
   q?: string
 }>
+
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: SearchParams
+}): Promise<Metadata> {
+  const { category, sort, q } = await searchParams
+  const hasFilters = Boolean(q || (category && category !== 'all') || (sort && sort !== 'newest'))
+
+  return {
+    title: 'Shop',
+    description: 'Browse the full Kimobo Furnitures collection of solid wood furniture.',
+    alternates: {
+      canonical: '/shop',
+    },
+    robots: hasFilters ? { index: false, follow: true } : undefined,
+  }
+}
 
 export default async function ShopPage({
   searchParams,
