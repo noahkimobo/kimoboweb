@@ -1,6 +1,6 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
-import { Lora, Poppins } from 'next/font/google'
+import { Poppins } from 'next/font/google'
 import Script from 'next/script'
 import { Suspense } from 'react'
 import { CartProvider } from '@/components/cart/cart-provider'
@@ -12,13 +12,6 @@ const poppins = Poppins({
   variable: '--font-poppins',
   display: 'swap',
   weight: ['400', '500', '600', '700'],
-})
-
-const lora = Lora({
-  subsets: ['latin'],
-  variable: '--font-lora',
-  display: 'swap',
-  weight: ['400', '700'],
 })
 
 export const metadata: Metadata = {
@@ -92,7 +85,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${poppins.variable} ${lora.variable} bg-background`}>
+    <html lang="en" className={`${poppins.variable} bg-background`}>
       <body className="font-sans antialiased">
         <noscript>
           <iframe
