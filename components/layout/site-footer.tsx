@@ -42,7 +42,11 @@ export function SiteFooter() {
             <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
               <li>Our Craft</li>
               <li>Sustainability</li>
-              <li>Delivery &amp; Returns</li>
+              <li>
+                <Link href="/return-policy" className="transition-colors hover:text-foreground">
+                  Returns &amp; Refunds
+                </Link>
+              </li>
               <li>Lifetime Warranty</li>
             </ul>
           </div>
