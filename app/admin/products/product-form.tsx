@@ -58,6 +58,67 @@ function toCents(dollars: string): number {
   return Number.isFinite(n) ? Math.round(n * 100) : 0
 }
 
+async function compressImageToWebp(file: File): Promise<File> {
+  const maxInputBytes = 20 * 1024 * 1024
+  const maxPixels = 40_000_000
+  const maxOutputBytes = 450 * 1024
+
+  if (file.size > maxInputBytes) {
+    throw new Error(`${file.name} is larger than 20 MB. Choose a smaller image.`)
+  }
+
+  let bitmap: ImageBitmap
+  try {
+    bitmap = await createImageBitmap(file)
+  } catch {
+    throw new Error(`${file.name} could not be opened as an image.`)
+  }
+
+  try {
+    if (bitmap.width * bitmap.height > maxPixels) {
+      throw new Error(`${file.name} has too many pixels. Resize it and try again.`)
+    }
+
+    const maxDimensions = [...new Set(
+      [2000, 1600, 1200, 1000, 800].map((maxDimension) =>
+        Math.min(maxDimension, Math.max(bitmap.width, bitmap.height)),
+      ),
+    )]
+
+    for (const maxDimension of maxDimensions) {
+      const scale = Math.min(1, maxDimension / Math.max(bitmap.width, bitmap.height))
+      const canvas = document.createElement('canvas')
+      canvas.width = Math.max(1, Math.round(bitmap.width * scale))
+      canvas.height = Math.max(1, Math.round(bitmap.height * scale))
+
+      const context = canvas.getContext('2d')
+      if (!context) throw new Error('Your browser could not prepare this image.')
+      context.drawImage(bitmap, 0, 0, canvas.width, canvas.height)
+
+      for (const quality of [0.82, 0.72, 0.62, 0.52]) {
+        const blob = await new Promise<Blob | null>((resolve) =>
+          canvas.toBlob(resolve, 'image/webp', quality),
+        )
+        if (!blob) throw new Error('Your browser could not convert this image to WebP.')
+        if (blob.type !== 'image/webp') {
+          throw new Error('Your browser does not support WebP image conversion.')
+        }
+        if (blob.size <= maxOutputBytes) {
+          const baseName = file.name.replace(/\.[^.]+$/, '') || 'product-image'
+          return new File([blob], `${baseName}.webp`, {
+            type: 'image/webp',
+            lastModified: Date.now(),
+          })
+        }
+      }
+    }
+  } finally {
+    bitmap.close()
+  }
+
+  throw new Error(`${file.name} could not be reduced enough. Try a different image.`)
+}
+
 export function ProductForm({ product }: { product?: Product }) {
   const router = useRouter()
   const isEditing = Boolean(product)
@@ -103,13 +164,23 @@ export function ProductForm({ product }: { product?: Product }) {
     setUploading(true)
     try {
       const body = new FormData()
-      files.forEach((file) => body.append('file', file))
+      for (const file of files) {
+        body.append('file', await compressImageToWebp(file))
+      }
 
       const res = await fetch('/api/admin/upload', { method: 'POST', body })
       const responseText = await res.text()
-      let data: { error?: string; url?: string; urls?: string[] }
+      let data: {
+        error?: string
+        url?: string
+        urls?: string[]
+      }
       try {
-        data = JSON.parse(responseText) as { error?: string; url?: string; urls?: string[] }
+        data = JSON.parse(responseText) as {
+          error?: string
+          url?: string
+          urls?: string[]
+        }
       } catch {
         throw new Error(`Upload failed (${res.status}). ${responseText.slice(0, 120)}`)
       }
@@ -130,7 +201,8 @@ export function ProductForm({ product }: { product?: Product }) {
         ...current,
         images: [...current.images, ...uploadedUrls],
       }))
-      toast.success(files.length > 1 ? `${files.length} images uploaded` : 'Image uploaded')
+      const countLabel = files.length > 1 ? `${files.length} images uploaded` : 'Image uploaded'
+      toast.success(`${countLabel} as WebP`)
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Upload failed.')
     } finally {
@@ -478,7 +550,12 @@ export function ProductForm({ product }: { product?: Product }) {
       </div>
 
       <div className="flex flex-col gap-3">
-        <Label>Images</Label>
+        <div>
+          <Label>Images</Label>
+          <p className="mt-1 text-xs text-muted-foreground">
+            Images are automatically resized, compressed, and saved as WebP.
+          </p>
+        </div>
         <div className="flex flex-wrap gap-3">
           {form.images.map((src, i) => (
             <div
