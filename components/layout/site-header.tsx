@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 import { Menu, Search, X } from 'lucide-react'
@@ -89,7 +90,14 @@ export function SiteHeader() {
         </div>
 
         <Link href="/" className="flex items-center">
-          <span className="font-serif text-2xl font-semibold tracking-tight">
+          <Image
+            src="/brand-logo.svg"
+            alt=""
+            width={28}
+            height={38}
+            className="mr-2 h-[38px] w-7 object-contain"
+          />
+          <span className="text-lg font-semibold tracking-tight sm:text-xl">
             {siteConfig.name}
           </span>
         </Link>
