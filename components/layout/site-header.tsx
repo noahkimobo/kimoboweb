@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
-import { Menu, Search, X } from 'lucide-react'
+import { Menu, Search, ShoppingBag, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/sheet'
 import { CATEGORIES } from '@/lib/format'
 import { siteConfig } from '@/lib/site'
+import { useCart } from '@/components/cart/cart-provider'
 import { cn } from '@/lib/utils'
 
 export function SiteHeader() {
@@ -25,6 +26,7 @@ export function SiteHeader() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [query, setQuery] = useState(searchParams.get('q') ?? '')
+  const { count, setOpen: setCartOpen } = useCart()
 
   function submitSearch(e: React.FormEvent) {
     e.preventDefault()
@@ -136,6 +138,21 @@ export function SiteHeader() {
         </nav>
 
         <div className="ml-auto flex items-center gap-1">
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            aria-label={`Open cart${count ? ` with ${count} items` : ''}`}
+            onClick={() => setCartOpen(true)}
+            className="relative"
+          >
+            <ShoppingBag className="size-5" />
+            {count > 0 && (
+              <span className="absolute -right-0.5 -top-0.5 flex size-4 items-center justify-center rounded-full bg-primary text-[10px] font-semibold text-primary-foreground">
+                {count > 9 ? '9+' : count}
+              </span>
+            )}
+          </Button>
           {searchOpen ? (
             <form onSubmit={submitSearch} className="hidden items-center gap-2 md:flex">
               <Input

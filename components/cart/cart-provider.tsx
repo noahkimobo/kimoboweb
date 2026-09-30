@@ -8,6 +8,7 @@ import {
   useMemo,
   useState,
 } from 'react'
+import { requestCustomerProfilePrompt } from '@/lib/customer-profile'
 
 export type CartItem = {
   productId: number
@@ -72,6 +73,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       return [...prev, { ...item, quantity: Math.min(quantity, item.maxStock) }]
     })
     setOpen(true)
+    requestCustomerProfilePrompt()
   }, [])
 
   const updateQuantity = useCallback<CartContextValue['updateQuantity']>(

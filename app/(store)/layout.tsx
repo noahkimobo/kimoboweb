@@ -3,6 +3,8 @@ import { SiteHeader } from '@/components/layout/site-header'
 import { SiteFooter } from '@/components/layout/site-footer'
 import { WhatsappButton } from '@/components/whatsapp-button'
 import { Toaster } from '@/components/ui/sonner'
+import { CartDrawer } from '@/components/cart/cart-drawer'
+import { CustomerProfilePrompt } from '@/components/profile/customer-profile-prompt'
 
 export default function StoreLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -12,6 +14,8 @@ export default function StoreLayout({ children }: { children: React.ReactNode })
       </Suspense>
       <main className="flex-1">{children}</main>
       <SiteFooter />
+      <CartDrawer />
+      <CustomerProfilePrompt />
       <WhatsappButton />
       <Toaster position="top-center" />
     </div>

@@ -7,8 +7,10 @@ import { formatPrice } from "@/lib/format"
 import { siteConfig, whatsappLink } from "@/lib/site"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { useCart } from "@/components/cart/cart-provider"
 
 export function PurchasePanel({ product }: { product: Product }) {
+  const { addItem } = useCart()
   const colors = (product.colors ?? []) as ProductColor[]
   const [color, setColor] = useState<ProductColor | null>(colors[0] ?? null)
   const [qty, setQty] = useState(1)
@@ -124,6 +126,24 @@ export function PurchasePanel({ product }: { product: Product }) {
           </span>
         </div>
       </div>
+
+      <Button
+        size="lg"
+        className="h-14 rounded-full text-base"
+        disabled={!inStock}
+        onClick={() => addItem({
+          productId: product.id,
+          name: product.name,
+          slug: product.slug,
+          image: product.images[0] ?? '',
+          price: product.price,
+          color: color?.name ?? null,
+          maxStock: product.stock,
+        }, qty)}
+      >
+        <ShoppingBag className="mr-2 h-5 w-5" />
+        Add to cart
+      </Button>
 
       <Button
         size="lg"
