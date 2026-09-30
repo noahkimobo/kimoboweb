@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
-import { Menu, Search, ShoppingBag, X } from 'lucide-react'
+import { Menu, Search, ShoppingCart, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -146,7 +146,7 @@ export function SiteHeader() {
             onClick={() => setCartOpen(true)}
             className="relative"
           >
-            <ShoppingBag className="size-5" />
+            <ShoppingCart className="size-5" />
             {count > 0 && (
               <span className="absolute -right-0.5 -top-0.5 flex size-4 items-center justify-center rounded-full bg-primary text-[10px] font-semibold text-primary-foreground">
                 {count > 9 ? '9+' : count}

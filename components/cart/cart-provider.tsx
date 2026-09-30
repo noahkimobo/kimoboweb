@@ -43,22 +43,16 @@ function sameLine(a: CartItem, productId: number, color: string | null) {
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([])
   const [isOpen, setOpen] = useState(false)
-  const [hydrated, setHydrated] = useState(false)
 
+  // Cart contents are intentionally session-only. Remove carts saved by earlier
+  // versions so stale items do not return after a reload.
   useEffect(() => {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY)
-      if (raw) setItems(JSON.parse(raw))
+      window.localStorage.removeItem(STORAGE_KEY)
     } catch {
-      // ignore corrupt storage
+      // Cart remains usable if browser storage is unavailable.
     }
-    setHydrated(true)
   }, [])
-
-  useEffect(() => {
-    if (!hydrated) return
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(items))
-  }, [items, hydrated])
 
   const addItem = useCallback<CartContextValue['addItem']>((item, quantity = 1) => {
     setItems((prev) => {
