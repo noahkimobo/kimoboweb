@@ -1,15 +1,15 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
-import { Poppins } from 'next/font/google'
+import { Montserrat } from 'next/font/google'
 import Script from 'next/script'
 import { Suspense } from 'react'
 import { CartProvider } from '@/components/cart/cart-provider'
 import { siteUrl } from '@/lib/seo'
 import './globals.css'
 
-const poppins = Poppins({
+const montserrat = Montserrat({
   subsets: ['latin'],
-  variable: '--font-poppins',
+  variable: '--font-montserrat',
   display: 'swap',
   weight: ['400', '500', '600', '700'],
 })
@@ -85,7 +85,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${poppins.variable} bg-background`}>
+    <html lang="en" className={`${montserrat.variable} bg-background`}>
       <body className="font-sans antialiased">
         <noscript>
           <iframe

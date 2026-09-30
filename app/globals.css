@@ -5,8 +5,8 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
-  --font-serif: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
 
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -57,8 +57,8 @@
   --card-foreground: #111111;
   --popover: #ffffff;
   --popover-foreground: #111111;
-  --primary: #040404;
-  --primary-foreground: #ffffff;
+  --primary: #ffc470;
+  --primary-foreground: #111111;
   --secondary: #fff7eb;
   --secondary-foreground: #111111;
   --muted: #f6f3ef;
@@ -77,8 +77,8 @@
   --radius: 0.375rem;
   --sidebar: #fff7eb;
   --sidebar-foreground: #111111;
-  --sidebar-primary: #040404;
-  --sidebar-primary-foreground: #ffffff;
+  --sidebar-primary: #ffc470;
+  --sidebar-primary-foreground: #111111;
   --sidebar-accent: #ffc470;
   --sidebar-accent-foreground: #111111;
   --sidebar-border: #e8e1d8;
@@ -124,7 +124,16 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    font-family: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  }
   body {
     @apply bg-background text-foreground;
+  }
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
   }
 }
