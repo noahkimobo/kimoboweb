@@ -1,11 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useCart } from '@/components/cart/cart-provider'
 import { calcShipping, formatPrice } from '@/lib/format'
+import { getCustomerProfile } from '@/lib/customer-profile'
 
 type Customer = { name: string; email: string; phone: string; address: string; city: string; postalCode: string; country: string }
 
@@ -20,6 +21,17 @@ export default function CheckoutPage() {
   const total = subtotal + shipping
   const clientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID
   const currency = process.env.NEXT_PUBLIC_PAYPAL_CURRENCY ?? 'USD'
+
+  useEffect(() => {
+    const profile = getCustomerProfile()
+    if (!profile) return
+    setCustomer((current) => ({
+      ...current,
+      name: profile.name,
+      email: profile.email,
+      phone: profile.phone,
+    }))
+  }, [])
 
   function updateCustomer(field: keyof Customer, value: string) {
     setCustomer((current) => ({ ...current, [field]: value }))

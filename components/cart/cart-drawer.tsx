@@ -168,7 +168,7 @@ export function CartDrawer() {
                 className="w-full"
                 onClick={() => setOpen(false)}
               >
-                <Link href="/cart">View cart</Link>
+                <Link href="/shop">Continue shopping</Link>
               </Button>
             </SheetFooter>
           </>

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Minus, Plus, Check, MessageCircle, Music2 } from "lucide-react"
+import { Minus, Plus, Check, MessageCircle, Music2, ShoppingBag } from "lucide-react"
 import type { Product, ProductColor } from "@/lib/db/schema"
 import { formatPrice } from "@/lib/format"
 import { siteConfig, whatsappLink } from "@/lib/site"

@@ -1,12 +1,13 @@
 'use client'
 
-import { useState, type FormEvent } from 'react'
+import { useEffect, useState, type FormEvent } from 'react'
 import { ArrowRight, MessageCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { whatsappLink } from '@/lib/site'
+import { getCustomerProfile, requestCustomerProfilePrompt, type CustomerProfile } from '@/lib/customer-profile'
 
 type BookingType = 'house-measurement' | 'showroom-visit' | 'custom-order'
 
@@ -20,6 +21,12 @@ export function BookingForm() {
   const [bookingType, setBookingType] = useState<BookingType | ''>('')
   const [dateError, setDateError] = useState('')
   const [requestLink, setRequestLink] = useState('')
+  const [profile, setProfile] = useState<CustomerProfile>({ name: '', email: '', phone: '' })
+
+  useEffect(() => {
+    const savedProfile = getCustomerProfile()
+    if (savedProfile) setProfile(savedProfile)
+  }, [])
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -52,6 +59,11 @@ export function BookingForm() {
     ]
 
     setRequestLink(whatsappLink(lines.join('\n')))
+    requestCustomerProfilePrompt({
+      name: String(formData.get('name') ?? '').trim(),
+      email: String(formData.get('email') ?? '').trim(),
+      phone: String(formData.get('phone') ?? '').trim(),
+    })
   }
 
   const detailLabel = bookingType === 'house-measurement'
@@ -90,7 +102,15 @@ export function BookingForm() {
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="bookingName">Your name *</Label>
-          <Input id="bookingName" name="name" autoComplete="name" required className="h-11" />
+          <Input
+            id="bookingName"
+            name="name"
+            autoComplete="name"
+            required
+            className="h-11"
+            value={profile.name}
+            onChange={(event) => setProfile((current) => ({ ...current, name: event.target.value }))}
+          />
         </div>
         <div className="space-y-2">
           <Label htmlFor="bookingPhone">Phone / WhatsApp number *</Label>
@@ -102,6 +122,8 @@ export function BookingForm() {
             required
             className="h-11"
             placeholder="e.g. +254 7XX XXX XXX"
+            value={profile.phone}
+            onChange={(event) => setProfile((current) => ({ ...current, phone: event.target.value }))}
           />
         </div>
         <div className="space-y-2 sm:col-span-2">
@@ -112,6 +134,8 @@ export function BookingForm() {
             type="email"
             autoComplete="email"
             className="h-11"
+            value={profile.email}
+            onChange={(event) => setProfile((current) => ({ ...current, email: event.target.value }))}
           />
         </div>
         <div className="space-y-2">
