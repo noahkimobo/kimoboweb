@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
+import { VisitEnrichmentFields } from '@/components/booking/visit-enrichment-fields'
 import { getCustomerProfile, requestCustomerProfilePrompt, type CustomerProfile } from '@/lib/customer-profile'
 import { whatsappLink } from '@/lib/site'
 
@@ -37,6 +38,9 @@ export function SofaRepairForm() {
     const email = String(form.get('email') ?? '').trim()
     const phone = String(form.get('phone') ?? '').trim()
     const details = String(form.get('details') ?? '').trim()
+    const coordinates = String(form.get('gpsCoordinates') ?? '')
+    const mapUrl = String(form.get('mapUrl') ?? '')
+    const photos = form.getAll('furniturePhotos').filter((item): item is File => item instanceof File && item.size > 0)
     const lines = [
       'Hi Kimobo Furnitures, I would like to request an assessment for repairing an old sofa.',
       '',
@@ -47,9 +51,13 @@ export function SofaRepairForm() {
       `Sofa type: ${String(form.get('sofaType') ?? '').trim() || 'Not sure'}`,
       `Preferred follow-up date: ${preferredDate}`,
       `Preferred time: ${String(form.get('preferredTime') ?? '')}`,
+      `Home visit requested: ${form.get('requestHomeVisit') === 'yes' ? 'Yes' : 'No'}`,
+      ...(coordinates ? [`Estimated coordinates: ${coordinates}`, `Map: ${mapUrl}`] : []),
+      `Quotation requested: ${form.get('requestQuote') === 'yes' ? 'Yes' : 'No'}`,
+      ...(photos.length ? [`Photos selected: ${photos.map((file) => file.name).join(', ')} (I will attach them in WhatsApp)`] : []),
       `Repair details: ${details}`,
       '',
-      'I can share photos of the sofa in this WhatsApp conversation. Please let me know whether an assessment/repair can be arranged and any applicable costs.',
+      'Please let me know whether an assessment/repair can be arranged. For home visits more than 30 km away, please confirm availability and any travel arrangements/costs before booking.',
     ]
 
     setRequestLink(whatsappLink(lines.join('\n')))
@@ -96,6 +104,9 @@ export function SofaRepairForm() {
         <div className="space-y-2 sm:col-span-2">
           <Label htmlFor="repairDetails">What needs repair or attention? *</Label>
           <Textarea id="repairDetails" name="details" required rows={5} placeholder="For example: damaged frame, sagging cushions, torn upholstery, or loose legs. Add the sofa's approximate age if you know it." />
+        </div>
+        <div className="sm:col-span-2">
+          <VisitEnrichmentFields idPrefix="sofa-repair" />
         </div>
       </div>
 

@@ -1,19 +1,19 @@
 import type { Metadata } from 'next'
-import { DraftingCompass, Ruler, Store } from 'lucide-react'
+import { Armchair, DraftingCompass, Ruler, Store } from 'lucide-react'
 import { BookingForm } from '@/components/booking/booking-form'
 import { siteUrl } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'Book a Visit or Design Consultation',
   description:
-    'Request a home measurement visit, showroom appointment, or custom furniture consultation with Kimobo Furnitures in Kenya.',
+    'Request a home measurement visit, showroom appointment, custom furniture consultation, or old sofa repair assessment with Kimobo Furnitures in Kenya.',
   alternates: {
     canonical: `${siteUrl}/book-visit`,
   },
   openGraph: {
     title: 'Book a Visit | Kimobo Furnitures',
     description:
-      'Arrange a home measurement, showroom visit, or consultation for a custom furniture order.',
+      'Arrange a home measurement, showroom visit, custom furniture consultation, or sofa repair assessment.',
     url: `${siteUrl}/book-visit`,
     type: 'website',
   },
@@ -35,6 +35,11 @@ const bookingOptions = [
     description: 'Talk through a made-to-order piece for your home.',
     icon: DraftingCompass,
   },
+  {
+    title: 'Old sofa repair',
+    description: 'Tell us what needs repair and request an assessment.',
+    icon: Armchair,
+  },
 ]
 
 export default function BookVisitPage() {
@@ -54,7 +59,7 @@ export default function BookVisitPage() {
         </p>
       </header>
 
-      <section className="mx-auto mt-12 grid max-w-5xl gap-4 md:grid-cols-3" aria-label="Appointment types">
+      <section className="mx-auto mt-12 grid max-w-5xl gap-4 sm:grid-cols-2" aria-label="Appointment types">
         {bookingOptions.map(({ title, description, icon: Icon }) => (
           <article key={title} className="rounded-2xl border border-border bg-card p-5 sm:p-6">
             <span className="flex size-11 items-center justify-center rounded-full bg-secondary text-accent">

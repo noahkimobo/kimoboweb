@@ -6,15 +6,17 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
+import { VisitEnrichmentFields } from '@/components/booking/visit-enrichment-fields'
 import { whatsappLink } from '@/lib/site'
 import { getCustomerProfile, requestCustomerProfilePrompt, type CustomerProfile } from '@/lib/customer-profile'
 
-type BookingType = 'house-measurement' | 'showroom-visit' | 'custom-order'
+type BookingType = 'house-measurement' | 'showroom-visit' | 'custom-order' | 'sofa-repair'
 
 const bookingTypeLabels: Record<BookingType, string> = {
   'house-measurement': 'House measurement',
   'showroom-visit': 'Showroom visit',
   'custom-order': 'Custom order consultation',
+  'sofa-repair': 'Old sofa repair assessment',
 }
 
 export function BookingForm() {
@@ -44,6 +46,11 @@ export function BookingForm() {
 
     const selectedType = String(formData.get('bookingType')) as BookingType
     const details = String(formData.get('details') ?? '').trim()
+    const coordinates = String(formData.get('gpsCoordinates') ?? '')
+    const mapUrl = String(formData.get('mapUrl') ?? '')
+    const photos = formData.getAll('furniturePhotos').filter((item): item is File => item instanceof File && item.size > 0)
+    const homeVisitRequested = formData.get('requestHomeVisit') === 'yes'
+    const quoteRequested = formData.get('requestQuote') === 'yes'
     const lines = [
       'Hi Kimobo Furnitures, I would like to request an appointment.',
       '',
@@ -53,9 +60,16 @@ export function BookingForm() {
       `Email: ${String(formData.get('email') ?? '').trim() || 'Not provided'}`,
       `Preferred date: ${preferredDate}`,
       `Preferred time: ${String(formData.get('preferredTime') ?? '')}`,
+      ...(['house-measurement', 'custom-order', 'sofa-repair'].includes(selectedType)
+        ? [`Area / address: ${String(formData.get('serviceLocation') ?? '').trim() || 'Not provided'}`]
+        : []),
+      `Home visit requested: ${homeVisitRequested ? 'Yes' : 'No'}`,
+      ...(coordinates ? [`Estimated coordinates: ${coordinates}`, `Map: ${mapUrl}`] : []),
+      `Quotation requested: ${quoteRequested ? 'Yes' : 'No'}`,
+      ...(photos.length ? [`Photos selected: ${photos.map((file) => file.name).join(', ')} (I will attach them in WhatsApp)`] : []),
       ...(details ? [`Details: ${details}`] : []),
       '',
-      'I understand this request is subject to confirmation.',
+      'I understand this request is subject to confirmation. For home visits more than 30 km away, please confirm availability and any travel arrangements/costs before booking.',
     ]
 
     setRequestLink(whatsappLink(lines.join('\n')))
@@ -70,15 +84,21 @@ export function BookingForm() {
     ? 'Visit address and area'
     : bookingType === 'custom-order'
       ? 'Tell us about your custom order'
+      : bookingType === 'sofa-repair'
+        ? 'Describe the sofa and repair needed'
       : 'Anything you would like us to prepare?'
 
   const detailPlaceholder = bookingType === 'house-measurement'
     ? 'Share your neighborhood, address, and any helpful directions.'
     : bookingType === 'custom-order'
       ? 'Describe the piece you have in mind, including approximate size, materials, or inspiration.'
+      : bookingType === 'sofa-repair'
+        ? 'Describe the sofa, its approximate age, what needs repair, and your neighborhood/location. You can attach photos after opening WhatsApp.'
       : 'For example, which pieces or materials would you like to see?'
 
-  const detailsRequired = bookingType === 'house-measurement' || bookingType === 'custom-order'
+  const detailsRequired = bookingType === 'house-measurement'
+    || bookingType === 'custom-order'
+    || bookingType === 'sofa-repair'
 
   return (
     <form onSubmit={handleSubmit} onChange={() => setRequestLink('')} className="space-y-5">
@@ -96,6 +116,7 @@ export function BookingForm() {
           <option value="house-measurement">House measurement</option>
           <option value="showroom-visit">Showroom visit</option>
           <option value="custom-order">Custom order consultation</option>
+          <option value="sofa-repair">Old sofa repair assessment</option>
         </select>
       </div>
 
@@ -172,6 +193,23 @@ export function BookingForm() {
             rows={4}
             placeholder={detailPlaceholder}
           />
+        </div>
+      )}
+
+      {bookingType && ['house-measurement', 'custom-order', 'sofa-repair'].includes(bookingType) && (
+        <div className="space-y-5">
+          <div className="space-y-2">
+            <Label htmlFor="serviceLocation">Your area / address *</Label>
+            <Input
+              id="serviceLocation"
+              name="serviceLocation"
+              required
+              autoComplete="street-address"
+              className="h-11"
+              placeholder="Neighborhood, town, and address or directions"
+            />
+          </div>
+          <VisitEnrichmentFields idPrefix="consultation" />
         </div>
       )}
 
