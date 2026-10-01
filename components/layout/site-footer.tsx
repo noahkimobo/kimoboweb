@@ -48,6 +48,11 @@ export function SiteFooter() {
                 </Link>
               </li>
               <li>
+                <Link href="/sofa-repair" className="transition-colors hover:text-foreground">
+                  Sofa repair
+                </Link>
+              </li>
+              <li>
                 <Link href="/return-policy" className="transition-colors hover:text-foreground">
                   Delivery &amp; Returns
                 </Link>

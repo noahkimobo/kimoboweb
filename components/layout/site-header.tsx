@@ -75,6 +75,13 @@ export function SiteHeader() {
                 >
                   Book a visit
                 </Link>
+                <Link
+                  href="/sofa-repair"
+                  onClick={() => setMobileOpen(false)}
+                  className="border-b border-border/60 py-3 text-sm font-medium"
+                >
+                  Sofa repair
+                </Link>
               </nav>
               <form onSubmit={submitSearch} className="mt-4 flex gap-2 px-4">
                 <Input
@@ -134,6 +141,15 @@ export function SiteHeader() {
             )}
           >
             Book a visit
+          </Link>
+          <Link
+            href="/sofa-repair"
+            className={cn(
+              'text-sm font-medium text-muted-foreground transition-colors hover:text-foreground',
+              pathname === '/sofa-repair' && 'text-foreground',
+            )}
+          >
+            Sofa repair
           </Link>
         </nav>
 
