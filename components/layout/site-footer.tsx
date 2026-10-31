@@ -40,8 +40,16 @@ export function SiteFooter() {
           <div>
             <h3 className="text-sm font-semibold">Company</h3>
             <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
-              <li>Our Craft</li>
-              <li>Sustainability</li>
+              <li>
+                <Link href="/our-craft" className="transition-colors hover:text-foreground">
+                  Our Craft
+                </Link>
+              </li>
+              <li>
+                <Link href="/sustainability" className="transition-colors hover:text-foreground">
+                  Sustainability
+                </Link>
+              </li>
               <li>
                 <Link href="/book-visit" className="transition-colors hover:text-foreground">
                   Book a visit
