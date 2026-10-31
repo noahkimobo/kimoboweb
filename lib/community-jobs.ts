@@ -45,7 +45,7 @@ export function parseCommunityJobInput(
     if (text.length > TEXT_LIMITS[field]) {
       return { ok: false, error: `${field} must be ${TEXT_LIMITS[field]} characters or fewer.` }
     }
-    if (!partial && !text && ['title', 'slug', 'description', 'location'].includes(field)) {
+    if (!text && ['title', 'slug', 'description', 'location'].includes(field)) {
       return { ok: false, error: `${field} is required.` }
     }
     if (field === 'slug' && text && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(text)) {

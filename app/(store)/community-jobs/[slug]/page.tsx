@@ -15,9 +15,17 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const job = await getCommunityJobBySlug(slug)
   if (!job) return { title: 'Opportunity not found' }
 
-  const description = `${job.title} casual work opportunity in ${job.location}. ${job.compensation ? `${job.compensation}. ` : ''}Contact Kimobo Furnitures on WhatsApp to apply.`
+  const title = job.title.length > 35 ? `${job.title.slice(0, 32)}…` : job.title
+  const description = [
+    `${job.title} casual work opportunity in ${job.location}.`,
+    job.compensation ? `${job.compensation}.` : '',
+    'Contact Kimobo Furnitures on WhatsApp to apply.',
+  ]
+    .filter(Boolean)
+    .join(' ')
+    .slice(0, 160)
   return {
-    title: `${job.title} — Community opportunity`,
+    title: `${title} — Casual job`,
     description,
     alternates: { canonical: `/community-jobs/${encodeURIComponent(job.slug)}` },
     openGraph: { type: 'article', title: job.title, description },
