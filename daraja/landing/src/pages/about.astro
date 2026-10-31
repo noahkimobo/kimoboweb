@@ -1,0 +1,85 @@
+---
+import CtaBand from '../components/CtaBand.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../config/paths';
+
+const principles = [
+  {
+    title: 'Numbers before launch',
+    body: 'We value the stock and read the transaction history first, so the move online rests on facts about your business.',
+  },
+  {
+    title: 'Pay the way customers pay',
+    body: 'In Kenya that means M-Pesa. Every storefront we build takes it as a first-class payment, not an afterthought.',
+  },
+  {
+    title: 'Content that answers questions',
+    body: 'The best posts answer what customers already ask. We turn those questions into scripts and FAQ videos.',
+  },
+];
+---
+
+<BaseLayout
+  title="About"
+  description="Daraja is a commerce company and a social media agency in one team, based in Nairobi. We move businesses online and keep them growing there."
+>
+  <div class="container page-hero">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <ol>
+        <li><a href={withBase('/')}>Home</a></li>
+        <li aria-current="page">About</li>
+      </ol>
+    </nav>
+    <h1 class="h1">A commerce company and a social media agency, under one roof.</h1>
+    <p class="lead">
+      Moving a business online is really two jobs. One is building the place where customers can buy and pay. The
+      other is getting customers there. Most businesses find two separate providers for it. We do both.
+    </p>
+  </div>
+
+  <section class="section" aria-labelledby="disciplines-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="h2" id="disciplines-title">Two disciplines, one team</h2>
+      </div>
+      <div class="grid grid--2">
+        <div class="card">
+          <p class="kicker">The commerce side</p>
+          <h3 class="h3">Gets you online</h3>
+          <p class="muted">
+            Valuation, a hybrid delivery model, brand and design, and the software that takes M-Pesa payments and
+            runs deliveries.
+          </p>
+        </div>
+        <div class="card card--dark">
+          <p class="kicker">The social media agency</p>
+          <h3 class="h3">Keeps you visible</h3>
+          <p>
+            Channel audits, scripts, FAQ videos and paid ads on TikTok, Instagram and Facebook, built from the
+            strategies the agency develops.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="think-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="h2" id="think-title">How we think</h2>
+      </div>
+      <div class="grid grid--3">
+        {
+          principles.map((principle) => (
+            <div class="process-card">
+              <h3 class="h3">{principle.title}</h3>
+              <p>{principle.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CtaBand heading="Tell us about your business." />
+</BaseLayout>

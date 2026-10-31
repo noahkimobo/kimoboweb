@@ -7,7 +7,7 @@ export function SiteFooter() {
   return (
     <footer className="mt-24 border-t border-border/70 bg-secondary/40">
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-        <div className="grid gap-10 md:grid-cols-4">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-5">
           <div className="md:col-span-1">
             <span className="font-serif text-2xl font-semibold">{siteConfig.name}</span>
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-muted-foreground">
@@ -40,8 +40,16 @@ export function SiteFooter() {
           <div>
             <h3 className="text-sm font-semibold">Company</h3>
             <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
-              <li>Our Craft</li>
-              <li>Sustainability</li>
+              <li>
+                <Link href="/our-craft" className="transition-colors hover:text-foreground">
+                  Our Craft
+                </Link>
+              </li>
+              <li>
+                <Link href="/sustainability" className="transition-colors hover:text-foreground">
+                  Sustainability
+                </Link>
+              </li>
               <li>
                 <Link href="/book-visit" className="transition-colors hover:text-foreground">
                   Book a visit
@@ -58,6 +66,22 @@ export function SiteFooter() {
                 </Link>
               </li>
               <li>Lifetime Warranty</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-sm font-semibold">Explore more from us</h3>
+            <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
+              <li>
+                <Link href="/daraja/" className="transition-colors hover:text-foreground">
+                  Daraja
+                </Link>
+              </li>
+              <li>
+                <Link href="/community-jobs" className="transition-colors hover:text-foreground">
+                  Community jobs
+                </Link>
+              </li>
             </ul>
           </div>
 

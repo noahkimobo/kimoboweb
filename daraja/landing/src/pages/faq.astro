@@ -1,0 +1,53 @@
+---
+import CtaBand from '../components/CtaBand.astro';
+import FaqList from '../components/FaqList.astro';
+import JsonLd from '../components/JsonLd.astro';
+import { faqGroups } from '../data/faq';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../config/paths';
+
+// One FAQPage block per page: Google ignores duplicates, so all groups share it.
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqGroups.flatMap((group) =>
+    group.entries.map((entry) => ({
+      '@type': 'Question',
+      name: entry.question,
+      acceptedAnswer: { '@type': 'Answer', text: entry.answer },
+    })),
+  ),
+};
+---
+
+<BaseLayout
+  title="FAQ"
+  description="Answers to the questions business owners ask before moving online: M-Pesa payments, receipts, delivery, social media ads, pricing and privacy."
+>
+  <div class="container page-hero">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <ol>
+        <li><a href={withBase('/')}>Home</a></li>
+        <li aria-current="page">FAQ</li>
+      </ol>
+    </nav>
+    <h1 class="h1">Questions business owners ask before they start.</h1>
+    <p class="lead">Short, straight answers. If yours is not here, message us.</p>
+  </div>
+
+  <section class="section" aria-label="Questions and answers">
+    <div class="container stack stack--28">
+      {
+        faqGroups.map((group) => (
+          <div class="faq-group">
+            <h2 class="h2">{group.title}</h2>
+            <FaqList entries={group.entries} />
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <JsonLd data={schema} />
+  <CtaBand heading="Still have a question?" />
+</BaseLayout>

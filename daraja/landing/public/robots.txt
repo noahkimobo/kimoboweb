@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kimobofurnitures.com/daraja/sitemap-index.xml

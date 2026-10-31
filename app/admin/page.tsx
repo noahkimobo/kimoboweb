@@ -11,6 +11,7 @@ export default async function AdminDashboardPage() {
 
   const cards = [
     { label: 'Products', value: stats.products },
+    { label: 'Job listings', value: stats.jobs },
     { label: 'Orders', value: stats.orders },
     { label: 'Pending orders', value: stats.pending },
     { label: 'Revenue', value: formatPrice(stats.revenue) },
@@ -30,7 +31,7 @@ export default async function AdminDashboardPage() {
         </Button>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
         {cards.map((c) => (
           <Card key={c.label}>
             <CardHeader className="pb-2">
@@ -46,9 +47,14 @@ export default async function AdminDashboardPage() {
       </div>
 
       <div className="mt-8">
-        <Button asChild variant="outline">
-          <Link href="/admin/products">Manage products →</Link>
-        </Button>
+        <div className="flex flex-wrap gap-3">
+          <Button asChild variant="outline">
+            <Link href="/admin/products">Manage products →</Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href="/admin/community-jobs">Manage community jobs →</Link>
+          </Button>
+        </div>
       </div>
     </div>
   )

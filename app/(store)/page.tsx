@@ -95,6 +95,39 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      <section className="mx-auto max-w-7xl px-4 pb-8 sm:px-6 lg:px-8">
+        <div className="grid gap-5 rounded-2xl border border-border bg-secondary/50 p-6 sm:p-8 lg:grid-cols-[1fr_auto] lg:items-center">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              Beyond furniture
+            </p>
+            <h2 className="mt-2 font-serif text-2xl font-semibold tracking-tight sm:text-3xl">
+              Explore more from us
+            </h2>
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+              Discover Daraja, our sister company, and find casual work opportunities
+              shared with our community.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <Link
+              href="/daraja/"
+              className="inline-flex min-h-11 items-center gap-2 rounded-md bg-foreground px-5 py-3 text-sm font-semibold text-background transition-opacity hover:opacity-90"
+            >
+              Explore Daraja
+              <ArrowRight className="size-4" />
+            </Link>
+            <Link
+              href="/community-jobs"
+              className="inline-flex min-h-11 items-center gap-2 rounded-md border border-border bg-background px-5 py-3 text-sm font-semibold transition-colors hover:bg-secondary"
+            >
+              Community jobs
+              <ArrowRight className="size-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
     </>
   )
 }

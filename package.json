@@ -3,9 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "packageManager": "pnpm@11.20.0",
+  "engines": {
+    "node": ">=22.23.4"
+  },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "node scripts/build-with-daraja.mjs",
     "start": "next start",
     "query:products": "node scripts/query-products.mjs",
     "import:catalog": "node scripts/seed-catalog.mjs",

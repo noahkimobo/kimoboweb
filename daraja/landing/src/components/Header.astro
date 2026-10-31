@@ -1,0 +1,27 @@
+---
+import { CTA_LABEL, NAV, SITE } from '../config/site';
+import { withBase, withoutBase } from '../config/paths';
+import Logo from './Logo.astro';
+
+const path = withoutBase(Astro.url.pathname);
+const isCurrent = (href: string) => path === href || path.startsWith(href);
+---
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href={withBase('/')} aria-label={`${SITE.name} home`}>
+      <Logo />
+      {SITE.name}
+    </a>
+    <nav class="nav" aria-label="Main">
+      {
+        NAV.map((item) => (
+          <a href={withBase(item.href)} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+            {item.label}
+          </a>
+        ))
+      }
+      <a class="btn btn--primary btn--small" href={withBase('/contact/')}>{CTA_LABEL}</a>
+    </nav>
+  </div>
+</header>

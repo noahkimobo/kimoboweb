@@ -52,6 +52,13 @@ export function SiteHeader() {
               </SheetHeader>
               <nav className="mt-2 flex flex-col px-4">
                 <Link
+                  href="/"
+                  onClick={() => setMobileOpen(false)}
+                  className="border-b border-border/60 py-3 text-sm font-medium"
+                >
+                  Home
+                </Link>
+                <Link
                   href="/shop"
                   onClick={() => setMobileOpen(false)}
                   className="border-b border-border/60 py-3 text-sm font-medium"
@@ -82,6 +89,13 @@ export function SiteHeader() {
                 >
                   Sofa repair
                 </Link>
+                <Link
+                  href="/community-jobs"
+                  onClick={() => setMobileOpen(false)}
+                  className="border-b border-border/60 py-3 text-sm font-medium"
+                >
+                  Community jobs
+                </Link>
               </nav>
               <form onSubmit={submitSearch} className="mt-4 flex gap-2 px-4">
                 <Input
@@ -111,7 +125,16 @@ export function SiteHeader() {
           </span>
         </Link>
 
-        <nav className="ml-6 hidden items-center gap-7 lg:flex">
+        <nav className="ml-4 hidden items-center gap-4 xl:flex">
+          <Link
+            href="/"
+            className={cn(
+              'text-sm font-medium text-muted-foreground transition-colors hover:text-foreground',
+              pathname === '/' && 'text-foreground',
+            )}
+          >
+            Home
+          </Link>
           <Link
             href="/shop"
             className={cn(

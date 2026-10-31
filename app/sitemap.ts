@@ -1,11 +1,14 @@
 import type { MetadataRoute } from 'next'
-import { getProducts } from '@/lib/queries'
+import { getCommunityJobs, getProducts } from '@/lib/queries'
 import { siteUrl } from '@/lib/seo'
 
 export const dynamic = 'force-dynamic'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const products = await getProducts({ sort: 'newest' })
+  const [products, jobs] = await Promise.all([
+    getProducts({ sort: 'newest' }),
+    getCommunityJobs(),
+  ])
 
   return [
     {
@@ -33,6 +36,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly',
       priority: 0.6,
     },
+    {
+      url: `${siteUrl}/our-craft`,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${siteUrl}/sustainability`,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${siteUrl}/community-jobs`,
+      changeFrequency: 'daily',
+      priority: 0.7,
+    },
+    ...jobs.map((job) => ({
+      url: `${siteUrl}/community-jobs/${encodeURIComponent(job.slug)}`,
+      lastModified: job.updatedAt,
+      changeFrequency: 'daily' as const,
+      priority: 0.65,
+    })),
     ...products.map((product) => ({
       url: `${siteUrl}/product/${encodeURIComponent(product.slug)}`,
       lastModified: product.createdAt,

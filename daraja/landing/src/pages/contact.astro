@@ -1,0 +1,85 @@
+---
+import { CONTACT, SITE } from '../config/site';
+import { withBase } from '../config/paths';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const hasContact = CONTACT.whatsappUrl !== null || CONTACT.emailUrl !== null;
+---
+
+<BaseLayout
+  title="Contact"
+  description="Tell Daraja where your business is today: offline, half online, or posting with no results. We reply with which path fits and what to do first."
+>
+  <div class="container page-hero">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <ol>
+        <li><a href={withBase('/')}>Home</a></li>
+        <li aria-current="page">Contact</li>
+      </ol>
+    </nav>
+    <h1 class="h1">Tell us where your business is today.</h1>
+    <p class="lead">
+      Offline, half online, or posting with no results. Message us and we will say which path fits and what to do
+      first.
+    </p>
+  </div>
+
+  <section class="section" aria-label="How to reach us">
+    <div class="container grid grid--2">
+      <div class="card">
+        <h2 class="h3">Reach us</h2>
+        {
+          hasContact ? (
+            <dl class="contact-list">
+              {CONTACT.whatsappUrl && (
+                <div>
+                  <dt>WhatsApp</dt>
+                  <dd>
+                    <a class="text-link" href={CONTACT.whatsappUrl} rel="noopener noreferrer">
+                      Start a chat
+                    </a>
+                  </dd>
+                </div>
+              )}
+              {CONTACT.emailUrl && (
+                <div>
+                  <dt>Email</dt>
+                  <dd>
+                    <a class="text-link" href={CONTACT.emailUrl}>{CONTACT.email}</a>
+                  </dd>
+                </div>
+              )}
+              <div>
+                <dt>Based in</dt>
+                <dd>{SITE.city}, {SITE.country}</dd>
+              </div>
+            </dl>
+          ) : (
+            <p class="notice">Contact details are being set up. Please check back shortly.</p>
+          )
+        }
+      </div>
+      <div class="card card--mist">
+        <h2 class="h3">What to tell us</h2>
+        <ul class="check-list">
+          <li>What you sell and where you sell it today</li>
+          <li>Whether you are online, and on which channels</li>
+          <li>The one thing you most want to change</li>
+        </ul>
+        <p class="muted">
+          Never send your M-Pesa PIN, card details or banking passwords in a message. We will never ask for them.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section--tight" aria-labelledby="client-title">
+    <div class="container">
+      <div class="card">
+        <h2 class="h3" id="client-title">Already a client?</h2>
+        <p class="muted">Sign in to see your orders, record your growth numbers and view your invoices.</p>
+        <a class="text-link" href={SITE.appUrl} rel="noopener">Go to your account</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

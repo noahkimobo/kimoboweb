@@ -1,0 +1,155 @@
+---
+import { Picture } from 'astro:assets';
+import hero from '../assets/hero-bridge.webp';
+import CtaBand from '../components/CtaBand.astro';
+import FaqList from '../components/FaqList.astro';
+import Testimonials from '../components/Testimonials.astro';
+import { CTA_LABEL } from '../config/site';
+import { withBase } from '../config/paths';
+import { homeFaq } from '../data/faq';
+import { services } from '../data/services';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const steps = [
+  {
+    num: '1',
+    title: 'Assess',
+    body: 'We read your numbers and your channels before proposing anything.',
+  },
+  {
+    num: '2',
+    title: 'Build',
+    body: 'Storefront, brand and payments for new sellers. Content and ad engine for existing ones.',
+  },
+  {
+    num: '3',
+    title: 'Grow',
+    body: 'Ads and content keep running, and we adjust them from what your audience actually does.',
+  },
+];
+---
+
+<BaseLayout
+  title="Take your business online in Nairobi"
+  description="Daraja moves Nairobi businesses online and grows the ones already there: valuation, M-Pesa storefronts, brand design and TikTok, Instagram and Facebook ads."
+  organization
+>
+  <div class="container hero">
+    <div class="stack stack--28">
+      <p class="eyebrow">Nairobi - Online migration and social media growth</p>
+      <h1 class="h1">The bridge between your business and the online market.</h1>
+      <p class="lead">
+        Daraja moves Nairobi businesses online and grows the ones already there. Storefront, M-Pesa
+        payments and social media, handled by one team.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn--primary" href={withBase('/contact/')}>{CTA_LABEL}</a>
+        <a class="text-link" href={withBase('/services/')}>See what we do</a>
+      </div>
+    </div>
+    <div class="hero-art">
+      <Picture
+        src={hero}
+        formats={['avif']}
+        fallbackFormat="webp"
+        widths={[480, 720, 1200]}
+        sizes="(min-width: 960px) 560px, 100vw"
+        alt="A glowing amber arch bridge linking a shop on the left to an online storefront on the right."
+        loading="eager"
+        fetchpriority="high"
+      />
+    </div>
+  </div>
+
+  <section class="section" aria-labelledby="paths-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="h2" id="paths-title">Two starting points, one company</h2>
+        <p class="muted">
+          The commerce side moves you online. The social media agency keeps you seen once you are there.
+        </p>
+      </div>
+      <div class="grid grid--2">
+        <div class="card">
+          <p class="kicker">Not online yet</p>
+          <h3 class="h3">Migrate</h3>
+          <ul class="check-list">
+            <li>Value your inventory and read your bank and M-Pesa history</li>
+            <li>Move to a warehouse delivery model with far less physical overhead</li>
+            <li>Launch a storefront that takes M-Pesa payments automatically</li>
+          </ul>
+        </div>
+        <div class="card card--dark">
+          <p class="kicker">Already online</p>
+          <h3 class="h3">Grow</h3>
+          <ul class="check-list">
+            <li>Audit your TikTok, Instagram and Facebook channels</li>
+            <li>Scripts and FAQ videos written around your business</li>
+            <li>Targeted Meta and TikTok ads, run for you</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="services-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="h2" id="services-title">What we do</h2>
+      </div>
+      <div class="service-grid">
+        {
+          services.map((service) => (
+            <article class="service-row">
+              <h3 class="h3">
+                <span class="num">{service.num}</span>
+                {service.title}
+              </h3>
+              <div class="stack stack--16">
+                <p class="muted">{service.summary}</p>
+                <a class="text-link" href={withBase(`/services/${service.slug}/`)}>
+                  Learn more<span class="visually-hidden"> about {service.shortTitle}</span>
+                </a>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="process-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="h2" id="process-title">How we work</h2>
+      </div>
+      <div class="grid grid--3">
+        {
+          steps.map((step) => (
+            <div class="process-card">
+              <p class="big" aria-hidden="true">{step.num}</p>
+              <h3 class="h3">{step.title}</h3>
+              <p>{step.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <Testimonials />
+
+  <section class="section" aria-labelledby="faq-title">
+    <div class="container">
+      <div class="faq-group">
+        <div class="section-head">
+          <h2 class="h2" id="faq-title">Questions business owners ask</h2>
+          <a class="text-link" href={withBase('/faq/')}>Read all questions</a>
+        </div>
+        <FaqList entries={homeFaq} schema />
+      </div>
+    </div>
+  </section>
+
+  <CtaBand heading="Tell us where your business is today." />
+</BaseLayout>
