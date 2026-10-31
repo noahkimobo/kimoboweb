@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { LayoutDashboard, Package, ExternalLink } from 'lucide-react'
+import { LayoutDashboard, Package, ExternalLink, BriefcaseBusiness } from 'lucide-react'
 import { siteConfig } from '@/lib/site'
 import { LogoutButton } from './logout-button'
 import { Toaster } from '@/components/ui/sonner'
@@ -39,6 +39,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             Products
           </Link>
           <Link
+            href="/admin/community-jobs"
+            className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-foreground/80 hover:bg-secondary"
+          >
+            <BriefcaseBusiness className="size-4" />
+            Community jobs
+          </Link>
+          <Link
             href="/"
             target="_blank"
             className="mt-auto flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-secondary"
@@ -51,10 +58,23 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </aside>
 
       <div className="flex-1">
-        <header className="flex items-center justify-between border-b border-border bg-background px-4 py-3 sm:hidden">
-          <span className="font-serif text-lg font-semibold">{siteConfig.name} Admin</span>
-          <LogoutButton compact />
-        </header>
+        <div className="border-b border-border bg-background sm:hidden">
+          <header className="flex items-center justify-between px-4 py-3">
+            <span className="font-serif text-lg font-semibold">{siteConfig.name} Admin</span>
+            <LogoutButton compact />
+          </header>
+          <nav aria-label="Admin navigation" className="flex gap-2 overflow-x-auto px-4 pb-3">
+            <Link href="/admin" className="shrink-0 rounded-md px-3 py-2 text-sm hover:bg-secondary">
+              Dashboard
+            </Link>
+            <Link href="/admin/products" className="shrink-0 rounded-md px-3 py-2 text-sm hover:bg-secondary">
+              Products
+            </Link>
+            <Link href="/admin/community-jobs" className="shrink-0 rounded-md px-3 py-2 text-sm hover:bg-secondary">
+              Community jobs
+            </Link>
+          </nav>
+        </div>
         <main className="mx-auto max-w-6xl px-4 py-8 sm:px-8">{children}</main>
       </div>
       <Toaster position="top-center" />

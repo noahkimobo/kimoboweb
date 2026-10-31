@@ -34,7 +34,7 @@ export const SITE = {
   city: 'Nairobi',
   country: 'Kenya',
   tagline: 'Online migration and social media growth for businesses in Nairobi',
-  url: readHttpsUrl(env.PUBLIC_SITE_URL, 'https://daraja.co.ke'),
+  url: readHttpsUrl(env.PUBLIC_SITE_URL, 'https://kimobofurnitures.com'),
   appUrl: readHttpsUrl(env.PUBLIC_APP_URL, 'https://app.daraja.co.ke'),
 } as const;
 

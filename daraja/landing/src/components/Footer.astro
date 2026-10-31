@@ -1,5 +1,6 @@
 ---
 import { CONTACT, NAV, SITE } from '../config/site';
+import { withBase } from '../config/paths';
 import { services } from '../data/services';
 ---
 
@@ -15,7 +16,7 @@ import { services } from '../data/services';
         {
           services.map((service) => (
             <li>
-              <a href={`/services/${service.slug}/`}>{service.shortTitle}</a>
+              <a href={withBase(`/services/${service.slug}/`)}>{service.shortTitle}</a>
             </li>
           ))
         }
@@ -27,11 +28,11 @@ import { services } from '../data/services';
         {
           NAV.filter((item) => item.href !== '/services/').map((item) => (
             <li>
-              <a href={item.href}>{item.label}</a>
+              <a href={withBase(item.href)}>{item.label}</a>
             </li>
           ))
         }
-        <li><a href="/contact/">Contact</a></li>
+        <li><a href={withBase('/contact/')}>Contact</a></li>
         <li><a href={SITE.appUrl} rel="noopener">Client login</a></li>
       </ul>
     </nav>

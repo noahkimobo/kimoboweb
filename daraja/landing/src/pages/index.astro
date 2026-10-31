@@ -5,6 +5,7 @@ import CtaBand from '../components/CtaBand.astro';
 import FaqList from '../components/FaqList.astro';
 import Testimonials from '../components/Testimonials.astro';
 import { CTA_LABEL } from '../config/site';
+import { withBase } from '../config/paths';
 import { homeFaq } from '../data/faq';
 import { services } from '../data/services';
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -42,8 +43,8 @@ const steps = [
         payments and social media, handled by one team.
       </p>
       <div class="hero-actions">
-        <a class="btn btn--primary" href="/contact/">{CTA_LABEL}</a>
-        <a class="text-link" href="/services/">See what we do</a>
+        <a class="btn btn--primary" href={withBase('/contact/')}>{CTA_LABEL}</a>
+        <a class="text-link" href={withBase('/services/')}>See what we do</a>
       </div>
     </div>
     <div class="hero-art">
@@ -106,7 +107,7 @@ const steps = [
               </h3>
               <div class="stack stack--16">
                 <p class="muted">{service.summary}</p>
-                <a class="text-link" href={`/services/${service.slug}/`}>
+                <a class="text-link" href={withBase(`/services/${service.slug}/`)}>
                   Learn more<span class="visually-hidden"> about {service.shortTitle}</span>
                 </a>
               </div>
@@ -143,7 +144,7 @@ const steps = [
       <div class="faq-group">
         <div class="section-head">
           <h2 class="h2" id="faq-title">Questions business owners ask</h2>
-          <a class="text-link" href="/faq/">Read all questions</a>
+          <a class="text-link" href={withBase('/faq/')}>Read all questions</a>
         </div>
         <FaqList entries={homeFaq} schema />
       </div>

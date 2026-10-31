@@ -1,7 +1,13 @@
 import 'server-only'
-import { and, desc, eq, ilike, ne, or, sql } from 'drizzle-orm'
+import { and, desc, eq, gt, ilike, isNull, ne, or, sql } from 'drizzle-orm'
 import { db } from '@/lib/db'
-import { orders, products, type Product } from '@/lib/db/schema'
+import {
+  communityJobs,
+  orders,
+  products,
+  type CommunityJob,
+  type Product,
+} from '@/lib/db/schema'
 
 export type ProductSort = 'newest' | 'price-asc' | 'price-desc' | 'name'
 
@@ -72,6 +78,37 @@ export async function getRelatedProducts(
     .limit(limit)
 }
 
+export async function getCommunityJobs(includeUnpublished = false): Promise<CommunityJob[]> {
+  const conditions = includeUnpublished
+    ? []
+    : [
+        eq(communityJobs.published, true),
+        or(isNull(communityJobs.closesAt), gt(communityJobs.closesAt, new Date())),
+      ]
+
+  return db
+    .select()
+    .from(communityJobs)
+    .where(conditions.length ? and(...conditions) : undefined)
+    .orderBy(desc(communityJobs.createdAt))
+}
+
+export async function getCommunityJobBySlug(slug: string): Promise<CommunityJob | null> {
+  const rows = await db
+    .select()
+    .from(communityJobs)
+    .where(
+      and(
+        eq(communityJobs.slug, slug),
+        eq(communityJobs.published, true),
+        or(isNull(communityJobs.closesAt), gt(communityJobs.closesAt, new Date())),
+      ),
+    )
+    .limit(1)
+
+  return rows[0] ?? null
+}
+
 export async function getCategoryCounts(): Promise<Record<string, number>> {
   const rows = await db
     .select({ category: products.category, count: sql<number>`count(*)::int` })
@@ -98,11 +135,15 @@ export async function getDashboardStats() {
     .select({ count: sql<number>`count(*)::int` })
     .from(orders)
     .where(eq(orders.status, 'pending'))
+  const [jobCount] = await db
+    .select({ count: sql<number>`count(*)::int` })
+    .from(communityJobs)
 
   return {
     products: productCount?.count ?? 0,
     orders: orderStats?.count ?? 0,
     revenue: orderStats?.revenue ?? 0,
     pending: pending?.count ?? 0,
+    jobs: jobCount?.count ?? 0,
   }
 }

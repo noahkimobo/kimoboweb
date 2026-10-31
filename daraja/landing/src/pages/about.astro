@@ -1,6 +1,7 @@
 ---
 import CtaBand from '../components/CtaBand.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../config/paths';
 
 const principles = [
   {
@@ -25,7 +26,7 @@ const principles = [
   <div class="container page-hero">
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <ol>
-        <li><a href="/">Home</a></li>
+        <li><a href={withBase('/')}>Home</a></li>
         <li aria-current="page">About</li>
       </ol>
     </nav>

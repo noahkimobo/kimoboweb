@@ -1,5 +1,6 @@
 import {
   boolean,
+  index,
   integer,
   jsonb,
   pgTable,
@@ -67,7 +68,27 @@ export const orders = pgTable('orders', {
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 })
 
+export const communityJobs = pgTable(
+  'community_jobs',
+  {
+    id: serial('id').primaryKey(),
+    title: text('title').notNull(),
+    slug: text('slug').notNull().unique(),
+    description: text('description').notNull(),
+    requirements: text('requirements').notNull().default(''),
+    location: text('location').notNull(),
+    compensation: text('compensation').notNull().default(''),
+    closesAt: timestamp('closes_at', { withTimezone: true }),
+    published: boolean('published').notNull().default(false),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [index('community_jobs_public_idx').on(table.published, table.createdAt)],
+)
+
 export type Product = typeof products.$inferSelect
 export type NewProduct = typeof products.$inferInsert
 export type Order = typeof orders.$inferSelect
 export type NewOrder = typeof orders.$inferInsert
+export type CommunityJob = typeof communityJobs.$inferSelect
+export type NewCommunityJob = typeof communityJobs.$inferInsert

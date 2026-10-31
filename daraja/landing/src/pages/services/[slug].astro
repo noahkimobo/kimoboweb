@@ -3,6 +3,7 @@ import type { GetStaticPaths } from 'astro';
 import CtaBand from '../../components/CtaBand.astro';
 import FaqList from '../../components/FaqList.astro';
 import { SITE } from '../../config/site';
+import { withBase } from '../../config/paths';
 import { getService, relatedServices, services } from '../../data/services';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import JsonLd from '../../components/JsonLd.astro';
@@ -28,8 +29,8 @@ const serviceSchema = {
   <div class="container page-hero">
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <ol>
-        <li><a href="/">Home</a></li>
-        <li><a href="/services/">Services</a></li>
+        <li><a href={withBase('/')}>Home</a></li>
+        <li><a href={withBase('/services/')}>Services</a></li>
         <li aria-current="page">{service.shortTitle}</li>
       </ol>
     </nav>
@@ -98,7 +99,7 @@ const serviceSchema = {
         {
           related.map((other) => (
             <li>
-              <a class="card card--mist card--compact" href={`/services/${other.slug}/`}>
+              <a class="card card--mist card--compact" href={withBase(`/services/${other.slug}/`)}>
                 <span class="kicker">{other.num}</span>
                 <span class="h3">{other.title}</span>
               </a>

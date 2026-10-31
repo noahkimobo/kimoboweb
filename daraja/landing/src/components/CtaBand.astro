@@ -1,5 +1,6 @@
 ---
 import { CONTACT, CTA_LABEL } from '../config/site';
+import { withBase } from '../config/paths';
 
 interface Props {
   heading: string;
@@ -9,7 +10,7 @@ const { heading } = Astro.props;
 
 // Prefer a direct WhatsApp chat when a number is configured.
 const external = CONTACT.whatsappUrl !== null;
-const href = CONTACT.whatsappUrl ?? '/contact/';
+const href = CONTACT.whatsappUrl ?? withBase('/contact/');
 const label = external ? 'Message us on WhatsApp' : CTA_LABEL;
 ---
 

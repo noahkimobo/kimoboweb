@@ -1,5 +1,6 @@
 ---
 import { CONTACT, SITE } from '../config/site';
+import { withBase } from '../config/paths';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const hasContact = CONTACT.whatsappUrl !== null || CONTACT.emailUrl !== null;
@@ -12,7 +13,7 @@ const hasContact = CONTACT.whatsappUrl !== null || CONTACT.emailUrl !== null;
   <div class="container page-hero">
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <ol>
-        <li><a href="/">Home</a></li>
+        <li><a href={withBase('/')}>Home</a></li>
         <li aria-current="page">Contact</li>
       </ol>
     </nav>

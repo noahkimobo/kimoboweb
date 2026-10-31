@@ -4,6 +4,7 @@ import FaqList from '../components/FaqList.astro';
 import JsonLd from '../components/JsonLd.astro';
 import { faqGroups } from '../data/faq';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../config/paths';
 
 // One FAQPage block per page: Google ignores duplicates, so all groups share it.
 const schema = {
@@ -26,7 +27,7 @@ const schema = {
   <div class="container page-hero">
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <ol>
-        <li><a href="/">Home</a></li>
+        <li><a href={withBase('/')}>Home</a></li>
         <li aria-current="page">FAQ</li>
       </ol>
     </nav>

@@ -5,10 +5,11 @@ import { cases } from './src/data/cases.ts';
 
 // The public marketing site. Keep it static: no client-side JavaScript is
 // shipped unless a component explicitly opts in (none do today).
-const SITE_URL = process.env.PUBLIC_SITE_URL ?? 'https://daraja.co.ke';
+const SITE_URL = process.env.PUBLIC_SITE_URL ?? 'https://kimobofurnitures.com';
 
 export default defineConfig({
   site: SITE_URL,
+  base: '/daraja',
   trailingSlash: 'always',
   integrations: [
     sitemap({

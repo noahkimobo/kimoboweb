@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const dist = resolve(here, '../dist');
+const base = '/daraja/';
 
 if (!existsSync(dist)) {
   console.error('dist/ not found. Run `npm run build` first.');
@@ -44,7 +45,8 @@ function visibleText(html) {
 function internalTargetExists(href) {
   const clean = href.split('#')[0].split('?')[0];
   if (clean === '') return true;
-  const target = join(dist, clean);
+  const outputPath = clean.startsWith(base) ? clean.slice(base.length) : clean.replace(/^\/+/, '');
+  const target = join(dist, outputPath);
   if (clean.endsWith('/')) return existsSync(join(target, 'index.html'));
   return existsSync(target) || existsSync(`${target}.html`);
 }

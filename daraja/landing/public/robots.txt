@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://daraja.co.ke/sitemap-index.xml
+Sitemap: https://kimobofurnitures.com/daraja/sitemap-index.xml

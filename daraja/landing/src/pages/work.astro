@@ -2,6 +2,7 @@
 import CtaBand from '../components/CtaBand.astro';
 import { cases } from '../data/cases';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../config/paths';
 
 const hasCases = cases.length > 0;
 ---
@@ -14,7 +15,7 @@ const hasCases = cases.length > 0;
   <div class="container page-hero">
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <ol>
-        <li><a href="/">Home</a></li>
+        <li><a href={withBase('/')}>Home</a></li>
         <li aria-current="page">Work</li>
       </ol>
     </nav>

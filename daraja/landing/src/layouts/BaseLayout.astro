@@ -6,6 +6,7 @@ import Header from '../components/Header.astro';
 import JsonLd from '../components/JsonLd.astro';
 import Seo from '../components/Seo.astro';
 import { SITE } from '../config/site';
+import { withBase } from '../config/paths';
 
 interface Props {
   title: string;
@@ -21,7 +22,7 @@ const organizationData = {
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',
   name: SITE.name,
-  url: SITE.url,
+  url: new URL(import.meta.env.BASE_URL, SITE.url).toString(),
   description: SITE.tagline,
   areaServed: { '@type': 'City', name: SITE.city },
   address: { '@type': 'PostalAddress', addressLocality: SITE.city, addressCountry: 'KE' },
@@ -34,7 +35,7 @@ const organizationData = {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#0E1B2E" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml" />
     <Seo title={title} description={description} noindex={noindex} />
     {organization && <JsonLd data={organizationData} />}
   </head>
