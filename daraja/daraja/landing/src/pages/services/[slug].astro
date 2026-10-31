@@ -1,0 +1,114 @@
+---
+import type { GetStaticPaths } from 'astro';
+import CtaBand from '../../components/CtaBand.astro';
+import FaqList from '../../components/FaqList.astro';
+import { SITE } from '../../config/site';
+import { getService, relatedServices, services } from '../../data/services';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import JsonLd from '../../components/JsonLd.astro';
+
+export const getStaticPaths = (() =>
+  services.map((service) => ({ params: { slug: service.slug } }))) satisfies GetStaticPaths;
+
+const { slug } = Astro.params;
+const service = getService(slug as string);
+const related = relatedServices(service.slug);
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: service.title,
+  description: service.metaDescription,
+  provider: { '@type': 'ProfessionalService', name: SITE.name, url: SITE.url },
+  areaServed: { '@type': 'City', name: SITE.city },
+};
+---
+
+<BaseLayout title={service.title} description={service.metaDescription}>
+  <div class="container page-hero">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="/">Home</a></li>
+        <li><a href="/services/">Services</a></li>
+        <li aria-current="page">{service.shortTitle}</li>
+      </ol>
+    </nav>
+    <h1 class="h1">{service.title}</h1>
+    <p class="lead">{service.intro}</p>
+  </div>
+
+  <section class="section" aria-labelledby="gets-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="h2" id="gets-title">What you get</h2>
+      </div>
+      <div class="grid grid--wide">
+        {
+          service.items.map((item) => (
+            <div class="card card--compact">
+              <h3 class="h3">{item.title}</h3>
+              <p class="muted">{item.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="how-title">
+    <div class="container">
+      <div class="band">
+        <div class="section-head">
+          <h2 class="h2" id="how-title">How it works</h2>
+        </div>
+        <ol class="steps">
+          {
+            service.steps.map((step, index) => (
+              <li class="step">
+                <p class="step-num">Step {index + 1}</p>
+                <h3 class="h3">{step.title}</h3>
+                <p>{step.body}</p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-label="Who it is for and common questions">
+    <div class="container faq-group">
+      <div class="stack stack--24">
+        <h2 class="h2">Who it is for</h2>
+        <ul class="check-list">
+          {service.who.map((line) => <li>{line}</li>)}
+        </ul>
+      </div>
+      <div class="stack stack--24">
+        <h2 class="h2">Questions owners ask</h2>
+        <FaqList entries={service.faq.map((f) => ({ question: f.question, answer: f.answer }))} schema />
+      </div>
+    </div>
+  </section>
+
+  <section class="section--tight" aria-labelledby="other-title">
+    <div class="container stack stack--24">
+      <h2 class="h2" id="other-title">Other services</h2>
+      <ul class="grid grid--3">
+        {
+          related.map((other) => (
+            <li>
+              <a class="card card--mist card--compact" href={`/services/${other.slug}/`}>
+                <span class="kicker">{other.num}</span>
+                <span class="h3">{other.title}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand heading={service.closing} />
+  <JsonLd data={serviceSchema} />
+</BaseLayout>

@@ -1,0 +1,23 @@
+---
+import { CONTACT, CTA_LABEL } from '../config/site';
+
+interface Props {
+  heading: string;
+}
+
+const { heading } = Astro.props;
+
+// Prefer a direct WhatsApp chat when a number is configured.
+const external = CONTACT.whatsappUrl !== null;
+const href = CONTACT.whatsappUrl ?? '/contact/';
+const label = external ? 'Message us on WhatsApp' : CTA_LABEL;
+---
+
+<section class="section--tight">
+  <div class="container">
+    <div class="cta-band">
+      <h2 class="h2">{heading}</h2>
+      <a class="btn" href={href} rel={external ? 'noopener noreferrer' : undefined}>{label}</a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "currency": "KES",
+  "isPlaceholder": true,
+  "note": "Sample prices for design review only. Replace with real prices before launch. A null priceKes means 'request a quote'.",
+  "items": [
+    {
+      "id": "val-assessment", "category": "valuation", "name": "Business valuation",
+      "description": "A clear view of what your business is worth and where it can grow online.",
+      "levels": {
+        "basic": {"priceKes": null, "includes": ["Intake call", "Written summary"]},
+        "standard": {"priceKes": null, "includes": ["Valuation report", "Online readiness score", "Action plan"]},
+        "premium": {"priceKes": null, "includes": ["Full report", "Competitor review", "90-day roadmap"]}
+      }
+    },
+    {
+      "id": "val-migration", "category": "valuation", "name": "Hybrid migration setup",
+      "description": "Move your products, payments and customers online without closing the shop.",
+      "levels": {
+        "basic": {"priceKes": null, "includes": ["Channel setup", "Product listing"]},
+        "standard": {"priceKes": null, "includes": ["Channels and payments", "Staff walkthrough"]},
+        "premium": {"priceKes": null, "includes": ["Full migration", "Delivery setup", "30-day support"]}
+      }
+    },
+    {
+      "id": "gd-logo", "category": "graphicDesign", "name": "Logo design",
+      "description": "A logo that works on a signboard and on a phone screen.",
+      "levels": {
+        "basic": {"priceKes": 3500, "includes": ["1 concept", "2 revisions", "PNG and SVG files"]},
+        "standard": {"priceKes": 8000, "includes": ["3 concepts", "4 revisions", "Colour and mono versions"]},
+        "premium": {"priceKes": 15000, "includes": ["5 concepts", "Unlimited revisions", "Usage guidelines"]}
+      }
+    },
+    {
+      "id": "gd-brandkit", "category": "graphicDesign", "name": "Brand kit",
+      "description": "Colours, type and templates so every post looks like the same business.",
+      "levels": {
+        "basic": {"priceKes": 6000, "includes": ["Colour palette", "Font pairing"]},
+        "standard": {"priceKes": 14000, "includes": ["Palette and fonts", "6 social templates"]},
+        "premium": {"priceKes": 28000, "includes": ["Full brand guide", "12 templates", "Business card"]}
+      }
+    },
+    {
+      "id": "gd-social-pack", "category": "graphicDesign", "name": "Social post pack",
+      "description": "Ready-to-post designs for your feed and stories.",
+      "levels": {
+        "basic": {"priceKes": 2500, "includes": ["5 designs"]},
+        "standard": {"priceKes": 6000, "includes": ["12 designs", "Story versions"]},
+        "premium": {"priceKes": 12000, "includes": ["30 designs", "Stories", "Carousel set"]}
+      }
+    },
+    {
+      "id": "gd-flyer", "category": "graphicDesign", "name": "Flyer or poster",
+      "description": "Print-ready promotion for events, offers and launches.",
+      "levels": {
+        "basic": {"priceKes": 1500, "includes": ["1 design", "1 revision"]},
+        "standard": {"priceKes": 3500, "includes": ["2 sizes", "3 revisions"]},
+        "premium": {"priceKes": 7000, "includes": ["Campaign set", "Unlimited revisions"]}
+      }
+    },
+    {
+      "id": "sw-pos", "category": "software", "name": "M-Pesa point of sale",
+      "description": "Take M-Pesa payments in store and see every sale in one place.",
+      "levels": {
+        "basic": {"priceKes": null, "includes": ["Single till", "Daily summary"]},
+        "standard": {"priceKes": null, "includes": ["Multiple staff", "Stock tracking"]},
+        "premium": {"priceKes": null, "includes": ["Multiple branches", "Reports", "Priority support"]}
+      }
+    },
+    {
+      "id": "sw-delivery", "category": "software", "name": "Delivery app",
+      "description": "Let customers order and track deliveries from your own app.",
+      "levels": {
+        "basic": {"priceKes": null, "includes": ["Order form", "Rider list"]},
+        "standard": {"priceKes": null, "includes": ["Live order status", "Payments"]},
+        "premium": {"priceKes": null, "includes": ["Rider tracking", "Branded app"]}
+      }
+    },
+    {
+      "id": "sa-audit", "category": "socialAds", "name": "Social media audit",
+      "description": "What is working, what is not, and what to change first.",
+      "levels": {
+        "basic": {"priceKes": 4000, "includes": ["1 platform", "Written findings"]},
+        "standard": {"priceKes": 9000, "includes": ["2 platforms", "Competitor review"]},
+        "premium": {"priceKes": 18000, "includes": ["All platforms", "30-day plan", "Review call"]}
+      }
+    },
+    {
+      "id": "sa-ads", "category": "socialAds", "name": "Ad management",
+      "description": "Monthly ad setup, testing and reporting. Ad spend is paid separately.",
+      "levels": {
+        "basic": {"priceKes": null, "includes": ["1 campaign", "Monthly report"]},
+        "standard": {"priceKes": null, "includes": ["3 campaigns", "Weekly report"]},
+        "premium": {"priceKes": null, "includes": ["Unlimited campaigns", "Weekly calls"]}
+      }
+    }
+  ]
+}

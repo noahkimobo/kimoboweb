@@ -1,0 +1,62 @@
+---
+import CtaBand from '../components/CtaBand.astro';
+import { cases } from '../data/cases';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const hasCases = cases.length > 0;
+---
+
+<BaseLayout
+  title="Work"
+  description="Businesses Daraja has moved online and helped grow in Nairobi: where they started, what we did and what changed."
+  noindex={!hasCases}
+>
+  <div class="container page-hero">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="/">Home</a></li>
+        <li aria-current="page">Work</li>
+      </ol>
+    </nav>
+    <h1 class="h1">Businesses we have moved online and helped grow.</h1>
+    <p class="lead">Each case follows the same shape: where the business started, what we did, and what changed.</p>
+  </div>
+
+  <section class="section" aria-label="Case studies">
+    <div class="container">
+      {
+        hasCases ? (
+          <div class="grid grid--wide">
+            {cases.map((item) => (
+              <article class="card">
+                <p class="kicker">{item.service}</p>
+                <h2 class="h3">{item.client}</h2>
+                <dl class="contact-list">
+                  <div>
+                    <dt>Before</dt>
+                    <dd>{item.before}</dd>
+                  </div>
+                  <div>
+                    <dt>What we did</dt>
+                    <dd>{item.whatWeDid}</dd>
+                  </div>
+                  <div>
+                    <dt>Result</dt>
+                    <dd>{item.result}</dd>
+                  </div>
+                </dl>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <p class="notice">
+            Our first case studies are being written with the clients involved. Tell us about your business and
+            we will show you the plan we would follow.
+          </p>
+        )
+      }
+    </div>
+  </section>
+
+  <CtaBand heading="Your business could be the next case here." />
+</BaseLayout>

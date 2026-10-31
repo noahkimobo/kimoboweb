@@ -1,0 +1,49 @@
+---
+import '@fontsource-variable/plus-jakarta-sans';
+import '../styles/global.css';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import JsonLd from '../components/JsonLd.astro';
+import Seo from '../components/Seo.astro';
+import { SITE } from '../config/site';
+
+interface Props {
+  title: string;
+  description: string;
+  noindex?: boolean;
+  /** Add the Organization structured data (home page only). */
+  organization?: boolean;
+}
+
+const { title, description, noindex = false, organization = false } = Astro.props;
+
+const organizationData = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: SITE.name,
+  url: SITE.url,
+  description: SITE.tagline,
+  areaServed: { '@type': 'City', name: SITE.city },
+  address: { '@type': 'PostalAddress', addressLocality: SITE.city, addressCountry: 'KE' },
+};
+---
+
+<!doctype html>
+<html lang={SITE.language}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0E1B2E" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <Seo title={title} description={description} noindex={noindex} />
+    {organization && <JsonLd data={organizationData} />}
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
