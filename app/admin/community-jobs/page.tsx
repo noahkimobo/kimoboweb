@@ -10,6 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { COMMUNITY_JOB_CATEGORIES } from '@/lib/community-jobs'
 
 export const dynamic = 'force-dynamic'
 
@@ -36,7 +37,9 @@ export default async function AdminCommunityJobsPage() {
           <TableHeader>
             <TableRow>
               <TableHead>Opportunity</TableHead>
+              <TableHead>Type</TableHead>
               <TableHead>Location</TableHead>
+              <TableHead>Employer WhatsApp</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Deadline</TableHead>
               <TableHead className="text-right">Edit</TableHead>
@@ -53,7 +56,12 @@ export default async function AdminCommunityJobsPage() {
                     <p className="font-medium">{job.title}</p>
                     <p className="text-xs text-muted-foreground">{job.slug}</p>
                   </TableCell>
+                  <TableCell>
+                    {COMMUNITY_JOB_CATEGORIES.find((category) => category.slug === job.category)?.label ??
+                      job.category}
+                  </TableCell>
                   <TableCell>{job.location}</TableCell>
+                  <TableCell>{job.employerPhone ? `+${job.employerPhone}` : 'Not added'}</TableCell>
                   <TableCell>
                     <Badge variant={job.published && !expired ? 'default' : 'secondary'}>
                       {status}
@@ -74,7 +82,7 @@ export default async function AdminCommunityJobsPage() {
             })}
             {jobs.length === 0 && (
               <TableRow>
-                <TableCell colSpan={5} className="py-10 text-center text-muted-foreground">
+                <TableCell colSpan={7} className="py-10 text-center text-muted-foreground">
                   No opportunities yet. Add a listing to get started.
                 </TableCell>
               </TableRow>

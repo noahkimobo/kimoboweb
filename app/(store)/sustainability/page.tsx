@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowRight, BookOpen, Handshake, Sprout, Trees } from 'lucide-react'
+import { ArrowRight, BookOpen, Handshake, Mail, MessageCircle, Sprout, Trees } from 'lucide-react'
+import { siteConfig, whatsappLink } from '@/lib/site'
 
 export const metadata: Metadata = {
   title: 'Sustainability & Our Community Vision',
@@ -37,6 +38,13 @@ const proposedSteps = [
 ]
 
 export default function SustainabilityPage() {
+  const contactMessage =
+    'Hi Kimobo Furnitures, I would like to talk with your team about the school tree-planting and community support initiative.'
+  const emailSubject = encodeURIComponent('Sustainability initiative')
+  const emailBody = encodeURIComponent(
+    'Hello Kimobo Furnitures,\n\nI would like to talk with your team about the school tree-planting and community support initiative.',
+  )
+
   return (
     <article>
       <header className="bg-secondary/60">
@@ -116,12 +124,23 @@ export default function SustainabilityPage() {
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
-            <Link
-              href="/book-visit"
+            <a
+              href={whatsappLink(contactMessage)}
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex min-h-11 items-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
             >
-              Talk with our team <ArrowRight className="size-4" aria-hidden="true" />
-            </Link>
+              <MessageCircle className="size-4" aria-hidden="true" />
+              Talk to our team on WhatsApp
+              <ArrowRight className="size-4" aria-hidden="true" />
+            </a>
+            <a
+              href={`mailto:${siteConfig.email}?subject=${emailSubject}&body=${emailBody}`}
+              className="inline-flex min-h-11 items-center gap-2 rounded-md border border-background/30 px-5 py-3 text-sm font-semibold text-background hover:bg-background/10"
+            >
+              <Mail className="size-4" aria-hidden="true" />
+              Email our team
+            </a>
             <Link
               href="/community-jobs"
               className="inline-flex min-h-11 items-center gap-2 rounded-md border border-background/30 px-5 py-3 text-sm font-semibold text-background hover:bg-background/10"

@@ -2,9 +2,12 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ArrowLeft, MapPin, MessageCircle } from 'lucide-react'
+import {
+  communityJobCategoryLabel,
+  normalizeEmployerPhone,
+} from '@/lib/community-jobs'
 import { getCommunityJobBySlug } from '@/lib/queries'
 import { siteUrl } from '@/lib/seo'
-import { whatsappLink } from '@/lib/site'
 
 type Params = { params: Promise<{ slug: string }> }
 
@@ -19,7 +22,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const description = [
     `${job.title} casual work opportunity in ${job.location}.`,
     job.compensation ? `${job.compensation}.` : '',
-    'Contact Kimobo Furnitures on WhatsApp to apply.',
+    'Contact the employer on WhatsApp to apply.',
   ]
     .filter(Boolean)
     .join(' ')
@@ -38,10 +41,15 @@ export default async function CommunityJobDetailPage({ params }: Params) {
   if (!job) notFound()
 
   const applyMessage = [
-    `Hi Kimobo Furnitures, I would like to apply for the casual opportunity: ${job.title}.`,
+    `Hello, I would like to apply for this opportunity: ${job.title}.`,
     `Location: ${job.location}`,
     `Opportunity: ${siteUrl}/community-jobs/${encodeURIComponent(job.slug)}`,
   ].join('\n')
+  const employerPhone = normalizeEmployerPhone(job.employerPhone)
+  const employerWhatsApp = employerPhone
+    ? `https://wa.me/${employerPhone}?text=${encodeURIComponent(applyMessage)}`
+    : null
+  const categoryLabel = communityJobCategoryLabel(job.category)
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'JobPosting',
@@ -50,11 +58,6 @@ export default async function CommunityJobDetailPage({ params }: Params) {
     datePosted: job.createdAt.toISOString(),
     ...(job.closesAt ? { validThrough: job.closesAt.toISOString() } : {}),
     employmentType: 'TEMPORARY',
-    hiringOrganization: {
-      '@type': 'Organization',
-      name: 'Kimobo Furnitures',
-      sameAs: siteUrl,
-    },
     jobLocation: {
       '@type': 'Place',
       address: {
@@ -93,7 +96,7 @@ export default async function CommunityJobDetailPage({ params }: Params) {
 
       <header className="mt-8 border-b border-border pb-7">
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-          Casual opportunity
+          {categoryLabel}
         </p>
         <h1 className="mt-3 font-serif text-3xl font-semibold tracking-tight sm:text-4xl">
           {job.title}
@@ -135,17 +138,28 @@ export default async function CommunityJobDetailPage({ params }: Params) {
         <aside className="h-fit rounded-2xl bg-secondary/60 p-5 sm:p-6">
           <h2 className="font-serif text-xl font-semibold">Interested?</h2>
           <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-            Message our team on WhatsApp and mention this opportunity. We’ll share the next steps.
+            Message the employer directly on WhatsApp and mention this opportunity.
           </p>
-          <a
-            href={whatsappLink(applyMessage)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-5 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md bg-[#25D366] px-4 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
-          >
-            <MessageCircle className="size-4" aria-hidden="true" />
-            Apply on WhatsApp
-          </a>
+          {employerWhatsApp ? (
+            <>
+              <a
+                href={employerWhatsApp}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-5 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md bg-[#25D366] px-4 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+              >
+                <MessageCircle className="size-4" aria-hidden="true" />
+                Apply on WhatsApp
+              </a>
+              <p className="mt-3 text-center text-xs text-muted-foreground">
+                Employer: +{employerPhone}
+              </p>
+            </>
+          ) : (
+            <p className="mt-5 rounded-lg border border-border bg-background p-3 text-sm text-muted-foreground">
+              The employer’s WhatsApp contact is not available yet. Please check back later.
+            </p>
+          )}
         </aside>
       </div>
     </article>

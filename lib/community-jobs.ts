@@ -1,9 +1,11 @@
 export type CommunityJobInput = {
   title?: string
   slug?: string
+  category?: string
   description?: string
   requirements?: string
   location?: string
+  employerPhone?: string
   compensation?: string
   closesAt?: Date | null
   published?: boolean
@@ -13,14 +15,45 @@ type ParseResult =
   | { ok: true; value: CommunityJobInput }
   | { ok: false; error: string }
 
+export const COMMUNITY_JOB_CATEGORIES = [
+  { slug: 'chapati-cook', label: 'Chapati cook / Mtu wa kupika chapati' },
+  { slug: 'salonist', label: 'Salonist' },
+  { slug: 'nail-technician', label: 'Nail technician' },
+  { slug: 'kinyozi', label: 'Kinyozi / Barber' },
+  { slug: 'other', label: 'Other opportunity' },
+] as const
+
+export function communityJobCategoryLabel(slug: string): string {
+  return (
+    COMMUNITY_JOB_CATEGORIES.find((category) => category.slug === slug)?.label ??
+    slug
+      .split('-')
+      .filter(Boolean)
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ')
+  )
+}
+
 const TEXT_LIMITS = {
   title: 160,
   slug: 180,
+  category: 60,
   description: 12000,
   requirements: 6000,
   location: 120,
+  employerPhone: 24,
   compensation: 120,
 } as const
+
+export function normalizeEmployerPhone(value: string): string | null {
+  const compact = value.trim().replace(/[\s()-]/g, '')
+  if (!/^\+?\d+$/.test(compact)) return null
+
+  const digits = compact.replace(/^\+/, '')
+  if (/^0[17]\d{8}$/.test(digits)) return `254${digits.slice(1)}`
+  if (/^254[17]\d{8}$/.test(digits)) return digits
+  return null
+}
 
 export function parseCommunityJobInput(
   input: unknown,
@@ -51,6 +84,17 @@ export function parseCommunityJobInput(
     if (field === 'slug' && text && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(text)) {
       return { ok: false, error: 'Slug may contain lowercase letters, numbers, and hyphens.' }
     }
+    if (field === 'category' && text && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(text)) {
+      return { ok: false, error: 'Job type may contain lowercase letters, numbers, and hyphens.' }
+    }
+    if (field === 'employerPhone' && text) {
+      const normalizedPhone = normalizeEmployerPhone(text)
+      if (!normalizedPhone) {
+        return { ok: false, error: 'Enter a valid Kenyan mobile number, such as 0712345678 or +254712345678.' }
+      }
+      value.employerPhone = normalizedPhone
+      continue
+    }
     value[field] = text
   }
 
@@ -76,11 +120,15 @@ export function parseCommunityJobInput(
   }
 
   if (!partial) {
-    for (const field of ['title', 'slug', 'description', 'location'] as const) {
+    for (const field of ['title', 'slug', 'category', 'description', 'location'] as const) {
       if (!value[field]) return { ok: false, error: `${field} is required.` }
     }
   } else if (Object.keys(value).length === 0) {
     return { ok: false, error: 'Provide at least one field to update.' }
+  }
+
+  if (value.published && !value.employerPhone) {
+    return { ok: false, error: 'Add the employer’s WhatsApp number before publishing this listing.' }
   }
 
   return { ok: true, value }
