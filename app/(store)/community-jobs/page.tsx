@@ -23,7 +23,9 @@ export default async function CommunityJobsPage({
 }) {
   const { category: selectedCategory } = await searchParams
   const allJobs = await getCommunityJobs()
-  const knownCategories = new Set(COMMUNITY_JOB_CATEGORIES.map((jobCategory) => jobCategory.slug))
+  const knownCategories = new Set<string>(
+    COMMUNITY_JOB_CATEGORIES.map((jobCategory) => jobCategory.slug),
+  )
   const additionalCategories = [...new Set(allJobs.map((job) => job.category))]
     .filter((jobCategory) => !knownCategories.has(jobCategory))
     .map((slug) => ({ slug, label: communityJobCategoryLabel(slug) }))
