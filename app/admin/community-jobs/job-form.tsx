@@ -9,6 +9,10 @@ import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
 import type { CommunityJob } from '@/lib/db/schema'
+import {
+  COMMUNITY_JOB_CATEGORIES,
+  communityJobCategoryLabel,
+} from '@/lib/community-jobs'
 
 function slugify(value: string) {
   return value
@@ -33,9 +37,11 @@ export function CommunityJobForm({ job }: { job?: CommunityJob }) {
   const [form, setForm] = useState({
     title: job?.title ?? '',
     slug: job?.slug ?? '',
+    category: job?.category ?? 'other',
     description: job?.description ?? '',
     requirements: job?.requirements ?? '',
     location: job?.location ?? '',
+    employerPhone: job?.employerPhone ?? '',
     compensation: job?.compensation ?? '',
     closesAt: toLocalDateTime(job?.closesAt ?? null),
     published: job?.published ?? false,
@@ -51,9 +57,11 @@ export function CommunityJobForm({ job }: { job?: CommunityJob }) {
       ...form,
       title: form.title.trim(),
       slug: form.slug.trim(),
+      category: form.category,
       description: form.description.trim(),
       requirements: form.requirements.trim(),
       location: form.location.trim(),
+      employerPhone: form.employerPhone.trim(),
       compensation: form.compensation.trim(),
       closesAt: form.closesAt ? new Date(form.closesAt).toISOString() : null,
     }
@@ -136,6 +144,32 @@ export function CommunityJobForm({ job }: { job?: CommunityJob }) {
           />
         </div>
         <div className="flex flex-col gap-2">
+          <Label htmlFor="category">Job type</Label>
+          <Input
+            id="category"
+            list="community-job-category-options"
+            maxLength={60}
+            value={communityJobCategoryLabel(form.category)}
+            onChange={(event) => {
+              const label = event.target.value.trim().toLowerCase()
+              const selectedCategory = COMMUNITY_JOB_CATEGORIES.find(
+                (category) => category.label.toLowerCase() === label,
+              )
+              update('category', selectedCategory?.slug ?? slugify(event.target.value))
+            }}
+            placeholder="e.g. Chapati cook"
+            required
+          />
+          <datalist id="community-job-category-options">
+            {COMMUNITY_JOB_CATEGORIES.map((category) => (
+              <option key={category.slug} value={category.label} />
+            ))}
+          </datalist>
+          <p className="text-xs text-muted-foreground">
+            Choose a suggestion or enter a new job type.
+          </p>
+        </div>
+        <div className="flex flex-col gap-2">
           <Label htmlFor="location">Location</Label>
           <Input
             id="location"
@@ -145,6 +179,22 @@ export function CommunityJobForm({ job }: { job?: CommunityJob }) {
             onChange={(event) => update('location', event.target.value)}
             required
           />
+        </div>
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="employerPhone">Employer WhatsApp number</Label>
+          <Input
+            id="employerPhone"
+            type="tel"
+            autoComplete="tel"
+            maxLength={24}
+            placeholder="0712 345 678 or +254 712 345 678"
+            value={form.employerPhone}
+            onChange={(event) => update('employerPhone', event.target.value)}
+            aria-describedby="employerPhone-help"
+          />
+          <p id="employerPhone-help" className="text-xs text-muted-foreground">
+            Required to publish. Applicants will message this employer directly.
+          </p>
         </div>
         <div className="flex flex-col gap-2">
           <Label htmlFor="compensation">Pay or compensation</Label>

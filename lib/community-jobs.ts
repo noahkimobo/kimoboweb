@@ -23,6 +23,17 @@ export const COMMUNITY_JOB_CATEGORIES = [
   { slug: 'other', label: 'Other opportunity' },
 ] as const
 
+export function communityJobCategoryLabel(slug: string): string {
+  return (
+    COMMUNITY_JOB_CATEGORIES.find((category) => category.slug === slug)?.label ??
+    slug
+      .split('-')
+      .filter(Boolean)
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ')
+  )
+}
+
 const TEXT_LIMITS = {
   title: 160,
   slug: 180,
@@ -73,8 +84,8 @@ export function parseCommunityJobInput(
     if (field === 'slug' && text && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(text)) {
       return { ok: false, error: 'Slug may contain lowercase letters, numbers, and hyphens.' }
     }
-    if (field === 'category' && text && !COMMUNITY_JOB_CATEGORIES.some((category) => category.slug === text)) {
-      return { ok: false, error: 'Choose a listed job category.' }
+    if (field === 'category' && text && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(text)) {
+      return { ok: false, error: 'Job type may contain lowercase letters, numbers, and hyphens.' }
     }
     if (field === 'employerPhone' && text) {
       const normalizedPhone = normalizeEmployerPhone(text)
