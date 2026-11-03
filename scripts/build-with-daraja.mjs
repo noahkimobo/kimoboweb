@@ -25,21 +25,28 @@ if (process.platform === 'win32') {
 const healthCheckSource = path.join(landing, 'Social Media Health Check.html')
 const healthCheckHtml = await readFile(healthCheckSource, 'utf8')
 const healthCheckOutput = path.join(output, 'social-media-health-check.html')
+const healthCheckScriptSource = path.join(landing, 'social-media-health-check.js')
+const healthCheckScriptOutput = path.join(output, 'social-media-health-check.js')
+const healthCheckStylesSource = path.join(landing, 'social-media-health-check.css')
+const healthCheckStylesOutput = path.join(output, 'social-media-health-check.css')
+const healthCheckScript = await readFile(healthCheckScriptSource, 'utf8')
 const whatsappNumber = process.env.PUBLIC_WHATSAPP_NUMBER ?? ''
 const configuredWhatsApp = /^\d{10,15}$/.test(whatsappNumber) ? whatsappNumber : ''
-const whatsappPlaceholder = 'var WHATSAPP="";'
+const whatsappPlaceholder = 'var WHATSAPP = "";'
 
-if (!healthCheckHtml.includes(whatsappPlaceholder)) {
+if (!healthCheckScript.includes(whatsappPlaceholder)) {
   throw new Error('Social media self-audit WhatsApp placeholder was not found.')
 }
 
+await writeFile(healthCheckOutput, healthCheckHtml)
 await writeFile(
-  healthCheckOutput,
-  healthCheckHtml.replace(
+  healthCheckScriptOutput,
+  healthCheckScript.replace(
     whatsappPlaceholder,
-    `var WHATSAPP=${JSON.stringify(configuredWhatsApp)};`,
+    `var WHATSAPP = ${JSON.stringify(configuredWhatsApp)};`,
   ),
 )
+await cp(healthCheckStylesSource, healthCheckStylesOutput)
 
 await rm(publicSite, { recursive: true, force: true })
 await mkdir(publicSite, { recursive: true })
