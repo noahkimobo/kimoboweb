@@ -1,5 +1,5 @@
 import { spawnSync } from 'node:child_process'
-import { cp, mkdir, rm } from 'node:fs/promises'
+import { cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -21,6 +21,25 @@ if (process.platform === 'win32') {
 } else {
   run('npm', ['run', 'build'], landing)
 }
+
+const healthCheckSource = path.join(landing, 'Social Media Health Check.html')
+const healthCheckHtml = await readFile(healthCheckSource, 'utf8')
+const healthCheckOutput = path.join(output, 'social-media-health-check.html')
+const whatsappNumber = process.env.PUBLIC_WHATSAPP_NUMBER ?? ''
+const configuredWhatsApp = /^\d{10,15}$/.test(whatsappNumber) ? whatsappNumber : ''
+const whatsappPlaceholder = 'var WHATSAPP="";'
+
+if (!healthCheckHtml.includes(whatsappPlaceholder)) {
+  throw new Error('Social media self-audit WhatsApp placeholder was not found.')
+}
+
+await writeFile(
+  healthCheckOutput,
+  healthCheckHtml.replace(
+    whatsappPlaceholder,
+    `var WHATSAPP=${JSON.stringify(configuredWhatsApp)};`,
+  ),
+)
 
 await rm(publicSite, { recursive: true, force: true })
 await mkdir(publicSite, { recursive: true })

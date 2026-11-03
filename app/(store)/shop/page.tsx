@@ -55,14 +55,10 @@ export default async function ShopPage({
         <h1 className="font-serif text-3xl font-semibold tracking-tight sm:text-4xl">
           {heading}
         </h1>
-        <p className="mt-2 max-w-2xl text-muted-foreground">
-          Solid wood pieces designed to be lived with. Every order includes white-glove
-          delivery and our lifetime warranty.
-        </p>
       </header>
 
       <Suspense fallback={<div className="h-10" />}>
-        <ShopFilters activeCategory={category} activeSort={sort} total={products.length} />
+        <ShopFilters activeSort={sort} total={products.length} />
       </Suspense>
 
       {products.length === 0 ? (
