@@ -87,11 +87,13 @@ const CATS: readonly Category[] = [
 
 const answers: (number | null)[][] = CATS.map(() => [null, null, null])
 let step = -1
-const app = document.getElementById('app')
+const appElement = document.getElementById('app')
 
-if (!(app instanceof HTMLElement)) {
+if (!(appElement instanceof HTMLElement)) {
   throw new Error('Social media self-audit container was not found.')
 }
+
+const app: HTMLElement = appElement
 
 function intro(): void {
   app.innerHTML =
@@ -173,7 +175,7 @@ function categoryScore(index: number): number {
   if (!categoryAnswers) {
     throw new Error(`Social media self-audit score ${index + 1} is unavailable.`)
   }
-  return categoryAnswers.reduce((total, answer) => total + (answer ?? 0), 0) / 9
+  return categoryAnswers.reduce<number>((total, answer) => total + (answer ?? 0), 0) / 9
 }
 
 function color(score: number): string {
