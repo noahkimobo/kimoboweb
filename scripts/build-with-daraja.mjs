@@ -25,25 +25,43 @@ if (process.platform === 'win32') {
 const healthCheckSource = path.join(landing, 'Social Media Health Check.html')
 const healthCheckHtml = await readFile(healthCheckSource, 'utf8')
 const healthCheckOutput = path.join(output, 'social-media-health-check.html')
-const healthCheckScriptSource = path.join(landing, 'social-media-health-check.js')
+const healthCheckScriptSource = path.join(landing, 'social-media-health-check.ts')
 const healthCheckScriptOutput = path.join(output, 'social-media-health-check.js')
 const healthCheckStylesSource = path.join(landing, 'social-media-health-check.css')
 const healthCheckStylesOutput = path.join(output, 'social-media-health-check.css')
-const healthCheckScript = await readFile(healthCheckScriptSource, 'utf8')
 const whatsappNumber = process.env.PUBLIC_WHATSAPP_NUMBER ?? ''
 const configuredWhatsApp = /^\d{10,15}$/.test(whatsappNumber) ? whatsappNumber : ''
-const whatsappPlaceholder = 'var WHATSAPP = "";'
-
-if (!healthCheckScript.includes(whatsappPlaceholder)) {
-  throw new Error('Social media self-audit WhatsApp placeholder was not found.')
-}
+const whatsappPlaceholder = "const WHATSAPP = '';"
 
 await writeFile(healthCheckOutput, healthCheckHtml)
+run(
+  process.execPath,
+  [
+    path.join(root, 'node_modules', 'typescript', 'bin', 'tsc'),
+    '--target',
+    'ES2020',
+    '--lib',
+    'DOM,ES2020',
+    '--strict',
+    '--noEmitOnError',
+    '--skipLibCheck',
+    '--module',
+    'ES2020',
+    '--outDir',
+    output,
+    healthCheckScriptSource,
+  ],
+  root,
+)
+const compiledScript = await readFile(healthCheckScriptOutput, 'utf8')
+if (!compiledScript.includes(whatsappPlaceholder)) {
+  throw new Error('Social media self-audit WhatsApp placeholder was not found.')
+}
 await writeFile(
   healthCheckScriptOutput,
-  healthCheckScript.replace(
+  compiledScript.replace(
     whatsappPlaceholder,
-    `var WHATSAPP = ${JSON.stringify(configuredWhatsApp)};`,
+    `const WHATSAPP = ${JSON.stringify(configuredWhatsApp)};`,
   ),
 )
 await cp(healthCheckStylesSource, healthCheckStylesOutput)
