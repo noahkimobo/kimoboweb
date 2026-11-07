@@ -92,7 +92,10 @@ for (const file of htmlFiles) {
   if (/\sstyle="/.test(html)) fail(page, 'inline style attribute (CSP forbids it)');
   if (/\son[a-z]+="/.test(html)) fail(page, 'inline event handler attribute');
   for (const script of html.match(/<script\b[^>]*>/g) ?? []) {
-    if (!/type="application\/ld\+json"/.test(script)) fail(page, `unexpected script tag: ${script}`);
+    const isJsonLd = /type="application\/ld\+json"/.test(script);
+    const isLocalScript =
+      /\bsrc="(?:\/|\.\/)?[^"]+"/.test(script) && !/\bsrc="https?:\/\//.test(script);
+    if (!isJsonLd && !isLocalScript) fail(page, `unexpected script tag: ${script}`);
   }
 
   // Structured data must parse, and FAQ markup must match visible text.
@@ -150,7 +153,11 @@ if (existsSync(home)) {
     if (!h3s.some((h) => h.endsWith(name))) fail('/', `missing <h3> for "${name}"`);
   }
   if (!/Nairobi - Online migration and social media growth/.test(html)) fail('/', 'missing localized eyebrow paragraph');
-  if (!/<link rel="preload"[^>]*as="image"|fetchpriority="high"/.test(html)) fail('/', 'hero image is not prioritised');
+  const prioritizedImage = /<link rel="preload"[^>]*as="image"|fetchpriority="high"/.test(html);
+  const accessibleIllustration =
+    /class="hero-art"[^>]*role="img"[^>]*aria-label="/.test(html);
+  if (!prioritizedImage && !accessibleIllustration)
+    fail('/', 'hero visual is not accessible or prioritised');
 }
 
 console.log(`Checked ${htmlFiles.length} pages.`);

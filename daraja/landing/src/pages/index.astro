@@ -6,6 +6,7 @@ import { CTA_LABEL } from '../config/site';
 import { withBase } from '../config/paths';
 import { homeFaq } from '../data/faq';
 import { services } from '../data/services';
+import { offeringGroups } from '../data/offerings';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const steps = [
@@ -119,7 +120,31 @@ const steps = [
     <div class="container">
       <div class="section-head">
         <h2 class="h2" id="services-title">What we do</h2>
+        <p class="muted">
+          Digital growth, search, websites, content and creative campaigns, alongside hands-on support to move your business online.
+        </p>
       </div>
+      <div class="offering-groups-home">
+        {
+          offeringGroups.map((group) => (
+            <article class="card offering-home-card">
+              <p class="kicker">{group.title}</p>
+              <h3 class="h3">{group.title}</h3>
+              <p class="muted">{group.summary}</p>
+              <ul class="offering-home-list">
+                {group.offerings.map((offering) => (
+                  <li>
+                    <a href={withBase(`/services/#${offering.slug}`)}>
+                      {offering.title}<span aria-hidden="true">↗</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))
+        }
+      </div>
+      <h3 class="h3 core-services-home-title">End-to-end business services</h3>
       <div class="service-grid">
         {
           services.map((service) => (
