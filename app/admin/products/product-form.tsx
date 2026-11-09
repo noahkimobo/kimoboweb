@@ -10,7 +10,6 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Switch } from '@/components/ui/switch'
-import { Checkbox } from '@/components/ui/checkbox'
 import {
   Select,
   SelectContent,
@@ -459,10 +458,11 @@ export function ProductForm({ product }: { product?: Product }) {
                     key={seaters}
                     className="flex cursor-pointer items-center gap-2 rounded-md border border-border px-3 py-2 text-sm transition-colors hover:bg-muted/50"
                   >
-                    <Checkbox
+                    <input
+                      type="checkbox"
                       checked={checked}
-                      onCheckedChange={(value) => toggleSeater(seaters, value === true)}
-                      aria-label={`${seaters} seater`}
+                      onChange={(event) => toggleSeater(seaters, event.target.checked)}
+                      className="size-4 accent-primary"
                     />
                     {seaters} seater{seaters === 1 ? '' : 's'}
                   </label>
