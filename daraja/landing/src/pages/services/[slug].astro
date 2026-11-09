@@ -63,6 +63,33 @@ const pageSchema = {
   {
     offeringPage ? (
       <>
+        {offeringPage.offering.showcase && (
+          <section class="section" aria-labelledby="analytics-title">
+            <div class="container">
+              <div class="section-head">
+                <h2 class="h2" id="analytics-title">{offeringPage.offering.showcase.heading}</h2>
+                <p class="muted">{offeringPage.offering.showcase.description}</p>
+              </div>
+              <ul class="analytics-gallery" aria-label="Social media analytics screenshots">
+                {offeringPage.offering.showcase.images.map((image) => (
+                  <li class="analytics-card">
+                    <figure>
+                      <img
+                        src={withBase(image.src)}
+                        alt={image.alt}
+                        width="768"
+                        height="1536"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                      <figcaption>{image.caption}</figcaption>
+                    </figure>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        )}
         <section class="section" aria-labelledby="includes-title">
           <div class="container">
             <div class="section-head">

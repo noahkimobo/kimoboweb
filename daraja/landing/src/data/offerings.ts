@@ -5,6 +5,15 @@ export interface Offering {
   intro: string;
   includes: string[];
   goodFitFor: string[];
+  showcase?: {
+    heading: string;
+    description: string;
+    images: {
+      src: string;
+      alt: string;
+      caption: string;
+    }[];
+  };
 }
 
 export interface OfferingGroup {
@@ -58,6 +67,38 @@ export const offeringGroups: OfferingGroup[] = [
           'Content support and a straightforward review of engagement and enquiries.',
         ],
         goodFitFor: ['Businesses that post irregularly or without a clear purpose.', 'Owners who want their social content to support real customer conversations.'],
+        showcase: {
+          heading: 'A look at social performance',
+          description:
+            'These account analytics show how views, engagement and discovery sources can be reviewed over different time periods. Results vary by account, audience and content.',
+          images: [
+            {
+              src: '/services/social-media-marketing/overview-7-days.webp',
+              alt: 'Seven-day social analytics overview showing 23.9 thousand post views, 309 profile views, 514 likes, 13 comments and 13 shares.',
+              caption: 'Overview · 7 days',
+            },
+            {
+              src: '/services/social-media-marketing/viewers-7-days.webp',
+              alt: 'Seven-day viewer analytics showing 18.6 thousand total viewers and 16.7 thousand new viewers.',
+              caption: 'Viewer insights · 7 days',
+            },
+            {
+              src: '/services/social-media-marketing/viewers-365-days.webp',
+              alt: 'Annual viewer analytics from November 8, 2025 to November 7, 2026 showing 428.9 thousand total viewers and 361.9 thousand new viewers.',
+              caption: 'Viewer insights · 365 days',
+            },
+            {
+              src: '/services/social-media-marketing/overview-365-days.webp',
+              alt: 'Annual social analytics overview from November 8, 2025 to November 7, 2026 showing 527.2 thousand post views, 4 thousand profile views, 13.1 thousand likes, 425 comments and 574 shares.',
+              caption: 'Overview · 365 days',
+            },
+            {
+              src: '/services/social-media-marketing/traffic-sources.webp',
+              alt: 'Social traffic sources: For You 54.8 percent, Search 41.9 percent, Personal profile 3.1 percent and Following 0.2 percent.',
+              caption: 'Traffic sources · 365 days',
+            },
+          ],
+        },
       },
       {
         title: 'Influencer Marketing',

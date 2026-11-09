@@ -1039,6 +1039,43 @@ img {
   gap: 14px;
 }
 
+.analytics-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+  gap: 20px;
+}
+
+.analytics-card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md);
+  background: var(--c-white);
+}
+
+.analytics-card figure {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+}
+
+.analytics-card img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 2;
+  background: #f3f4f6;
+  object-fit: contain;
+  object-position: top;
+}
+
+.analytics-card figcaption {
+  margin-top: auto;
+  padding: 14px 16px;
+  color: var(--c-ink);
+  font-size: 0.9375rem;
+  font-weight: 700;
+}
+
 .offering-detail-fit {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
