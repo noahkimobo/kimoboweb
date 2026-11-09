@@ -974,6 +974,32 @@ img {
   font-size: 1.1rem;
 }
 
+.offering-title-link {
+  color: var(--c-ink);
+}
+
+.offering-title-link:hover,
+.offering-title-link:focus-visible {
+  color: var(--c-blue);
+}
+
+.offering-detail-list {
+  list-style: none;
+}
+
+.offering-detail-list .card {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+}
+
+.offering-detail-fit {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px 56px;
+  align-items: start;
+}
+
 .offering-mark {
   display: grid;
   width: 32px;
@@ -1009,7 +1035,8 @@ img {
 
   .nav-services-groups,
   .offering-groups-home,
-  .offering-list {
+  .offering-list,
+  .offering-detail-fit {
     grid-template-columns: minmax(0, 1fr);
   }
 

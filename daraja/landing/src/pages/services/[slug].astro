@@ -2,114 +2,179 @@
 import type { GetStaticPaths } from 'astro';
 import CtaBand from '../../components/CtaBand.astro';
 import FaqList from '../../components/FaqList.astro';
+import JsonLd from '../../components/JsonLd.astro';
 import { SITE } from '../../config/site';
 import { withBase } from '../../config/paths';
+import { getOffering, offeringGroups } from '../../data/offerings';
 import { getService, relatedServices, services } from '../../data/services';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import JsonLd from '../../components/JsonLd.astro';
 
 export const getStaticPaths = (() =>
-  services.map((service) => ({ params: { slug: service.slug } }))) satisfies GetStaticPaths;
+  [
+    ...services.map((service) => ({ params: { slug: service.slug } })),
+    ...offeringGroups.flatMap((group) =>
+      group.offerings.map((offering) => ({ params: { slug: offering.slug } })),
+    ),
+  ]) satisfies GetStaticPaths;
 
-const { slug } = Astro.params;
-const service = getService(slug as string);
-const related = relatedServices(service.slug);
-
-const serviceSchema = {
+const slug = Astro.params.slug ?? '';
+const offeringPage = getOffering(slug);
+const service = offeringPage ? undefined : getService(slug);
+const title = offeringPage?.offering.title ?? service?.title ?? '';
+const description = offeringPage?.offering.summary ?? service?.metaDescription ?? '';
+const category = offeringPage?.group.title;
+const pageSchema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
-  name: service.title,
-  description: service.metaDescription,
+  name: title,
+  description,
   provider: { '@type': 'ProfessionalService', name: SITE.name, url: SITE.url },
   areaServed: { '@type': 'City', name: SITE.city },
 };
 ---
 
-<BaseLayout title={service.title} description={service.metaDescription}>
+<BaseLayout title={title} description={description}>
   <div class="container page-hero">
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <ol>
         <li><a href={withBase('/')}>Home</a></li>
         <li><a href={withBase('/services/')}>Services</a></li>
-        <li aria-current="page">{service.shortTitle}</li>
+        {category && <li><a href={withBase(`/services/#${offeringPage?.group.slug}`)}>{category}</a></li>}
+        <li aria-current="page">{title}</li>
       </ol>
     </nav>
-    <h1 class="h1">{service.title}</h1>
-    <p class="lead">{service.intro}</p>
+    {category && <p class="kicker">{category}</p>}
+    <h1 class="h1">{title}</h1>
+    <p class="lead">{offeringPage?.offering.intro ?? service?.intro}</p>
   </div>
 
-  <section class="section" aria-labelledby="gets-title">
-    <div class="container">
-      <div class="section-head">
-        <h2 class="h2" id="gets-title">What you get</h2>
-      </div>
-      <div class="grid grid--wide">
-        {
-          service.items.map((item) => (
-            <div class="card card--compact">
-              <h3 class="h3">{item.title}</h3>
-              <p class="muted">{item.body}</p>
+  {
+    offeringPage ? (
+      <>
+        <section class="section" aria-labelledby="includes-title">
+          <div class="container">
+            <div class="section-head">
+              <h2 class="h2" id="includes-title">How we can help</h2>
+              <p class="muted">{offeringPage.offering.summary}</p>
             </div>
-          ))
-        }
-      </div>
-    </div>
-  </section>
+            <ul class="grid grid--3 offering-detail-list">
+              {offeringPage.offering.includes.map((item, index) => (
+                <li class="card card--compact">
+                  <span class="kicker">0{index + 1}</span>
+                  <p>{item}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
 
-  <section class="section" aria-labelledby="how-title">
-    <div class="container">
-      <div class="band">
-        <div class="section-head">
-          <h2 class="h2" id="how-title">How it works</h2>
-        </div>
-        <ol class="steps">
-          {
-            service.steps.map((step, index) => (
-              <li class="step">
-                <p class="step-num">Step {index + 1}</p>
-                <h3 class="h3">{step.title}</h3>
-                <p>{step.body}</p>
-              </li>
-            ))
-          }
-        </ol>
-      </div>
-    </div>
-  </section>
+        <section class="section" aria-labelledby="fit-title">
+          <div class="container offering-detail-fit">
+            <div class="stack stack--16">
+              <p class="kicker">A practical starting point</p>
+              <h2 class="h2" id="fit-title">Who this service is for</h2>
+              <p class="muted">
+                Every business starts from a different place. We’ll learn about your goals and agree a scope
+                before recommending any work.
+              </p>
+            </div>
+            <ul class="check-list">
+              {offeringPage.offering.goodFitFor.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+        </section>
 
-  <section class="section" aria-label="Who it is for and common questions">
-    <div class="container faq-group">
-      <div class="stack stack--24">
-        <h2 class="h2">Who it is for</h2>
-        <ul class="check-list">
-          {service.who.map((line) => <li>{line}</li>)}
-        </ul>
-      </div>
-      <div class="stack stack--24">
-        <h2 class="h2">Questions owners ask</h2>
-        <FaqList entries={service.faq.map((f) => ({ question: f.question, answer: f.answer }))} schema />
-      </div>
-    </div>
-  </section>
+        <section class="section--tight" aria-labelledby="related-title">
+          <div class="container stack stack--24">
+            <h2 class="h2" id="related-title">Explore more in {category}</h2>
+            <ul class="grid grid--3">
+              {offeringPage.group.offerings
+                .filter((other) => other.slug !== offeringPage.offering.slug)
+                .slice(0, 3)
+                .map((other) => (
+                  <li>
+                    <a class="card card--mist card--compact" href={withBase(`/services/${other.slug}/`)}>
+                      <span class="h3">{other.title}</span>
+                      <span class="muted">{other.summary}</span>
+                    </a>
+                  </li>
+                ))}
+            </ul>
+          </div>
+        </section>
+        <CtaBand heading={`Let’s talk about ${offeringPage.offering.title.toLowerCase()}.`} />
+      </>
+    ) : service ? (
+      <>
+        <section class="section" aria-labelledby="gets-title">
+          <div class="container">
+            <div class="section-head">
+              <h2 class="h2" id="gets-title">What you get</h2>
+            </div>
+            <div class="grid grid--wide">
+              {service.items.map((item) => (
+                <div class="card card--compact">
+                  <h3 class="h3">{item.title}</h3>
+                  <p class="muted">{item.body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
 
-  <section class="section--tight" aria-labelledby="other-title">
-    <div class="container stack stack--24">
-      <h2 class="h2" id="other-title">Other services</h2>
-      <ul class="grid grid--3">
-        {
-          related.map((other) => (
-            <li>
-              <a class="card card--mist card--compact" href={withBase(`/services/${other.slug}/`)}>
-                <span class="kicker">{other.num}</span>
-                <span class="h3">{other.title}</span>
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </div>
-  </section>
+        <section class="section" aria-labelledby="how-title">
+          <div class="container">
+            <div class="band">
+              <div class="section-head">
+                <h2 class="h2" id="how-title">How it works</h2>
+              </div>
+              <ol class="steps">
+                {service.steps.map((step, index) => (
+                  <li class="step">
+                    <p class="step-num">Step {index + 1}</p>
+                    <h3 class="h3">{step.title}</h3>
+                    <p>{step.body}</p>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </div>
+        </section>
 
-  <CtaBand heading={service.closing} />
-  <JsonLd data={serviceSchema} />
+        <section class="section" aria-label="Who it is for and common questions">
+          <div class="container faq-group">
+            <div class="stack stack--24">
+              <h2 class="h2">Who it is for</h2>
+              <ul class="check-list">
+                {service.who.map((line) => <li>{line}</li>)}
+              </ul>
+            </div>
+            <div class="stack stack--24">
+              <h2 class="h2">Questions owners ask</h2>
+              <FaqList entries={service.faq.map((f) => ({ question: f.question, answer: f.answer }))} schema />
+            </div>
+          </div>
+        </section>
+
+        <section class="section--tight" aria-labelledby="other-title">
+          <div class="container stack stack--24">
+            <h2 class="h2" id="other-title">Other services</h2>
+            <ul class="grid grid--3">
+              {relatedServices(service.slug).map((other) => (
+                <li>
+                  <a class="card card--mist card--compact" href={withBase(`/services/${other.slug}/`)}>
+                    <span class="kicker">{other.num}</span>
+                    <span class="h3">{other.title}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        <CtaBand heading={service.closing} />
+      </>
+    ) : null
+  }
+  <JsonLd data={pageSchema} />
 </BaseLayout>
