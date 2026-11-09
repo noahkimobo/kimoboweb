@@ -39,8 +39,19 @@ const schema = {
     <div class="container stack stack--28">
       {
         faqGroups.map((group) => (
-          <div class="faq-group">
-            <h2 class="h2">{group.title}</h2>
+          <div class="faq-group" id={group.illustration.replace('.svg', '')}>
+            <div class="faq-visual">
+              <h2 class="h2">{group.title}</h2>
+              <img
+                class="faq-illustration"
+                src={withBase(`/faq/${group.illustration}`)}
+                width="640"
+                height="360"
+                alt={group.illustrationAlt}
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
             <FaqList entries={group.entries} />
           </div>
         ))

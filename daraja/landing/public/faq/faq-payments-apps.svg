@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" fill="none">
+  <rect width="640" height="360" rx="28" fill="#E8EEF7"/>
+  <circle cx="128" cy="86" r="42" fill="#F2A93B" opacity=".72"/>
+  <rect x="178" y="49" width="178" height="274" rx="26" fill="#0E1B2E"/>
+  <rect x="190" y="68" width="154" height="238" rx="17" fill="#fff"/>
+  <rect x="239" y="57" width="55" height="5" rx="2.5" fill="#8190A6"/>
+  <text x="267" y="112" text-anchor="middle" fill="#55627A" font-family="Arial,sans-serif" font-size="15" font-weight="700">PAY WITH</text>
+  <rect x="220" y="129" width="94" height="52" rx="12" fill="#24A148"/>
+  <text x="267" y="162" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="23" font-weight="700">M-PESA</text>
+  <text x="267" y="211" text-anchor="middle" fill="#0E1B2E" font-family="Arial,sans-serif" font-size="18" font-weight="700">KES 2,500</text>
+  <rect x="215" y="232" width="104" height="37" rx="18.5" fill="#F2A93B"/>
+  <path d="m248 250 12 11 22-24" stroke="#0E1B2E" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="404" y="112" width="145" height="190" rx="12" fill="#fff" stroke="#DDE2EA" stroke-width="3"/>
+  <path d="M427 143h98M427 165h69M427 188h98M427 211h83" stroke="#9AA8BC" stroke-width="6" stroke-linecap="round"/>
+  <path d="M427 246h98" stroke="#DDE2EA" stroke-width="3" stroke-dasharray="5 6"/>
+  <path d="M428 267h8m12 0h8m12 0h8m12 0h8m12 0h8m12 0h8" stroke="#0E1B2E" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="475" cy="77" r="23" fill="#24A148"/>
+  <path d="m465 77 7 7 14-16" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
