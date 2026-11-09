@@ -60,17 +60,17 @@ export const offeringGroups: OfferingGroup[] = [
         slug: 'social-media-marketing',
         summary: 'Build a consistent social presence with a clear content and audience plan.',
         intro:
-          'Use social media to show what your business does, answer customer questions and build a more consistent relationship with your audience. The plan is shaped around your channels, voice and available content.',
+          'Use social media to show what your business does, answer customer questions and build a more consistent relationship with your audience. We use your analytics to understand what is changing, make informed decisions and anticipate promising content and audience trends—then adapt the plan as new results come in.',
         includes: [
           'A review of your social profiles, audience and current content.',
           'A channel plan with content themes, posting rhythm and calls to action.',
-          'Content support and a straightforward review of engagement and enquiries.',
+          'Content support and regular reviews of engagement, reach and enquiries to guide next steps.',
         ],
         goodFitFor: ['Businesses that post irregularly or without a clear purpose.', 'Owners who want their social content to support real customer conversations.'],
         showcase: {
           heading: 'A look at social performance',
           description:
-            'These account analytics show how views, engagement and discovery sources can be reviewed over different time periods. Results vary by account, audience and content.',
+            'We use analytics like these to see what is gaining attention, where viewers discover content and how performance changes over time. Those patterns inform practical decisions and help us anticipate opportunities—not promise exact future results. Every audience and account is different.',
           images: [
             {
               src: '/services/social-media-marketing/overview-7-days.webp',
