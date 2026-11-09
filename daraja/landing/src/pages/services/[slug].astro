@@ -3,7 +3,7 @@ import type { GetStaticPaths } from 'astro';
 import CtaBand from '../../components/CtaBand.astro';
 import FaqList from '../../components/FaqList.astro';
 import JsonLd from '../../components/JsonLd.astro';
-import { SITE } from '../../config/site';
+import { createWhatsAppUrl, SITE } from '../../config/site';
 import { withBase } from '../../config/paths';
 import { getOffering, offeringGroups } from '../../data/offerings';
 import { getService, relatedServices, services } from '../../data/services';
@@ -23,6 +23,8 @@ const service = offeringPage ? undefined : getService(slug);
 const title = offeringPage?.offering.title ?? service?.title ?? '';
 const description = offeringPage?.offering.summary ?? service?.metaDescription ?? '';
 const category = offeringPage?.group.title;
+const contactMessage = `Hello Daraja, I would like to discuss ${title}. What would be a good next step?`;
+const serviceWhatsAppUrl = createWhatsAppUrl(contactMessage);
 const pageSchema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
@@ -46,6 +48,16 @@ const pageSchema = {
     {category && <p class="kicker">{category}</p>}
     <h1 class="h1">{title}</h1>
     <p class="lead">{offeringPage?.offering.intro ?? service?.intro}</p>
+    <div class="service-hero-action">
+      <a
+        class="btn btn--primary"
+        href={serviceWhatsAppUrl ?? withBase('/contact/')}
+        rel={serviceWhatsAppUrl ? 'noopener noreferrer' : undefined}
+      >
+        Discuss this service
+      </a>
+      <p class="muted">We’ll learn about your goals and agree a scope before work begins.</p>
+    </div>
   </div>
 
   {
@@ -102,7 +114,10 @@ const pageSchema = {
             </ul>
           </div>
         </section>
-        <CtaBand heading={`Let’s talk about ${offeringPage.offering.title.toLowerCase()}.`} />
+        <CtaBand
+          heading={`Let’s talk about ${offeringPage.offering.title.toLowerCase()}.`}
+          whatsappMessage={contactMessage}
+        />
       </>
     ) : service ? (
       <>
@@ -172,7 +187,7 @@ const pageSchema = {
           </div>
         </section>
 
-        <CtaBand heading={service.closing} />
+        <CtaBand heading={service.closing} whatsappMessage={contactMessage} />
       </>
     ) : null
   }

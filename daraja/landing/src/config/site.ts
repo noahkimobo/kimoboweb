@@ -41,6 +41,12 @@ export const SITE = {
 const whatsappNumber = readPhone(env.PUBLIC_WHATSAPP_NUMBER);
 const contactEmail = readEmail(env.PUBLIC_CONTACT_EMAIL);
 
+export function createWhatsAppUrl(message: string): string | null {
+  return whatsappNumber
+    ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
+    : null;
+}
+
 if (import.meta.env.PROD && !whatsappNumber && !contactEmail) {
   console.warn(
     '[daraja] PUBLIC_WHATSAPP_NUMBER and PUBLIC_CONTACT_EMAIL are not set. ' +
@@ -52,11 +58,7 @@ export const CONTACT = {
   whatsappNumber,
   email: contactEmail,
   /** Pre-filled message only; never interpolate user input into this URL. */
-  whatsappUrl: whatsappNumber
-    ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-        'Hello Daraja, I would like to talk about my business.',
-      )}`
-    : null,
+  whatsappUrl: createWhatsAppUrl('Hello Daraja, I would like to talk about my business.'),
   emailUrl: contactEmail ? `mailto:${contactEmail}` : null,
 } as const;
 
