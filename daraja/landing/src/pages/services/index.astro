@@ -36,10 +36,14 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
               </header>
               <ul class="offering-list">
                 {group.offerings.map((offering) => (
-                  <li id={offering.slug}>
+                  <li>
                     <span class="offering-mark" aria-hidden="true">↗</span>
                     <div>
-                      <h3 class="h3">{offering.title}</h3>
+                      <h3 class="h3">
+                        <a class="offering-title-link" href={withBase(`/services/${offering.slug}/`)}>
+                          {offering.title}
+                        </a>
+                      </h3>
                       <p class="muted">{offering.summary}</p>
                     </div>
                   </li>

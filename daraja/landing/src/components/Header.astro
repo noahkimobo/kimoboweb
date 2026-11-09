@@ -29,7 +29,7 @@ const isCurrent = (href: string) => path === href || path.startsWith(href);
                   <ul>
                     {group.offerings.map((offering) => (
                       <li>
-                        <a href={withBase(`/services/#${offering.slug}`)}>{offering.title}</a>
+                        <a href={withBase(`/services/${offering.slug}/`)}>{offering.title}</a>
                       </li>
                     ))}
                   </ul>

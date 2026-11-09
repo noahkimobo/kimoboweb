@@ -134,7 +134,7 @@ const steps = [
               <ul class="offering-home-list">
                 {group.offerings.map((offering) => (
                   <li>
-                    <a href={withBase(`/services/#${offering.slug}`)}>
+                    <a href={withBase(`/services/${offering.slug}/`)}>
                       {offering.title}<span aria-hidden="true">↗</span>
                     </a>
                   </li>

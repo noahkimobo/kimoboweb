@@ -5,6 +5,8 @@ export interface FaqEntry {
 
 export interface FaqGroup {
   title: string;
+  illustration: string;
+  illustrationAlt: string;
   entries: FaqEntry[];
 }
 
@@ -16,6 +18,8 @@ export interface FaqGroup {
 export const faqGroups: FaqGroup[] = [
   {
     title: 'Getting started',
+    illustration: 'faq-getting-started.svg',
+    illustrationAlt: 'A local shop connected to an online storefront across an amber bridge.',
     entries: [
       {
         question: 'What does hybrid mean?',
@@ -35,6 +39,8 @@ export const faqGroups: FaqGroup[] = [
   },
   {
     title: 'Payments and apps',
+    illustration: 'faq-payments-apps.svg',
+    illustrationAlt: 'A customer approving an M-Pesa payment on a phone beside a printed receipt.',
     entries: [
       {
         question: 'Can customers pay with M-Pesa?',
@@ -53,6 +59,8 @@ export const faqGroups: FaqGroup[] = [
   },
   {
     title: 'Social media',
+    illustration: 'faq-social-media.svg',
+    illustrationAlt: 'Social media content cards showing a video, a conversation and audience growth.',
     entries: [
       {
         question: 'Which platforms do you work on?',
@@ -71,6 +79,8 @@ export const faqGroups: FaqGroup[] = [
   },
   {
     title: 'Working with us',
+    illustration: 'faq-working-together.svg',
+    illustrationAlt: 'A business owner and advisor discussing a simple growth plan.',
     entries: [
       {
         question: 'How much does it cost?',
