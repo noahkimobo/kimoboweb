@@ -17,7 +17,10 @@ const isCurrent = (href: string) => path === href || path.startsWith(href);
     <nav class="nav" aria-label="Main">
       <details class="nav-services">
         <summary aria-current={path.startsWith('/services/') ? 'page' : undefined}>
-          Services <span class="nav-caret" aria-hidden="true"></span>
+          Services
+          <svg class="nav-caret" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
+            <path d="m2.5 4.5 3.5 3 3.5-3" />
+          </svg>
         </summary>
         <div class="nav-services-menu">
           <a class="nav-services-all" href={withBase('/services/')}>Explore all services</a>

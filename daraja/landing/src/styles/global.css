@@ -280,16 +280,19 @@ img {
 }
 
 .nav-caret {
-  width: 7px;
-  height: 7px;
-  border-right: 1.5px solid currentColor;
-  border-bottom: 1.5px solid currentColor;
-  transform: translateY(-2px) rotate(45deg);
+  width: 12px;
+  height: 12px;
+  flex: 0 0 12px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.5;
   transition: transform 160ms ease;
 }
 
 .nav-services[open] .nav-caret {
-  transform: translateY(2px) rotate(225deg);
+  transform: rotate(180deg);
 }
 
 .nav-services-menu {
