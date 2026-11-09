@@ -697,6 +697,34 @@ img {
   box-shadow: 0 16px 32px rgb(14 27 46 / 12%);
 }
 
+.path-card {
+  align-items: flex-start;
+}
+
+.path-card-link {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 8px;
+  border-bottom: 2px solid var(--c-amber);
+  color: var(--c-ink);
+  font-weight: 700;
+}
+
+.path-card-link:hover {
+  color: var(--c-blue);
+}
+
+.card--dark .path-card-link {
+  color: var(--c-white);
+}
+
+.card--dark .path-card-link:hover {
+  color: var(--c-amber);
+}
+
 @media (max-width: 900px) {
   .hero {
     grid-template-columns: minmax(0, 1fr);

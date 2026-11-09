@@ -94,24 +94,36 @@ const steps = [
         </p>
       </div>
       <div class="grid grid--2">
-        <div class="card">
+        <article class="card path-card" aria-labelledby="migrate-title">
           <p class="kicker">Not online yet</p>
-          <h3 class="h3">Migrate</h3>
+          <h3 class="h3" id="migrate-title">Move your business online</h3>
+          <p class="muted">
+            Get a clearer picture of your stock and sales, then plan an online setup around your business.
+          </p>
           <ul class="check-list">
             <li>Value your inventory and read your bank and M-Pesa history</li>
             <li>Move to a warehouse delivery model with far less physical overhead</li>
             <li>Launch a storefront that takes M-Pesa payments automatically</li>
           </ul>
-        </div>
-        <div class="card card--dark">
+          <a class="path-card-link" href={withBase('/services/valuation-and-migration/')}>
+            Explore valuation and migration<span aria-hidden="true">→</span>
+          </a>
+        </article>
+        <article class="card card--dark path-card" aria-labelledby="grow-title">
           <p class="kicker">Already online</p>
-          <h3 class="h3">Grow</h3>
+          <h3 class="h3" id="grow-title">Turn social activity into growth</h3>
+          <p class="muted">
+            If you are posting but unsure what is working, start by checking your profiles and content.
+          </p>
           <ul class="check-list">
             <li>Audit your TikTok, Instagram and Facebook channels</li>
             <li>Scripts and FAQ videos written around your business</li>
             <li>Targeted Meta and TikTok ads, run for you</li>
           </ul>
-        </div>
+          <a class="path-card-link" href={withBase('/social-media-health-check.html')}>
+            Take the free social media self-audit<span aria-hidden="true">→</span>
+          </a>
+        </article>
       </div>
     </div>
   </section>
