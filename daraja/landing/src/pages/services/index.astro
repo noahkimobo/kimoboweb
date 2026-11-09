@@ -2,12 +2,13 @@
 import CtaBand from '../../components/CtaBand.astro';
 import { withBase } from '../../config/paths';
 import { services } from '../../data/services';
+import { offeringGroups } from '../../data/offerings';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout
   title="Services"
-  description="Business valuation and hybrid migration, brand and graphic design, M-Pesa storefronts and POS apps, and TikTok, Instagram and Facebook ads for Nairobi businesses."
+  description="Explore Daraja's digital marketing, paid advertising, SEO, website, content, branding and business migration services for Nairobi businesses."
 >
   <div class="container page-hero">
     <nav class="breadcrumb" aria-label="Breadcrumb">
@@ -18,13 +19,37 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     </nav>
     <h1 class="h1">Everything it takes to get online, and to keep growing once you are.</h1>
     <p class="lead">
-      Four services you can take alone or together. Each one has its own page with what you get, how it works and
-      the questions owners ask us.
+      Find practical support for getting your business online, reaching more customers and growing your brand.
     </p>
   </div>
 
   <section class="section" aria-label="All services">
     <div class="container">
+      <div class="offerings-grid">
+        {
+          offeringGroups.map((group) => (
+            <section class="offering-group" aria-labelledby={`group-${group.slug}`}>
+              <header>
+                <p class="kicker">{group.title}</p>
+                <h2 class="h2" id={`group-${group.slug}`}>{group.title}</h2>
+                <p class="muted">{group.summary}</p>
+              </header>
+              <ul class="offering-list">
+                {group.offerings.map((offering) => (
+                  <li id={offering.slug}>
+                    <span class="offering-mark" aria-hidden="true">↗</span>
+                    <div>
+                      <h3 class="h3">{offering.title}</h3>
+                      <p class="muted">{offering.summary}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))
+        }
+      </div>
+      <h2 class="h2 core-services-title">End-to-end business services</h2>
       {
         services.map((service) => (
           <article class="service-row">
