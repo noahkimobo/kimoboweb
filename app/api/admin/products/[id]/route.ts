@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { eq } from 'drizzle-orm'
 import { db } from '@/lib/db'
+import { getPostgresErrorInfo, isProductSlugConflict } from '@/lib/db/errors'
 import { products, type NewProduct } from '@/lib/db/schema'
 
 type Params = { params: Promise<{ id: string }> }
@@ -41,12 +42,21 @@ export async function PATCH(request: NextRequest, { params }: Params) {
       return NextResponse.json({ error: 'Product not found.' }, { status: 404 })
     }
     return NextResponse.json({ product: updated })
-  } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : 'Failed to update product.'
-    const isDuplicateSlug = message.includes('products_slug_unique') || message.includes('duplicate key')
+  } catch (error: unknown) {
+    const isDuplicateSlug = isProductSlugConflict(error)
+    if (!isDuplicateSlug) {
+      console.error('Failed to update product.', {
+        errorName: error instanceof Error ? error.name : 'UnknownError',
+        ...getPostgresErrorInfo(error),
+      })
+    }
     return NextResponse.json(
-      { error: isDuplicateSlug ? 'That slug is already in use.' : message },
-      { status: 400 },
+      {
+        error: isDuplicateSlug
+          ? 'That slug is already in use. Choose a different URL slug.'
+          : 'Failed to update product. Please try again.',
+      },
+      { status: isDuplicateSlug ? 409 : 500 },
     )
   }
 }

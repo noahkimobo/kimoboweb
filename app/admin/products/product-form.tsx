@@ -294,7 +294,7 @@ export function ProductForm({ product }: { product?: Product }) {
       return
     }
 
-    const addSeaterSuffix = !isEditing && seatersToCreate.length > 1
+    const addSeaterSuffix = !isEditing && form.category !== 'bedroom'
     const baseName = payload.name.replace(/\s+\d+\s*-?\s*seaters?$/i, '').trim()
     const baseSlug = payload.slug.replace(/-\d+-?seaters?$/i, '')
     const productsToCreate = seatersToCreate.map((seaters) => ({

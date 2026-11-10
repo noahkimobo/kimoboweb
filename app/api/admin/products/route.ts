@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { db } from '@/lib/db'
+import { getPostgresErrorInfo, isProductSlugConflict } from '@/lib/db/errors'
 import { products, type NewProduct } from '@/lib/db/schema'
 
 function hasRequiredFields(
@@ -63,12 +64,21 @@ export async function POST(request: NextRequest) {
       .returning()
 
     return NextResponse.json(isBulkRequest ? { products: created } : { product: created[0] })
-  } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : 'Failed to create product.'
-    const isDuplicateSlug = message.includes('products_slug_unique') || message.includes('duplicate key')
+  } catch (error: unknown) {
+    const isDuplicateSlug = isProductSlugConflict(error)
+    if (!isDuplicateSlug) {
+      console.error('Failed to create product.', {
+        errorName: error instanceof Error ? error.name : 'UnknownError',
+        ...getPostgresErrorInfo(error),
+      })
+    }
     return NextResponse.json(
-      { error: isDuplicateSlug ? 'That slug is already in use.' : message },
-      { status: 400 },
+      {
+        error: isDuplicateSlug
+          ? 'That slug is already in use. Choose a different URL slug.'
+          : 'Failed to create product. Please try again.',
+      },
+      { status: isDuplicateSlug ? 409 : 500 },
     )
   }
 }
