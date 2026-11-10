@@ -4,7 +4,7 @@ import { ShopFilters } from '@/components/product/shop-filters'
 import { ProductCard } from '@/components/product/product-card'
 import { getProducts, type ProductSort } from '@/lib/queries'
 import { categoryLabel } from '@/lib/format'
-import { ArrowDown, Sparkles } from 'lucide-react'
+import { ArrowDown } from 'lucide-react'
 import Link from 'next/link'
 
 export const dynamic = 'force-dynamic'
@@ -67,8 +67,7 @@ export default async function ShopPage({
         />
         <div className="relative flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-2xl">
-            <span className="inline-flex items-center gap-2 rounded-full border border-amber-300/40 bg-amber-300/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-amber-200 sm:text-xs">
-              <Sparkles className="size-3.5" aria-hidden="true" />
+            <span className="inline-flex items-center rounded-full border border-amber-300/40 bg-amber-300/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-amber-200 sm:text-xs">
               November at Kimobo
             </span>
             <h2

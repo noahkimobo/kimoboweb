@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
-import { ArrowUpRight, MessageCircle, Sparkles } from 'lucide-react'
+import { ArrowUpRight, MessageCircle } from 'lucide-react'
 import type { Product } from '@/lib/db/schema'
 import { categoryLabel, formatPrice } from '@/lib/format'
 import { whatsappLink } from '@/lib/site'
@@ -52,8 +52,7 @@ export function ProductCard({
             }`}
           >
             {isBlackFridayDeal ? (
-              <span className="inline-flex min-w-0 items-center gap-1 rounded-full bg-gradient-to-r from-amber-300 to-orange-400 px-2 py-1 text-[8px] font-black uppercase tracking-wide text-neutral-950 shadow-lg sm:px-2.5 sm:text-[10px] sm:tracking-wider">
-                <Sparkles className="size-3 shrink-0" aria-hidden="true" />
+              <span className="inline-flex min-w-0 items-center rounded-full bg-gradient-to-r from-amber-300 to-orange-400 px-2 py-1 text-[8px] font-black uppercase tracking-wide text-neutral-950 shadow-lg sm:px-2.5 sm:text-[10px] sm:tracking-wider">
                 Black Friday
               </span>
             ) : onSale && !soldOut ? (
