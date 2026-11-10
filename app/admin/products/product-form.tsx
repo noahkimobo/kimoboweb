@@ -18,6 +18,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { CATEGORIES } from '@/lib/format'
+import { MAX_PRODUCT_IMAGES_PER_UPLOAD } from '@/lib/product-image-upload'
 import type { Product, ProductColor } from '@/lib/db/schema'
 
 type FormState = {
@@ -127,6 +128,7 @@ export function ProductForm({ product }: { product?: Product }) {
   const isEditing = Boolean(product)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [uploading, setUploading] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState('')
   const [isPending, startTransition] = useTransition()
   const [slugTouched, setSlugTouched] = useState(isEditing)
 
@@ -166,51 +168,68 @@ export function ProductForm({ product }: { product?: Product }) {
     if (!files.length) return
 
     setUploading(true)
+    let uploadedCount = 0
     try {
-      const body = new FormData()
-      for (const file of files) {
-        body.append('file', await compressImageToWebp(file))
-      }
+      for (let offset = 0; offset < files.length; offset += MAX_PRODUCT_IMAGES_PER_UPLOAD) {
+        const batch = files.slice(offset, offset + MAX_PRODUCT_IMAGES_PER_UPLOAD)
+        const batchEnd = offset + batch.length
+        const body = new FormData()
 
-      const res = await fetch('/api/admin/upload', { method: 'POST', body })
-      const responseText = await res.text()
-      let data: {
-        error?: string
-        url?: string
-        urls?: string[]
-      }
-      try {
-        data = JSON.parse(responseText) as {
+        setUploadProgress(`Preparing images ${offset + 1}-${batchEnd} of ${files.length}`)
+        for (const file of batch) {
+          body.append('file', await compressImageToWebp(file))
+        }
+
+        setUploadProgress(`Uploading images ${offset + 1}-${batchEnd} of ${files.length}`)
+        const res = await fetch('/api/admin/upload', { method: 'POST', body })
+        const responseText = await res.text()
+        let data: {
           error?: string
           url?: string
           urls?: string[]
         }
-      } catch {
-        throw new Error(`Upload failed (${res.status}). ${responseText.slice(0, 120)}`)
+        try {
+          data = JSON.parse(responseText) as {
+            error?: string
+            url?: string
+            urls?: string[]
+          }
+        } catch {
+          throw new Error(`Upload failed (${res.status}). ${responseText.slice(0, 120)}`)
+        }
+
+        if (!res.ok) throw new Error(data.error ?? 'Upload failed.')
+
+        const uploadedUrls = Array.isArray(data.urls)
+          ? data.urls
+          : data.url
+            ? [data.url]
+            : []
+
+        if (uploadedUrls.length !== batch.length) {
+          throw new Error(
+            `Upload returned ${uploadedUrls.length} image URLs for ${batch.length} selected images.`,
+          )
+        }
+
+        setForm((current) => ({
+          ...current,
+          images: [...current.images, ...uploadedUrls],
+        }))
+        uploadedCount += uploadedUrls.length
       }
 
-      if (!res.ok) throw new Error(data.error ?? 'Upload failed.')
-
-      const uploadedUrls = Array.isArray(data.urls)
-        ? data.urls
-        : data.url
-          ? [data.url]
-          : []
-
-      if (!uploadedUrls.length) {
-        throw new Error('Upload succeeded but no image URLs were returned.')
-      }
-
-      setForm((current) => ({
-        ...current,
-        images: [...current.images, ...uploadedUrls],
-      }))
-      const countLabel = files.length > 1 ? `${files.length} images uploaded` : 'Image uploaded'
-      toast.success(`${countLabel} as WebP`)
+      toast.success(`${uploadedCount} ${uploadedCount === 1 ? 'image' : 'images'} uploaded as WebP`)
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Upload failed.')
+      const message = err instanceof Error ? err.message : 'Upload failed.'
+      toast.error(
+        uploadedCount
+          ? `${uploadedCount} images uploaded; remaining uploads failed. ${message}`
+          : message,
+      )
     } finally {
       setUploading(false)
+      setUploadProgress('')
       if (fileInputRef.current) fileInputRef.current.value = ''
     }
   }
@@ -643,7 +662,7 @@ export function ProductForm({ product }: { product?: Product }) {
         <div>
           <Label>Images</Label>
           <p className="mt-1 text-xs text-muted-foreground">
-            Images are automatically resized, compressed, and saved as WebP.
+            Select multiple images at once. They upload in batches of {MAX_PRODUCT_IMAGES_PER_UPLOAD}, then are resized, compressed, and saved as WebP.
           </p>
         </div>
         <div className="flex flex-wrap gap-3">
@@ -676,7 +695,7 @@ export function ProductForm({ product }: { product?: Product }) {
               <Upload className="size-5" />
             )}
             <span className="text-[11px]">
-              {uploading ? 'Uploading' : 'Upload images'}
+              {uploading ? 'Uploading' : 'Add images'}
             </span>
           </button>
           <input
@@ -688,6 +707,11 @@ export function ProductForm({ product }: { product?: Product }) {
             onChange={handleFileSelect}
           />
         </div>
+        {uploadProgress && (
+          <p className="text-xs text-muted-foreground" aria-live="polite">
+            {uploadProgress}
+          </p>
+        )}
       </div>
 
       <div className="flex flex-col gap-3">

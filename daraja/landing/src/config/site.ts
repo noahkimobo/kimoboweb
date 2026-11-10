@@ -38,7 +38,8 @@ export const SITE = {
   appUrl: readHttpsUrl(env.PUBLIC_APP_URL, 'https://app.daraja.co.ke'),
 } as const;
 
-const whatsappNumber = readPhone(env.PUBLIC_WHATSAPP_NUMBER);
+const DEFAULT_WHATSAPP_NUMBER = '254141459677';
+const whatsappNumber = readPhone(env.PUBLIC_WHATSAPP_NUMBER) ?? DEFAULT_WHATSAPP_NUMBER;
 const contactEmail = readEmail(env.PUBLIC_CONTACT_EMAIL);
 
 export function createWhatsAppUrl(message: string): string | null {

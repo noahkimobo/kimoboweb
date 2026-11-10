@@ -3,9 +3,9 @@ import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import { put } from '@vercel/blob'
 import sharp from 'sharp'
+import { MAX_PRODUCT_IMAGES_PER_UPLOAD } from '@/lib/product-image-upload'
 
 const ALLOWED_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/avif'])
-const MAX_FILES = 8
 const MAX_FILE_SIZE = 4 * 1024 * 1024
 const MAX_TOTAL_SIZE = 4 * 1024 * 1024
 const MAX_IMAGE_PIXELS = 40_000_000
@@ -21,9 +21,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'No file provided.' }, { status: 400 })
   }
 
-  if (files.length > MAX_FILES) {
+  if (files.length > MAX_PRODUCT_IMAGES_PER_UPLOAD) {
     return NextResponse.json(
-      { error: `Upload up to ${MAX_FILES} images at a time.` },
+      { error: `Upload up to ${MAX_PRODUCT_IMAGES_PER_UPLOAD} images at a time.` },
       { status: 400 },
     )
   }

@@ -1,0 +1,1 @@
+export const MAX_PRODUCT_IMAGES_PER_UPLOAD = 8
