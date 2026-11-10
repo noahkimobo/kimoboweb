@@ -39,7 +39,10 @@ type FormState = {
   featured: boolean
   images: string[]
   colors: ProductColor[]
+  selectedSeaters: number[]
 }
+
+const SEATER_OPTIONS = Array.from({ length: 12 }, (_, index) => index + 1)
 
 function slugify(str: string) {
   return str
@@ -146,6 +149,7 @@ export function ProductForm({ product }: { product?: Product }) {
     featured: product?.featured ?? false,
     images: product?.images ?? [],
     colors: product?.colors ?? [],
+    selectedSeaters: product ? [product.seaters] : [],
   })
 
   function update<K extends keyof FormState>(key: K, value: FormState[K]) {
@@ -236,8 +240,28 @@ export function ProductForm({ product }: { product?: Product }) {
     )
   }
 
+  function toggleSeater(seaters: number, checked: boolean) {
+    update(
+      'selectedSeaters',
+      checked
+        ? [...form.selectedSeaters, seaters].sort((a, b) => a - b)
+        : form.selectedSeaters.filter((value) => value !== seaters),
+    )
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+
+    const seatersToCreate = isEditing
+      ? [Math.max(1, Number.parseInt(form.seaters, 10) || 1)]
+      : form.category === 'bedroom'
+        ? [1]
+        : form.selectedSeaters
+
+    if (!isEditing && form.category !== 'bedroom' && seatersToCreate.length === 0) {
+      toast.error('Select at least one seater size.')
+      return
+    }
 
     const payload = {
       name: form.name.trim(),
@@ -249,7 +273,6 @@ export function ProductForm({ product }: { product?: Product }) {
       compareAtPrice: form.compareAtPriceDollars.trim()
         ? toCents(form.compareAtPriceDollars)
         : null,
-      seaters: Math.max(1, Number.parseInt(form.seaters, 10) || 1),
       woodType: form.woodType.trim(),
       cushionType: form.cushionType.trim(),
       bedSize: form.category === 'bedroom' ? form.bedSize || null : null,
@@ -271,19 +294,51 @@ export function ProductForm({ product }: { product?: Product }) {
       return
     }
 
+    const addSeaterSuffix = !isEditing && form.category !== 'bedroom'
+    const baseName = payload.name.replace(/\s+\d+\s*-?\s*seaters?$/i, '').trim()
+    const baseSlug = payload.slug.replace(/-\d+-?seaters?$/i, '')
+    const productsToCreate = seatersToCreate.map((seaters) => ({
+      ...payload,
+      name: addSeaterSuffix ? `${baseName} ${seaters}-Seater` : payload.name,
+      slug: addSeaterSuffix ? slugify(`${baseSlug}-${seaters}-seater`) : payload.slug,
+      seaters,
+    }))
+
     startTransition(async () => {
       const url = isEditing ? `/api/admin/products/${product!.id}` : '/api/admin/products'
       const res = await fetch(url, {
         method: isEditing ? 'PATCH' : 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(
+          isEditing || productsToCreate.length === 1
+            ? productsToCreate[0]
+            : productsToCreate,
+        ),
       })
-      const data = await res.json()
+      const data = await res.json() as {
+        error?: string
+        adjustedSlug?: boolean
+        product?: { slug: string }
+        adjustedSlugs?: boolean
+        products?: Array<{ slug: string }>
+      }
       if (!res.ok) {
         toast.error(data.error ?? 'Something went wrong.')
         return
       }
-      toast.success(isEditing ? 'Product updated' : 'Product created')
+      if (isEditing) {
+        toast.success('Product updated')
+      } else if (data.adjustedSlugs && Array.isArray(data.products)) {
+        toast.success(
+          `${data.products.length} products created with unique URLs: ${data.products
+            .map((created) => created.slug)
+            .join(', ')}`,
+        )
+      } else if (data.adjustedSlug && data.product?.slug) {
+        toast.success(`Product created with unique URL: ${data.product.slug}`)
+      } else {
+        toast.success(productsToCreate.length > 1 ? `${productsToCreate.length} products created` : 'Product created')
+      }
       router.push('/admin/products')
       router.refresh()
     })
@@ -385,7 +440,7 @@ export function ProductForm({ product }: { product?: Product }) {
           />
         </div>
 
-        {form.category !== 'bedroom' && (
+        {form.category !== 'bedroom' && isEditing && (
           <div className="flex flex-col gap-2">
             <Label htmlFor="seaters">Seaters</Label>
             <Input
@@ -396,6 +451,41 @@ export function ProductForm({ product }: { product?: Product }) {
               value={form.seaters}
               onChange={(e) => update('seaters', e.target.value)}
             />
+          </div>
+        )}
+
+        {form.category !== 'bedroom' && !isEditing && (
+          <div className="flex flex-col gap-3 rounded-md border border-border p-4 sm:col-span-2">
+            <div>
+              <Label>Seater sizes</Label>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Choose every size to create a separate listing for each one. Price, stock, photos, and colors will be shared across the new listings.
+              </p>
+            </div>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+              {SEATER_OPTIONS.map((seaters) => {
+                const checked = form.selectedSeaters.includes(seaters)
+                return (
+                  <label
+                    key={seaters}
+                    className="flex cursor-pointer items-center gap-2 rounded-md border border-border px-3 py-2 text-sm transition-colors hover:bg-muted/50"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={checked}
+                      onChange={(event) => toggleSeater(seaters, event.target.checked)}
+                      className="size-4 accent-primary"
+                    />
+                    {seaters} seater{seaters === 1 ? '' : 's'}
+                  </label>
+                )
+              })}
+            </div>
+            <p className="text-xs text-muted-foreground" aria-live="polite">
+              {form.selectedSeaters.length
+                ? `${form.selectedSeaters.length} listing${form.selectedSeaters.length === 1 ? '' : 's'} will be created.`
+                : 'Select at least one size to continue.'}
+            </p>
           </div>
         )}
 
@@ -601,8 +691,13 @@ export function ProductForm({ product }: { product?: Product }) {
       </div>
 
       <div className="flex flex-col gap-3">
-        <div className="flex items-center justify-between">
-          <Label>Colors</Label>
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <Label>Colors</Label>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Shoppers can choose from these colors on each listing.
+            </p>
+          </div>
           <Button type="button" variant="outline" size="sm" onClick={addColor}>
             Add color
           </Button>
@@ -656,9 +751,20 @@ export function ProductForm({ product }: { product?: Product }) {
           <Button type="button" variant="outline" onClick={() => router.push('/admin/products')}>
             Cancel
           </Button>
-          <Button type="submit" disabled={isPending || uploading}>
+          <Button
+            type="submit"
+            disabled={
+              isPending ||
+              uploading ||
+              (!isEditing && form.category !== 'bedroom' && form.selectedSeaters.length === 0)
+            }
+          >
             {isPending && <Loader2 className="size-4 animate-spin" />}
-            {isEditing ? 'Save changes' : 'Create product'}
+            {isEditing
+              ? 'Save changes'
+              : form.selectedSeaters.length > 1 && form.category !== 'bedroom'
+                ? `Create ${form.selectedSeaters.length} products`
+                : 'Create product'}
           </Button>
         </div>
       </div>

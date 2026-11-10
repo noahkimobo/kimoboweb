@@ -280,16 +280,19 @@ img {
 }
 
 .nav-caret {
-  width: 7px;
-  height: 7px;
-  border-right: 1.5px solid currentColor;
-  border-bottom: 1.5px solid currentColor;
-  transform: translateY(-2px) rotate(45deg);
+  width: 12px;
+  height: 12px;
+  flex: 0 0 12px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.5;
   transition: transform 160ms ease;
 }
 
 .nav-services[open] .nav-caret {
-  transform: translateY(2px) rotate(225deg);
+  transform: rotate(180deg);
 }
 
 .nav-services-menu {
@@ -694,6 +697,34 @@ img {
   box-shadow: 0 16px 32px rgb(14 27 46 / 12%);
 }
 
+.path-card {
+  align-items: flex-start;
+}
+
+.path-card-link {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 8px;
+  border-bottom: 2px solid var(--c-amber);
+  color: var(--c-ink);
+  font-weight: 700;
+}
+
+.path-card-link:hover {
+  color: var(--c-blue);
+}
+
+.card--dark .path-card-link {
+  color: var(--c-white);
+}
+
+.card--dark .path-card-link:hover {
+  color: var(--c-amber);
+}
+
 @media (max-width: 900px) {
   .hero {
     grid-template-columns: minmax(0, 1fr);
@@ -773,6 +804,21 @@ img {
 
 .page-hero .lead {
   margin-top: 24px;
+}
+
+.service-hero-action {
+  display: grid;
+  justify-items: start;
+  gap: 10px;
+  margin-top: 28px;
+}
+
+.service-hero-action .btn {
+  min-height: 52px;
+}
+
+.service-hero-action .muted {
+  font-size: 0.9375rem;
 }
 
 .breadcrumb ol {
@@ -991,6 +1037,43 @@ img {
   display: grid;
   align-content: start;
   gap: 14px;
+}
+
+.analytics-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  gap: 20px;
+}
+
+.analytics-card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md);
+  background: var(--c-white);
+}
+
+.analytics-card figure {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+}
+
+.analytics-card img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 2;
+  background: #f3f4f6;
+  object-fit: contain;
+  object-position: top;
+}
+
+.analytics-card figcaption {
+  margin-top: auto;
+  padding: 14px 16px;
+  color: var(--c-ink);
+  font-size: 0.9375rem;
+  font-weight: 700;
 }
 
 .offering-detail-fit {
