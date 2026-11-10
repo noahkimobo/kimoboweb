@@ -46,10 +46,14 @@ export function ProductCard({
               className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/60 to-transparent"
             />
           )}
-          <div className="absolute left-2 top-2 flex flex-col items-start gap-1.5 sm:left-3 sm:top-3">
+          <div
+            className={`absolute left-2 right-2 top-2 flex items-start sm:left-3 sm:right-3 sm:top-3 ${
+              isBlackFridayDeal ? 'justify-between gap-1' : 'flex-col gap-1.5'
+            }`}
+          >
             {isBlackFridayDeal ? (
-              <span className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-amber-300 to-orange-400 px-2.5 py-1 text-[9px] font-black uppercase tracking-wider text-neutral-950 shadow-lg sm:text-[10px]">
-                <Sparkles className="size-3" aria-hidden="true" />
+              <span className="inline-flex min-w-0 items-center gap-1 rounded-full bg-gradient-to-r from-amber-300 to-orange-400 px-2 py-1 text-[8px] font-black uppercase tracking-wide text-neutral-950 shadow-lg sm:px-2.5 sm:text-[10px] sm:tracking-wider">
+                <Sparkles className="size-3 shrink-0" aria-hidden="true" />
                 Black Friday
               </span>
             ) : onSale && !soldOut ? (
@@ -57,13 +61,13 @@ export function ProductCard({
                 Sale
               </Badge>
             ) : null}
+            {isBlackFridayDeal && (
+              <span className="shrink-0 rounded-full bg-red-600 px-2 py-1 text-[10px] font-extrabold text-white shadow-lg sm:px-2.5 sm:text-xs">
+                -{discountPercent}%
+              </span>
+            )}
             {soldOut && <Badge variant="secondary">Sold out</Badge>}
           </div>
-          {isBlackFridayDeal && (
-            <span className="absolute right-2 top-2 rounded-full bg-red-600 px-2.5 py-1 text-[10px] font-extrabold text-white shadow-lg sm:right-3 sm:top-3 sm:text-xs">
-              -{discountPercent}%
-            </span>
-          )}
           {isBlackFridayDeal && (
             <span className="absolute bottom-3 left-3 rounded-full border border-white/30 bg-black/55 px-2.5 py-1 text-[10px] font-medium text-white backdrop-blur-sm">
               Save {formatPrice(product.compareAtPrice! - product.price)}
