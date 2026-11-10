@@ -315,18 +315,30 @@ export function ProductForm({ product }: { product?: Product }) {
             : productsToCreate,
         ),
       })
-      const data = await res.json()
+      const data = await res.json() as {
+        error?: string
+        adjustedSlug?: boolean
+        product?: { slug: string }
+        adjustedSlugs?: boolean
+        products?: Array<{ slug: string }>
+      }
       if (!res.ok) {
         toast.error(data.error ?? 'Something went wrong.')
         return
       }
-      toast.success(
-        isEditing
-          ? 'Product updated'
-          : productsToCreate.length > 1
-            ? `${productsToCreate.length} products created`
-            : 'Product created',
-      )
+      if (isEditing) {
+        toast.success('Product updated')
+      } else if (data.adjustedSlugs && Array.isArray(data.products)) {
+        toast.success(
+          `${data.products.length} products created with unique URLs: ${data.products
+            .map((created) => created.slug)
+            .join(', ')}`,
+        )
+      } else if (data.adjustedSlug && data.product?.slug) {
+        toast.success(`Product created with unique URL: ${data.product.slug}`)
+      } else {
+        toast.success(productsToCreate.length > 1 ? `${productsToCreate.length} products created` : 'Product created')
+      }
       router.push('/admin/products')
       router.refresh()
     })

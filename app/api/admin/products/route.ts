@@ -1,6 +1,8 @@
 import { NextResponse, type NextRequest } from 'next/server'
+import { eq } from 'drizzle-orm'
 import { db } from '@/lib/db'
 import { getPostgresErrorInfo, isProductSlugConflict } from '@/lib/db/errors'
+import { getSlugConflictFallback } from '@/lib/db/product-slugs'
 import { products, type NewProduct } from '@/lib/db/schema'
 
 function hasRequiredFields(
@@ -34,10 +36,52 @@ export async function POST(request: NextRequest) {
   }
 
   try {
+    const slugsInRequest = new Set<string>()
+    const productsToInsert: NewProduct[] = []
+
+    for (const body of validEntries) {
+      let candidate: Pick<NewProduct, 'name' | 'slug' | 'category' | 'seaters'> = {
+        name: body.name,
+        slug: body.slug,
+        category: body.category,
+        seaters: body.seaters ?? 1,
+      }
+
+      for (let attempt = 0; attempt < 50; attempt += 1) {
+        const [existing] = await db
+          .select({ id: products.id })
+          .from(products)
+          .where(eq(products.slug, candidate.slug))
+          .limit(1)
+
+        if (!existing && !slugsInRequest.has(candidate.slug)) break
+        candidate = getSlugConflictFallback(candidate, attempt)
+      }
+
+      const [existing] = await db
+        .select({ id: products.id })
+        .from(products)
+        .where(eq(products.slug, candidate.slug))
+        .limit(1)
+      if (existing || slugsInRequest.has(candidate.slug)) {
+        return NextResponse.json(
+          { error: 'Could not generate an available product URL. Please change the slug and try again.' },
+          { status: 409 },
+        )
+      }
+
+      slugsInRequest.add(candidate.slug)
+      productsToInsert.push({
+        ...body,
+        name: candidate.name,
+        slug: candidate.slug,
+      })
+    }
+
     const created = await db
       .insert(products)
       .values(
-        validEntries.map((body) => ({
+        productsToInsert.map((body) => ({
           name: body.name,
           slug: body.slug,
           description: body.description ?? '',
@@ -63,7 +107,17 @@ export async function POST(request: NextRequest) {
       )
       .returning()
 
-    return NextResponse.json(isBulkRequest ? { products: created } : { product: created[0] })
+    if (isBulkRequest) {
+      return NextResponse.json({
+        products: created,
+        adjustedSlugs: created.some((product, index) => product.slug !== validEntries[index].slug),
+      })
+    }
+
+    return NextResponse.json({
+      product: created[0],
+      adjustedSlug: created[0].slug !== validEntries[0].slug,
+    })
   } catch (error: unknown) {
     const isDuplicateSlug = isProductSlugConflict(error)
     if (!isDuplicateSlug) {
